@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="Add method" Url="html/2c13ac71-bfba-71a5-9617-0f76a2fef5cb.htm" />
+  <HelpKINode Title="AddCommand property" Url="html/93df80fd-476b-9b02-358f-93b43c0c398b.htm" />
+  <HelpKINode Title="AddNode method" Url="html/2dc5ac30-4767-c7e3-230f-9a1fbd18957c.htm" />
+  <HelpKINode Title="Children property">
+    <HelpKINode Title="ITreeNode(T).Children Property " Url="html/66c95158-b146-4175-8ad4-94e9840cc29d.htm" />
+    <HelpKINode Title="TreeNode(T).Children Property " Url="html/88360073-bbfc-d6b3-25d0-e29bb640ef6f.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CreateTree method" Url="html/7c739f1a-3189-7d04-d126-da0762a92114.htm" />
+  <HelpKINode Title="DepthFromRoot property">
+    <HelpKINode Title="ITreeNode(T).DepthFromRoot Property " Url="html/74f258c8-bf9a-34e6-fd6c-8e1a785f7a1d.htm" />
+    <HelpKINode Title="TreeNode(T).DepthFromRoot Property " Url="html/78b861ea-6cfe-6e34-90c7-42319a2db94b.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Entity property" Url="html/0ade404d-d5d8-badc-03d2-56f4ae226cfd.htm" />
+  <HelpKINode Title="FindById method">
+    <HelpKINode Title="ITreeNode(T).FindById Method " Url="html/e37b85c1-a584-ce93-9a64-17e9ed655094.htm" />
+    <HelpKINode Title="TreeNode(T).FindById Method " Url="html/f9f4ac9b-a818-b260-d36b-055154464bb7.htm" />
+  </HelpKINode>
+  <HelpKINode Title="HasChildren property">
+    <HelpKINode Title="ITreeNode(T).HasChildren Property " Url="html/ec13e874-d52e-65c5-6b15-53049f5744db.htm" />
+    <HelpKINode Title="TreeNode(T).HasChildren Property " Url="html/756fd092-758b-118c-fc5f-93a04e4fa5f3.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Id property">
+    <HelpKINode Title="ITreeNode(T).Id Property " Url="html/03e2c3e6-c6bb-d088-57d9-4be8ceb8f2f6.htm" />
+    <HelpKINode Title="TreeNode(T).Id Property " Url="html/8590aa38-86a7-ab1b-dd70-ed3cba519f00.htm" />
+    <HelpKINode Title="TreeNodeWpfViewModel(T).Id Property " Url="html/a90f7b29-348e-c1f4-1954-44e492b7aed4.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IndentCharacter property">
+    <HelpKINode Title="ITreeNode(T).IndentCharacter Property " Url="html/55a72b18-1001-25c1-147f-6a6916ec2e6e.htm" />
+    <HelpKINode Title="TreeNode(T).IndentCharacter Property " Url="html/fa49a0c7-ee54-6900-aa36-adbfac4ed5c4.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IndentString property">
+    <HelpKINode Title="ITreeNode(T).IndentString Property " Url="html/5a1b97f4-5bda-2979-cc5f-2139b85d6589.htm" />
+    <HelpKINode Title="TreeNode(T).IndentString Property " Url="html/a8a2cb00-5783-54e2-1e06-66d67e909711.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsAncestor method">
+    <HelpKINode Title="ITreeNode(T).IsAncestor Method " Url="html/a98203d7-1614-109b-0935-dcc6a787bf58.htm" />
+    <HelpKINode Title="TreeNode(T).IsAncestor Method " Url="html/d958b6db-d1ed-19ed-2661-8a3e12246b8c.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsDescendent method">
+    <HelpKINode Title="ITreeNode(T).IsDescendent Method " Url="html/965b7b67-4419-3788-ae33-52cce6159408.htm" />
+    <HelpKINode Title="TreeNode(T).IsDescendent Method " Url="html/052e5ee3-81c0-7d8e-9b58-73b612ca42aa.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsExpanded property" Url="html/ef35ee84-27e6-f029-9958-69d8034ae562.htm" />
+  <HelpKINode Title="IsSelected property" Url="html/c6ece341-b69f-816c-ae5b-a229a6c47e15.htm" />
+  <HelpKINode Title="IsSibling method">
+    <HelpKINode Title="ITreeNode(T).IsSibling Method " Url="html/9a743602-e4ee-5e5d-c131-6c84fc0dceb7.htm" />
+    <HelpKINode Title="TreeNode(T).IsSibling Method " Url="html/8f305210-86ed-9d22-fb9f-19373f346013.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ITreeNode(Of T) interface">
+    <HelpKINode Title="ITreeNode(T) Interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+    <HelpKINode Title="about ITreeNode(Of T) interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+    <HelpKINode Title="methods" Url="html/ebb869a3-8886-0b3d-7e7a-44b072a3fb53.htm" />
+    <HelpKINode Title="properties" Url="html/3f4bdd47-d196-185c-9e4d-d9ea938e43af.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ITreeNode(Of T).Children property" Url="html/66c95158-b146-4175-8ad4-94e9840cc29d.htm" />
+  <HelpKINode Title="ITreeNode(Of T).DepthFromRoot property" Url="html/74f258c8-bf9a-34e6-fd6c-8e1a785f7a1d.htm" />
+  <HelpKINode Title="ITreeNode(Of T).FindById method" Url="html/e37b85c1-a584-ce93-9a64-17e9ed655094.htm" />
+  <HelpKINode Title="ITreeNode(Of T).HasChildren property" Url="html/ec13e874-d52e-65c5-6b15-53049f5744db.htm" />
+  <HelpKINode Title="ITreeNode(Of T).Id property" Url="html/03e2c3e6-c6bb-d088-57d9-4be8ceb8f2f6.htm" />
+  <HelpKINode Title="ITreeNode(Of T).IndentCharacter property" Url="html/55a72b18-1001-25c1-147f-6a6916ec2e6e.htm" />
+  <HelpKINode Title="ITreeNode(Of T).IndentString property" Url="html/5a1b97f4-5bda-2979-cc5f-2139b85d6589.htm" />
+  <HelpKINode Title="ITreeNode(Of T).IsAncestor method" Url="html/a98203d7-1614-109b-0935-dcc6a787bf58.htm" />
+  <HelpKINode Title="ITreeNode(Of T).IsDescendent method" Url="html/965b7b67-4419-3788-ae33-52cce6159408.htm" />
+  <HelpKINode Title="ITreeNode(Of T).IsSibling method" Url="html/9a743602-e4ee-5e5d-c131-6c84fc0dceb7.htm" />
+  <HelpKINode Title="ITreeNode(Of T).MakeChildOfUpperSibling method" Url="html/9f976178-d1d5-d356-d86a-ed212436b86b.htm" />
+  <HelpKINode Title="ITreeNode(Of T).MakeSiblingOfParent method" Url="html/ecbbb9ad-d44b-2659-a448-8aee0ebe9075.htm" />
+  <HelpKINode Title="ITreeNode(Of T).MoveDownInSiblingOrder method" Url="html/aacf2d75-1bc9-37e6-a006-1da4bb06e92c.htm" />
+  <HelpKINode Title="ITreeNode(Of T).MoveUpInSiblingOrder method" Url="html/0f6d6a1c-81cb-2a48-dead-d300b6cf97b2.htm" />
+  <HelpKINode Title="ITreeNode(Of T).Parent property" Url="html/5ae2cce1-b32d-fa54-5045-2f72ada40498.htm" />
+  <HelpKINode Title="ITreeNode(Of T).ParentId property" Url="html/f1bb4138-61be-bbd6-30a7-f6ac7c248192.htm" />
+  <HelpKINode Title="ITreeNode(Of T).ProcessChildren method" Url="html/6af747d0-7c27-d07a-2c27-b55703e2fb32.htm" />
+  <HelpKINode Title="ITreeNode(Of T).ProcessTree method" Url="html/519bb094-2e8b-bad2-06d2-fc0aa93fc6e5.htm" />
+  <HelpKINode Title="ITreeNode(Of T).Root property" Url="html/9413ff2a-b7e8-7a7b-e5e7-a7dc9ee24782.htm" />
+  <HelpKINode Title="ITreeNode(Of T).Siblings property" Url="html/9e6a9d6c-67e8-2a6c-5a23-eba7cb1c7009.htm" />
+  <HelpKINode Title="ITreeNode(Of T).SortableTreePath property" Url="html/e09add03-d62b-8c98-084b-f6d6840e82b9.htm" />
+  <HelpKINode Title="ITreeNode(Of T).TreeNodeId property" Url="html/1b7720da-298d-430e-b85d-08fb88623876.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt; interface">
+    <HelpKINode Title="ITreeNode(T) Interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+    <HelpKINode Title="about ITreeNode&lt;T&gt; interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+    <HelpKINode Title="methods" Url="html/ebb869a3-8886-0b3d-7e7a-44b072a3fb53.htm" />
+    <HelpKINode Title="properties" Url="html/3f4bdd47-d196-185c-9e4d-d9ea938e43af.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ITreeNode&lt;T&gt;.Children property" Url="html/66c95158-b146-4175-8ad4-94e9840cc29d.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.DepthFromRoot property" Url="html/74f258c8-bf9a-34e6-fd6c-8e1a785f7a1d.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.FindById method" Url="html/e37b85c1-a584-ce93-9a64-17e9ed655094.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.HasChildren property" Url="html/ec13e874-d52e-65c5-6b15-53049f5744db.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.Id property" Url="html/03e2c3e6-c6bb-d088-57d9-4be8ceb8f2f6.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.IndentCharacter property" Url="html/55a72b18-1001-25c1-147f-6a6916ec2e6e.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.IndentString property" Url="html/5a1b97f4-5bda-2979-cc5f-2139b85d6589.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.IsAncestor method" Url="html/a98203d7-1614-109b-0935-dcc6a787bf58.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.IsDescendent method" Url="html/965b7b67-4419-3788-ae33-52cce6159408.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.IsSibling method" Url="html/9a743602-e4ee-5e5d-c131-6c84fc0dceb7.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.MakeChildOfUpperSibling method" Url="html/9f976178-d1d5-d356-d86a-ed212436b86b.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.MakeSiblingOfParent method" Url="html/ecbbb9ad-d44b-2659-a448-8aee0ebe9075.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.MoveDownInSiblingOrder method" Url="html/aacf2d75-1bc9-37e6-a006-1da4bb06e92c.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.MoveUpInSiblingOrder method" Url="html/0f6d6a1c-81cb-2a48-dead-d300b6cf97b2.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.Parent property" Url="html/5ae2cce1-b32d-fa54-5045-2f72ada40498.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.ParentId property" Url="html/f1bb4138-61be-bbd6-30a7-f6ac7c248192.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.ProcessChildren method" Url="html/6af747d0-7c27-d07a-2c27-b55703e2fb32.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.ProcessTree method" Url="html/519bb094-2e8b-bad2-06d2-fc0aa93fc6e5.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.Root property" Url="html/9413ff2a-b7e8-7a7b-e5e7-a7dc9ee24782.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.Siblings property" Url="html/9e6a9d6c-67e8-2a6c-5a23-eba7cb1c7009.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.SortableTreePath property" Url="html/e09add03-d62b-8c98-084b-f6d6840e82b9.htm" />
+  <HelpKINode Title="ITreeNode&lt;T&gt;.TreeNodeId property" Url="html/1b7720da-298d-430e-b85d-08fb88623876.htm" />
+  <HelpKINode Title="ITreeNodeProcessor(Of T) interface">
+    <HelpKINode Title="ITreeNodeProcessor(T) Interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+    <HelpKINode Title="about ITreeNodeProcessor(Of T) interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+    <HelpKINode Title="methods" Url="html/df8e8c63-6d2f-94e1-0d71-5c8234239388.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ITreeNodeProcessor(Of T).ProcessNode method" Url="html/31e7068b-7398-55fd-77eb-b8ddb239c32d.htm" />
+  <HelpKINode Title="ITreeNodeProcessor&lt;T&gt; interface">
+    <HelpKINode Title="ITreeNodeProcessor(T) Interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+    <HelpKINode Title="about ITreeNodeProcessor&lt;T&gt; interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+    <HelpKINode Title="methods" Url="html/df8e8c63-6d2f-94e1-0d71-5c8234239388.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ITreeNodeProcessor&lt;T&gt;.ProcessNode method" Url="html/31e7068b-7398-55fd-77eb-b8ddb239c32d.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical namespace" Url="html/a3fd85d0-83a9-c754-cf3b-fb566147ef3d.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.ITreeNode(Of T) interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.ITreeNode&lt;T&gt; interface" Url="html/ea51172a-30f4-05f8-5c96-970bf74de3af.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.ITreeNodeProcessor(Of T) interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.ITreeNodeProcessor&lt;T&gt; interface" Url="html/6fc009e8-03e6-d212-95d2-316e50f37fb3.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeList(Of T) class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeList&lt;T&gt; class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNode(Of T) class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNode&lt;T&gt; class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNodeWpfViewModel(Of T) class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNodeWpfViewModel&lt;T&gt; class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNodeWrapper(Of T) class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+  <HelpKINode Title="KnightMoves.Hierarchical.TreeNodeWrapper&lt;T&gt; class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+  <HelpKINode Title="MakeChildOfUpperSibling method">
+    <HelpKINode Title="ITreeNode(T).MakeChildOfUpperSibling Method " Url="html/9f976178-d1d5-d356-d86a-ed212436b86b.htm" />
+    <HelpKINode Title="TreeNode(T).MakeChildOfUpperSibling Method " Url="html/537f5271-05d2-16ff-4fc6-e8102d1426e4.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MakeSiblingOfParent method">
+    <HelpKINode Title="ITreeNode(T).MakeSiblingOfParent Method " Url="html/ecbbb9ad-d44b-2659-a448-8aee0ebe9075.htm" />
+    <HelpKINode Title="TreeNode(T).MakeSiblingOfParent Method " Url="html/b1be0221-0b68-5258-60ba-4cfd79654e5e.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ModelEntity property" Url="html/bc3ec3c3-76f3-a37b-f912-0b957f6a9397.htm" />
+  <HelpKINode Title="MoveDownInSiblingOrder method">
+    <HelpKINode Title="ITreeNode(T).MoveDownInSiblingOrder Method " Url="html/aacf2d75-1bc9-37e6-a006-1da4bb06e92c.htm" />
+    <HelpKINode Title="TreeNode(T).MoveDownInSiblingOrder Method " Url="html/3c220a3f-8a67-c915-46ec-553a64785f45.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MoveUpInSiblingOrder method">
+    <HelpKINode Title="ITreeNode(T).MoveUpInSiblingOrder Method " Url="html/0f6d6a1c-81cb-2a48-dead-d300b6cf97b2.htm" />
+    <HelpKINode Title="TreeNode(T).MoveUpInSiblingOrder Method " Url="html/1d964989-4b59-9a7b-410e-5219dcbb9ae2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Parent property">
+    <HelpKINode Title="ITreeNode(T).Parent Property " Url="html/5ae2cce1-b32d-fa54-5045-2f72ada40498.htm" />
+    <HelpKINode Title="TreeList(T).Parent Property " Url="html/2554fc42-8df4-4463-6753-7734fc32d9d7.htm" />
+    <HelpKINode Title="TreeNode(T).Parent Property " Url="html/f7be090f-4809-0480-1f29-b77109910eda.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ParentId property">
+    <HelpKINode Title="ITreeNode(T).ParentId Property " Url="html/f1bb4138-61be-bbd6-30a7-f6ac7c248192.htm" />
+    <HelpKINode Title="TreeNode(T).ParentId Property " Url="html/a1687050-4f3b-51bf-4ebf-39b89b454845.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ProcessChildren method">
+    <HelpKINode Title="ITreeNode(T).ProcessChildren Method " Url="html/6af747d0-7c27-d07a-2c27-b55703e2fb32.htm" />
+    <HelpKINode Title="TreeNode(T).ProcessChildren Method " Url="html/fa555f2a-5ac0-0f3d-d027-f41fb2193b9c.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ProcessNode method" Url="html/31e7068b-7398-55fd-77eb-b8ddb239c32d.htm" />
+  <HelpKINode Title="ProcessTree method">
+    <HelpKINode Title="ITreeNode(T).ProcessTree Method " Url="html/519bb094-2e8b-bad2-06d2-fc0aa93fc6e5.htm" />
+    <HelpKINode Title="TreeNode(T).ProcessTree Method " Url="html/54f9e086-678d-aa61-6973-0c89bd9036e7.htm" />
+  </HelpKINode>
+  <HelpKINode Title="PropertyChanged event" Url="html/b1eef209-25fc-5dfd-da8c-da11d25e020e.htm" />
+  <HelpKINode Title="Root property">
+    <HelpKINode Title="ITreeNode(T).Root Property " Url="html/9413ff2a-b7e8-7a7b-e5e7-a7dc9ee24782.htm" />
+    <HelpKINode Title="TreeNode(T).Root Property " Url="html/89618e40-5837-45b1-8841-564156034500.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Siblings property">
+    <HelpKINode Title="ITreeNode(T).Siblings Property " Url="html/9e6a9d6c-67e8-2a6c-5a23-eba7cb1c7009.htm" />
+    <HelpKINode Title="TreeNode(T).Siblings Property " Url="html/9451d4e3-55f1-7397-3ece-f148e754dba4.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SortableTreePath property">
+    <HelpKINode Title="ITreeNode(T).SortableTreePath Property " Url="html/e09add03-d62b-8c98-084b-f6d6840e82b9.htm" />
+    <HelpKINode Title="TreeNode(T).SortableTreePath Property " Url="html/8d69ed25-6d00-f263-554f-dd3af4104a9f.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeList(Of T) class">
+    <HelpKINode Title="TreeList(T) Class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+    <HelpKINode Title="about TreeList(Of T) class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+    <HelpKINode Title="constructor" Url="html/6a09b5a7-8a24-4827-a9a2-c0efd0a7fede.htm" />
+    <HelpKINode Title="methods" Url="html/ff70750a-888e-3e09-c1bd-31add07ba410.htm" />
+    <HelpKINode Title="properties" Url="html/cc1c46f8-8028-f47c-3dd4-b1af5e607979.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeList(Of T).Add method" Url="html/2c13ac71-bfba-71a5-9617-0f76a2fef5cb.htm" />
+  <HelpKINode Title="TreeList(Of T).Parent property" Url="html/2554fc42-8df4-4463-6753-7734fc32d9d7.htm" />
+  <HelpKINode Title="TreeList(Of T).TreeList constructor" Url="html/6a09b5a7-8a24-4827-a9a2-c0efd0a7fede.htm" />
+  <HelpKINode Title="TreeList&lt;T&gt; class">
+    <HelpKINode Title="TreeList(T) Class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+    <HelpKINode Title="about TreeList&lt;T&gt; class" Url="html/ab629f53-8357-6e62-161e-f9a801215cdc.htm" />
+    <HelpKINode Title="constructor" Url="html/6a09b5a7-8a24-4827-a9a2-c0efd0a7fede.htm" />
+    <HelpKINode Title="methods" Url="html/ff70750a-888e-3e09-c1bd-31add07ba410.htm" />
+    <HelpKINode Title="properties" Url="html/cc1c46f8-8028-f47c-3dd4-b1af5e607979.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeList&lt;T&gt;.Add method" Url="html/2c13ac71-bfba-71a5-9617-0f76a2fef5cb.htm" />
+  <HelpKINode Title="TreeList&lt;T&gt;.Parent property" Url="html/2554fc42-8df4-4463-6753-7734fc32d9d7.htm" />
+  <HelpKINode Title="TreeList&lt;T&gt;.TreeList constructor" Url="html/6a09b5a7-8a24-4827-a9a2-c0efd0a7fede.htm" />
+  <HelpKINode Title="TreeNode(Of T) class">
+    <HelpKINode Title="TreeNode(T) Class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+    <HelpKINode Title="about TreeNode(Of T) class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+    <HelpKINode Title="constructor" Url="html/c95c1dbf-260b-3938-5307-ee4d5203d9fb.htm" />
+    <HelpKINode Title="methods" Url="html/d2df4bdb-2d5e-c028-9643-c420da897ad1.htm" />
+    <HelpKINode Title="properties" Url="html/417726ac-78c3-fe1b-287d-5ff29f81be0f.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNode(Of T).Children property" Url="html/88360073-bbfc-d6b3-25d0-e29bb640ef6f.htm" />
+  <HelpKINode Title="TreeNode(Of T).CreateTree method" Url="html/7c739f1a-3189-7d04-d126-da0762a92114.htm" />
+  <HelpKINode Title="TreeNode(Of T).DepthFromRoot property" Url="html/78b861ea-6cfe-6e34-90c7-42319a2db94b.htm" />
+  <HelpKINode Title="TreeNode(Of T).FindById method" Url="html/f9f4ac9b-a818-b260-d36b-055154464bb7.htm" />
+  <HelpKINode Title="TreeNode(Of T).HasChildren property" Url="html/756fd092-758b-118c-fc5f-93a04e4fa5f3.htm" />
+  <HelpKINode Title="TreeNode(Of T).Id property" Url="html/8590aa38-86a7-ab1b-dd70-ed3cba519f00.htm" />
+  <HelpKINode Title="TreeNode(Of T).IndentCharacter property" Url="html/fa49a0c7-ee54-6900-aa36-adbfac4ed5c4.htm" />
+  <HelpKINode Title="TreeNode(Of T).IndentString property" Url="html/a8a2cb00-5783-54e2-1e06-66d67e909711.htm" />
+  <HelpKINode Title="TreeNode(Of T).IsAncestor method" Url="html/d958b6db-d1ed-19ed-2661-8a3e12246b8c.htm" />
+  <HelpKINode Title="TreeNode(Of T).IsDescendent method" Url="html/052e5ee3-81c0-7d8e-9b58-73b612ca42aa.htm" />
+  <HelpKINode Title="TreeNode(Of T).IsSibling method" Url="html/8f305210-86ed-9d22-fb9f-19373f346013.htm" />
+  <HelpKINode Title="TreeNode(Of T).MakeChildOfUpperSibling method" Url="html/537f5271-05d2-16ff-4fc6-e8102d1426e4.htm" />
+  <HelpKINode Title="TreeNode(Of T).MakeSiblingOfParent method" Url="html/b1be0221-0b68-5258-60ba-4cfd79654e5e.htm" />
+  <HelpKINode Title="TreeNode(Of T).MoveDownInSiblingOrder method" Url="html/3c220a3f-8a67-c915-46ec-553a64785f45.htm" />
+  <HelpKINode Title="TreeNode(Of T).MoveUpInSiblingOrder method" Url="html/1d964989-4b59-9a7b-410e-5219dcbb9ae2.htm" />
+  <HelpKINode Title="TreeNode(Of T).Parent property" Url="html/f7be090f-4809-0480-1f29-b77109910eda.htm" />
+  <HelpKINode Title="TreeNode(Of T).ParentId property" Url="html/a1687050-4f3b-51bf-4ebf-39b89b454845.htm" />
+  <HelpKINode Title="TreeNode(Of T).ProcessChildren method" Url="html/fa555f2a-5ac0-0f3d-d027-f41fb2193b9c.htm" />
+  <HelpKINode Title="TreeNode(Of T).ProcessTree method" Url="html/54f9e086-678d-aa61-6973-0c89bd9036e7.htm" />
+  <HelpKINode Title="TreeNode(Of T).Root property" Url="html/89618e40-5837-45b1-8841-564156034500.htm" />
+  <HelpKINode Title="TreeNode(Of T).Siblings property" Url="html/9451d4e3-55f1-7397-3ece-f148e754dba4.htm" />
+  <HelpKINode Title="TreeNode(Of T).SortableTreePath property" Url="html/8d69ed25-6d00-f263-554f-dd3af4104a9f.htm" />
+  <HelpKINode Title="TreeNode(Of T).TreeNode constructor" Url="html/c95c1dbf-260b-3938-5307-ee4d5203d9fb.htm" />
+  <HelpKINode Title="TreeNode(Of T).TreeNodeId property" Url="html/e9624623-92df-378a-c4a4-cd53b94efd45.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt; class">
+    <HelpKINode Title="TreeNode(T) Class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+    <HelpKINode Title="about TreeNode&lt;T&gt; class" Url="html/ead54978-f016-d799-c481-594b114fa4cd.htm" />
+    <HelpKINode Title="constructor" Url="html/c95c1dbf-260b-3938-5307-ee4d5203d9fb.htm" />
+    <HelpKINode Title="methods" Url="html/d2df4bdb-2d5e-c028-9643-c420da897ad1.htm" />
+    <HelpKINode Title="properties" Url="html/417726ac-78c3-fe1b-287d-5ff29f81be0f.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNode&lt;T&gt;.Children property" Url="html/88360073-bbfc-d6b3-25d0-e29bb640ef6f.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.CreateTree method" Url="html/7c739f1a-3189-7d04-d126-da0762a92114.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.DepthFromRoot property" Url="html/78b861ea-6cfe-6e34-90c7-42319a2db94b.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.FindById method" Url="html/f9f4ac9b-a818-b260-d36b-055154464bb7.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.HasChildren property" Url="html/756fd092-758b-118c-fc5f-93a04e4fa5f3.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.Id property" Url="html/8590aa38-86a7-ab1b-dd70-ed3cba519f00.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.IndentCharacter property" Url="html/fa49a0c7-ee54-6900-aa36-adbfac4ed5c4.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.IndentString property" Url="html/a8a2cb00-5783-54e2-1e06-66d67e909711.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.IsAncestor method" Url="html/d958b6db-d1ed-19ed-2661-8a3e12246b8c.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.IsDescendent method" Url="html/052e5ee3-81c0-7d8e-9b58-73b612ca42aa.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.IsSibling method" Url="html/8f305210-86ed-9d22-fb9f-19373f346013.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.MakeChildOfUpperSibling method" Url="html/537f5271-05d2-16ff-4fc6-e8102d1426e4.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.MakeSiblingOfParent method" Url="html/b1be0221-0b68-5258-60ba-4cfd79654e5e.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.MoveDownInSiblingOrder method" Url="html/3c220a3f-8a67-c915-46ec-553a64785f45.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.MoveUpInSiblingOrder method" Url="html/1d964989-4b59-9a7b-410e-5219dcbb9ae2.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.Parent property" Url="html/f7be090f-4809-0480-1f29-b77109910eda.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.ParentId property" Url="html/a1687050-4f3b-51bf-4ebf-39b89b454845.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.ProcessChildren method" Url="html/fa555f2a-5ac0-0f3d-d027-f41fb2193b9c.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.ProcessTree method" Url="html/54f9e086-678d-aa61-6973-0c89bd9036e7.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.Root property" Url="html/89618e40-5837-45b1-8841-564156034500.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.Siblings property" Url="html/9451d4e3-55f1-7397-3ece-f148e754dba4.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.SortableTreePath property" Url="html/8d69ed25-6d00-f263-554f-dd3af4104a9f.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.TreeNode constructor" Url="html/c95c1dbf-260b-3938-5307-ee4d5203d9fb.htm" />
+  <HelpKINode Title="TreeNode&lt;T&gt;.TreeNodeId property" Url="html/e9624623-92df-378a-c4a4-cd53b94efd45.htm" />
+  <HelpKINode Title="TreeNodeId property">
+    <HelpKINode Title="ITreeNode(T).TreeNodeId Property " Url="html/1b7720da-298d-430e-b85d-08fb88623876.htm" />
+    <HelpKINode Title="TreeNode(T).TreeNodeId Property " Url="html/e9624623-92df-378a-c4a4-cd53b94efd45.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T) class">
+    <HelpKINode Title="TreeNodeWpfViewModel(T) Class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+    <HelpKINode Title="about TreeNodeWpfViewModel(Of T) class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+    <HelpKINode Title="constructor" Url="html/efb84370-451b-ee03-42fe-60f4d8412cf6.htm" />
+    <HelpKINode Title="events" Url="html/d6c47074-62f4-4e65-533b-3791a5297178.htm" />
+    <HelpKINode Title="methods" Url="html/52f2f5c8-9b8e-655f-a248-415eafb31cfb.htm" />
+    <HelpKINode Title="properties" Url="html/35581b79-d3e2-32a1-26b7-856a1c86fccc.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).AddCommand property" Url="html/93df80fd-476b-9b02-358f-93b43c0c398b.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).AddNode method" Url="html/2dc5ac30-4767-c7e3-230f-9a1fbd18957c.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).Id property" Url="html/a90f7b29-348e-c1f4-1954-44e492b7aed4.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).IsExpanded property" Url="html/ef35ee84-27e6-f029-9958-69d8034ae562.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).IsSelected property" Url="html/c6ece341-b69f-816c-ae5b-a229a6c47e15.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).ModelEntity property" Url="html/bc3ec3c3-76f3-a37b-f912-0b957f6a9397.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).PropertyChanged event" Url="html/b1eef209-25fc-5dfd-da8c-da11d25e020e.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel(Of T).TreeNodeWpfViewModel constructor" Url="html/efb84370-451b-ee03-42fe-60f4d8412cf6.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt; class">
+    <HelpKINode Title="TreeNodeWpfViewModel(T) Class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+    <HelpKINode Title="about TreeNodeWpfViewModel&lt;T&gt; class" Url="html/4371adca-b895-8c20-8952-ccc819c0da57.htm" />
+    <HelpKINode Title="constructor" Url="html/efb84370-451b-ee03-42fe-60f4d8412cf6.htm" />
+    <HelpKINode Title="events" Url="html/d6c47074-62f4-4e65-533b-3791a5297178.htm" />
+    <HelpKINode Title="methods" Url="html/52f2f5c8-9b8e-655f-a248-415eafb31cfb.htm" />
+    <HelpKINode Title="properties" Url="html/35581b79-d3e2-32a1-26b7-856a1c86fccc.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.AddCommand property" Url="html/93df80fd-476b-9b02-358f-93b43c0c398b.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.AddNode method" Url="html/2dc5ac30-4767-c7e3-230f-9a1fbd18957c.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.Id property" Url="html/a90f7b29-348e-c1f4-1954-44e492b7aed4.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.IsExpanded property" Url="html/ef35ee84-27e6-f029-9958-69d8034ae562.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.IsSelected property" Url="html/c6ece341-b69f-816c-ae5b-a229a6c47e15.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.ModelEntity property" Url="html/bc3ec3c3-76f3-a37b-f912-0b957f6a9397.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.PropertyChanged event" Url="html/b1eef209-25fc-5dfd-da8c-da11d25e020e.htm" />
+  <HelpKINode Title="TreeNodeWpfViewModel&lt;T&gt;.TreeNodeWpfViewModel constructor" Url="html/efb84370-451b-ee03-42fe-60f4d8412cf6.htm" />
+  <HelpKINode Title="TreeNodeWrapper(Of T) class">
+    <HelpKINode Title="TreeNodeWrapper(T) Class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+    <HelpKINode Title="about TreeNodeWrapper(Of T) class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+    <HelpKINode Title="constructor" Url="html/3966422b-c1ca-82ff-eefa-98a875a6f67a.htm" />
+    <HelpKINode Title="methods" Url="html/1c2260f8-9072-2328-4a0b-aa91600dd5ae.htm" />
+    <HelpKINode Title="properties" Url="html/27b47745-6d30-50d3-d151-1902b6f256f1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNodeWrapper(Of T).Entity property" Url="html/0ade404d-d5d8-badc-03d2-56f4ae226cfd.htm" />
+  <HelpKINode Title="TreeNodeWrapper(Of T).TreeNodeWrapper constructor" Url="html/3966422b-c1ca-82ff-eefa-98a875a6f67a.htm" />
+  <HelpKINode Title="TreeNodeWrapper&lt;T&gt; class">
+    <HelpKINode Title="TreeNodeWrapper(T) Class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+    <HelpKINode Title="about TreeNodeWrapper&lt;T&gt; class" Url="html/9a4fd3fb-9f00-6398-0694-72490f82c586.htm" />
+    <HelpKINode Title="constructor" Url="html/3966422b-c1ca-82ff-eefa-98a875a6f67a.htm" />
+    <HelpKINode Title="methods" Url="html/1c2260f8-9072-2328-4a0b-aa91600dd5ae.htm" />
+    <HelpKINode Title="properties" Url="html/27b47745-6d30-50d3-d151-1902b6f256f1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TreeNodeWrapper&lt;T&gt;.Entity property" Url="html/0ade404d-d5d8-badc-03d2-56f4ae226cfd.htm" />
+  <HelpKINode Title="TreeNodeWrapper&lt;T&gt;.TreeNodeWrapper constructor" Url="html/3966422b-c1ca-82ff-eefa-98a875a6f67a.htm" />
+</HelpKI>
