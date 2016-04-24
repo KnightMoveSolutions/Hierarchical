@@ -292,7 +292,7 @@ Therein you will find the HTML pages in MSDN style and also the HtmlHelp .chm fi
 
 ## Q & A
 
-### I can utilize recursion with the SQL syntax of my database. Why not use that?
+#### I can utilize recursion with the SQL syntax of my database. Why not use that?
 
 You can certainly use that to produce or process your tree. However, you will find that for every type of entity that must 
 participate in a tree you will need to write that kind of recursive code again. With this library it is done once. Also, 
@@ -303,7 +303,7 @@ create a tree with indented children simply by sorting on the SortableTreePath. 
 hierarchical entities. Lastly, if you're like me and you prefer not to put business logic in the database, then this makes 
 it easier to write code to process a tree recursively and keep the business logic in the application code.
 
-### My entity already inherits from something. C# doesn't support multiple inheritance so what do I do?
+#### My entity already inherits from something. C# doesn't support multiple inheritance so what do I do?
 
 Use the `TreeNodeWrapper<T>` class. The Help Documentation fully explains it. 
 
