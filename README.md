@@ -177,6 +177,9 @@ This value is incredibly useful when persisting to the database. It allows for t
 
 Using the dataset above you can do the following.
 
+NOTE: Keep in mind that if you have multiple trees in the table, you will have to add WHERE RootId = 'Something' to keep it within the tree. Your data
+access model would have to persist the RootId from the entity. 
+
 Get all nodes in the tree in hierarchical order:
 
 	SELECT IndentString + Name FROM MyTreeTable ORDER BY SortableTreePath
