@@ -36,7 +36,7 @@ All you have to do is inherit from 'TreeNode<T>' and your 'Person' class becomes
         public string Name { get; set; }
     }
 
-One instance by itself a tree is does not make. So you start with a collection of 'Person' objects.
+One instance of your class is not useful as a tree. So to illustrate, we start with a collection of 'Person' objects.
 
 	List<ITreeNode<Person>> persons = _personRepository.GetPersons();
 
@@ -214,6 +214,7 @@ Get children of ItemD:
 	SELECT Name FROM MyTreeTable WHERE SortableTreePath LIKE '1.4.%' ORDER BY SortableTreePath
 
 Result:
+
     Name
     -------------
     ItemD1
@@ -233,6 +234,48 @@ Result:
         ItemB1
           ItemBA
 
+## Process the Tree Recursively
+
+You can process the nodes of your tree of objects recursively without having to code a recursive function. 
+
+First you would create the code that processes the nodes of the tree by implementing ITreeNodeProcessor<T>, which requires the 
+implementation of one method called `bool ProcessNode(ITreeNode<T> node)`. 
+
+For example:
+
+    class MyTreeNodeProcessor : ITreeNodeProcessor<Person>
+    {
+        public IList<string> TestOutput;
+
+        public MyTreeNodeProcessor()
+        {
+            TestOutput = new List<string>();
+        }
+
+        public bool ProcessNode(ITreeNode<Person> node)
+        {
+            TestOutput.Add(node.Id + " Processed");
+            return true;
+        }
+    }
+
+Then you just feed it to the top of the node you want to process. In the example below, we process every node in the tree because 
+we start at the root node.
+
+    var myProcessor = new MyTreeNodeProcessor();
+    hierarchy.ProcessTree(myProcessor);
+
+However, if you want to process only a branch, then you can pass the tree node processor to the root of that branch only. If you 
+want to exclude the root node (or root of branch node) and process starting with its children, then you can use the 
+`ProcessChildren(ITreeNode<T> node)` method instead. 
+
+    var myProcessor = new MyTreeNodeProcessor();
+    hierarchy.ProcessChildren(myProcessor);
+
+As you can see, you can just write your business logic and forget about having to recurse. Your tree node processor could act on 
+the node or not depending on the logic. If your entity is a View Model, you can set property values to drive user interface changes 
+such as setting 'IsHighlighted = true' if the object matches a search string.  
+
 ## Documentation
 
 Full documentation is provided in the KnightMoves.Hierarchical.Help project, which is a SandCastle Help file builder project. 
@@ -248,7 +291,8 @@ having a business logic layer implementation makes it database agnostic. You can
 because your hierarchical processing is done in the application code. The output of the SortableTreePath also makes reporting 
 easier. Sometimes the people creating the reports are not developers. You can use a reporting tool like Tableau and easily 
 create a tree with indented children simply by sorting on the SortableTreePath. This is implemented once for all of your 
-hierarchical entities. 
+hierarchical entities. Lastly, if you're like me and you prefer not to put business logic in the database, then this makes 
+it easier to write code to process a tree recursively and keep the business logic in the application code.
 
 ### My entity already inherits from something. C# doesn't support multiple inheritance so what do I do?
 
