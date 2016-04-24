@@ -25,7 +25,7 @@ Suppose you have the following entity class in your application.
 		// And a bunch of other properties not included for brevity
     }
 
-All you have to do is inherit from 'TreeNode<T>' and your 'Person' class becomes a fully capable node in a hierarchy. 
+All you have to do is inherit from `TreeNode<T>` and your `Person` class becomes a fully capable node in a hierarchy. 
 
 	// Just inherit from TreeNode<T>
     public class Person : TreeNode<Person>
@@ -36,17 +36,17 @@ All you have to do is inherit from 'TreeNode<T>' and your 'Person' class becomes
         public string Name { get; set; }
     }
 
-One instance of your class is not useful as a tree. So to illustrate, we start with a collection of 'Person' objects.
+One instance of your class is not useful as a tree. So to illustrate, we start with a collection of `Person` objects.
 
 	List<ITreeNode<Person>> persons = _personRepository.GetPersons();
 
-The persons collection can contain the 'Person' objects in any order. As long as they have an 'Id' and a 'ParentId' with a single 
-'Person' object having a 'null' 'ParentId' representing the root node, you can create the tree like this.
+The persons collection can contain the `Person` objects in any order. As long as they have an `Id` and a `ParentId` with a single 
+'Person' object having a `null` `ParentId` representing the root node, you can create the tree like this.
 
 	ITreeNode<ITreeNode<Person>> hierarchy = TreeNode<ITreeNode<Person>>.CreateTree(persons)
 
-The 'hierarchy' object is a single ITreeNode<T> object that contains all other objects in its 'Children' collection. Some of 
-those children will have child objects in their 'Children' collection so on and so forth. 
+The `hierarchy` object is a single `ITreeNode<T>` object that contains all other objects in its `Children` collection. Some of 
+those children will have child objects in their `Children` collection so on and so forth. 
 
 That's all you need at its most basic level.
 
@@ -116,40 +116,40 @@ Here is an example console application.
 
 ## Persisting To Your Database
 
-In order to recreate the tree later on, it is important to persist the 'Id' and 'ParentId' properties in the database. When the 
-collection of objects of your entity type is retrieved, the 'Id' and 'ParentId' properties are used to rebuild the tree. The 
-only other requirement is that the collection must have only one object with the 'ParentId' set to 'null', which represents the 
-root object. Other properties of 'ITreeNode<T>' are not required to save in the database but can be very useful.
+In order to recreate the tree later on, it is important to persist the `Id` and `ParentId` properties in the database. When the 
+collection of objects of your entity type is retrieved, the `Id` and `ParentId` properties are used to rebuild the tree. The 
+only other requirement is that the collection must have only one object with the `ParentId` set to `null`, which represents the 
+root object. Other properties of `ITreeNode<T>` are not required to save in the database but can be very useful.
 
 ## Useful Methods Your Entity Class Inherits
 
-* FindById - Finds and returns the ITreeNode<T> object where the Id value is equal to the nodeId value provided as an argument. It will search the tree recursively until it is found.
-* IsAncestor - Determines if the node provided as the treeNode is an ancestor of this node up the tree.
-* IsDescendent - Determines if the node provided as the treeNode is an descendant of this node down the tree.
-* IsSibling	- Determines if the node provided as the treeNode is a sibling of this node.
-* MakeChildOfUpperSibling - Makes this node a child of the sibling higher in the order of the Children collection of its parent.
-* MakeSiblingOfParent - Makes this node a sibling of its parent.
-* MoveDownInSiblingOrder - Moves this node down in the sibling order.
-* MoveUpInSiblingOrder - Moves this node up in the sibling order.
-* ProcessChildren(Func<ITreeNode<T>, Boolean>) - Passes each child of this node to the nodeProcessor provided recursively down the tree. It does not include this node.
-* ProcessChildren(ITreeNodeProcessor<T>) - Passes each child of this node to the nodeProcessor provided recursively down the tree. It does not include this node.
-* ProcessTree(Func<ITreeNode<T>, Boolean>) - Passes each child of this node to the nodeProcessor provided recursively down the tree. Unlike ProcessChildren, this method will start with (include) this node.
-* ProcessTree(ITreeNodeProcessor<T>) - Passes each child of this node to the nodeProcessor provided recursively down the tree. Unlike ProcessChildren, this method will start with (include) this node.
+* `FindById` - Finds and returns the ITreeNode<T> object where the Id value is equal to the nodeId value provided as an argument. It will search the tree recursively until it is found.
+* `IsAncestor` - Determines if the node provided as the treeNode is an ancestor of this node up the tree.
+* `IsDescendent` - Determines if the node provided as the treeNode is an descendant of this node down the tree.
+* `IsSibling`	- Determines if the node provided as the treeNode is a sibling of this node.
+* `MakeChildOfUpperSibling` - Makes this node a child of the sibling higher in the order of the Children collection of its parent.
+* `MakeSiblingOfParent` - Makes this node a sibling of its parent.
+* `MoveDownInSiblingOrder` - Moves this node down in the sibling order.
+* `MoveUpInSiblingOrder` - Moves this node up in the sibling order.
+* `ProcessChildren(Func<ITreeNode<T>, Boolean>)` - Passes each child of this node to the nodeProcessor provided recursively down the tree. It does not include this node.
+* `ProcessChildren(ITreeNodeProcessor<T>)` - Passes each child of this node to the nodeProcessor provided recursively down the tree. It does not include this node.
+* `ProcessTree(Func<ITreeNode<T>, Boolean>)` - Passes each child of this node to the nodeProcessor provided recursively down the tree. Unlike ProcessChildren, this method will start with (include) this node.
+* `ProcessTree(ITreeNodeProcessor<T>)` - Passes each child of this node to the nodeProcessor provided recursively down the tree. Unlike ProcessChildren, this method will start with (include) this node.
 
 ## Useful Properties Your Entity Class Inherits
 
-* Children - The Child objects of this node in the hierarchy
-* DepthFromRoot	- The number of levels in the tree where the ROOT node is Level 1. Whatever contains the Root (i.e. whole tree) is Level 0.
-* HasChildren - True if this node has Children false if not.
-* Id - The ID of this node
-* IndentCharacter - The character used for indentation. It will be repeated once for every Level in the tree, which is reported by the DepthFromRoot property by the IndentString property.
-* IndentString - Repeats the IndentCharacterDepthFromRoot number of times to produce the indentation string for pretty display in text output.
-* Parent - The Parent node of this node
-* ParentId - The Id of the Parent object of this node.
-* Root - A reference to the Root object in the tree. All objects in the tree will have the same Root.
-* Siblings - The other objects in the Parent objects Children collection. It returns all objects in that collection except for this node.
-* SortableTreePath - A string representation of the location of this object in the tree in the form of a "Path".
-* TreeNodeId - A unique identifer for the node. Not required but can be useful.
+* `Children` - The Child objects of this node in the hierarchy
+* `DepthFromRoot`	- The number of levels in the tree where the ROOT node is Level 1. Whatever contains the Root (i.e. whole tree) is Level 0.
+* `HasChildren` - True if this node has Children false if not.
+* `Id` - The ID of this node
+* `IndentCharacter` - The character used for indentation. It will be repeated once for every Level in the tree, which is reported by the DepthFromRoot property by the IndentString property.
+* `IndentString` - Repeats the IndentCharacterDepthFromRoot number of times to produce the indentation string for pretty display in text output.
+* `Parent` - The Parent node of this node
+* `ParentId` - The Id of the Parent object of this node.
+* `Root` - A reference to the Root object in the tree. All objects in the tree will have the same Root.
+* `Siblings` - The other objects in the Parent objects Children collection. It returns all objects in that collection except for this node.
+* `SortableTreePath` - A string representation of the location of this object in the tree in the form of a "Path".
+* `TreeNodeId` - A unique identifer for the node. Not required but can be useful.
 
 ## About the 'SortableTreePath' Property
 
@@ -172,7 +172,7 @@ The SortableTreePath produces a path using integers starting with 1. See the exa
       ...
       etc.
             
-You can see that if you sort by the SortableTreePath it will result in a list where every object is in order by its position in the tree.
+You can see that if you sort by the `SortableTreePath` it will result in a list where every object is in order by its position in the tree.
 This value is incredibly useful when persisting to the database. It allows for the use of very simple SQL queries to get nodes or segments of the tree.
 
 Using the dataset above you can do the following.
@@ -238,7 +238,7 @@ Result:
 
 You can process the nodes of your tree of objects recursively without having to code a recursive function. 
 
-First you would create the code that processes the nodes of the tree by implementing ITreeNodeProcessor<T>, which requires the 
+First you would create the code that processes the nodes of the tree by implementing `ITreeNodeProcessor<T>`, which requires the 
 implementation of one method called `bool ProcessNode(ITreeNode<T> node)`. 
 
 For example:
@@ -296,5 +296,5 @@ it easier to write code to process a tree recursively and keep the business logi
 
 ### My entity already inherits from something. C# doesn't support multiple inheritance so what do I do?
 
-Use the 'TreeNodeWrapper<T>' class. The Help Documentation fully explains it. 
+Use the `TreeNodeWrapper<T>` class. The Help Documentation fully explains it. 
 
