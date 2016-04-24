@@ -285,6 +285,36 @@ You can make this shorter by using a lambda.
         return true;
     });
 
+The return value of the `ProcessTree` method is the logical AND result of all the resulting processing of the nodes. To 
+illustrate consider the following example:
+
+	IList<string> testOutput = new List<string>();
+
+    bool okay = hierarchy.ProcessTree(node => {
+					bool okay = true;
+
+					// Test the node for something 
+					if(node.IsManager == false)
+						okay = false;
+
+					testOutput.Add(node.Id + " Processed");
+					return okay;
+				});
+
+	if(okay) 
+	{
+		// All nodes processed returned true
+	} else {
+		// At least one of the nodes that were processed failed
+		// whatever condition you coded in the function
+	}
+
+With one quick function in a method call you can test an entire tree for something. 
+
+There is no equivalent for a logical OR processing of the nodes, where it would return true if ANY of the tests in the condition resulted in true. 
+However, you can code this yourself as part of your function. Just keep OR'ing some boolean that is outside of the function. This 
+sets you up to do all kinds of neat things with trees easily. 
+
 ## Documentation
 
 Full documentation is provided in the KnightMoves.Hierarchical.Help project, which is a SandCastle Help file builder project. 
