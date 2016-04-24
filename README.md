@@ -276,6 +276,15 @@ As you can see, you can just write your business logic and forget about having t
 the node or not depending on the logic. If your entity is a View Model, you can set property values to drive user interface changes 
 such as setting 'IsHighlighted = true' if the object matches a search string.  
 
+You can make this shorter by using a lambda.
+
+	IList<string> testOutput = new List<string>();
+
+    hierarchy.ProcessTree(node => {
+        testOutput.Add(node.Id + " Processed");
+        return true;
+    });
+
 ## Documentation
 
 Full documentation is provided in the KnightMoves.Hierarchical.Help project, which is a SandCastle Help file builder project. 
