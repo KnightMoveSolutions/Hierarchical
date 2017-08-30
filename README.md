@@ -7,7 +7,7 @@ hierarchies, etc.
 
 ## License
 
-MIT License. Have fun. You're welcome. =]
+MIT License
 
 ## Getting Started
 
