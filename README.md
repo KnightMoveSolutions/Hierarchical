@@ -43,7 +43,7 @@ All you have to do is inherit from `TreeNode<TId, T>` and your `Person` class be
 
 One instance of your class is not useful as a tree. So to illustrate, we start with a collection of `Person` objects.
 
-	List<ITreeNode<string, Person>> persons = _personRepository.GetPersons();
+	List<Person> persons = _personRepository.GetPersons();
 
 The persons collection can contain the `Person` objects in any order. As long as they have an `Id` and a `ParentId` with a single 
 'Person' object having a `null` `ParentId` representing the root node, you can create the tree like this.
