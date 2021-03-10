@@ -94,7 +94,7 @@ namespace KnightMoves.Hierarchical
             IndentCharacter = ' ';
         }
 
-        private static void AddChildren(List<ITreeNode<TId, T>> treeNodeCollection, ITreeNode<TId, T> node)
+        private static void AddChildren(List<T> treeNodeCollection, ITreeNode<TId, T> node)
         {
             treeNodeCollection
                 .FindAll(n => n.ParentId?.ToString() == node.Id.ToString())
@@ -121,7 +121,7 @@ namespace KnightMoves.Hierarchical
         /// An <see cref="T"/> object representing the root node from the <paramref name="treeNodeCollection"/> argument. 
         /// All other objects will be added as <see cref="Children"/> of their respective <see cref="Parent"/> objects in the object graph.
         /// </returns>
-        public static T CreateTree(List<ITreeNode<TId, T>> treeNodeCollection) 
+        public static T CreateTree(List<T> treeNodeCollection) 
         {
             var rootNode = treeNodeCollection.Find(n => {
                 return

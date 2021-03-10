@@ -23,7 +23,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         private readonly Person _cousin;
         private readonly Person _sister;
         private readonly Person _me;
-        private readonly List<ITreeNode<string, Person>> _familyMembers;
+        private readonly List<Person> _familyMembers;
         private readonly Person _familyTree;
 
         public TreeNodeTests()
@@ -36,7 +36,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             _sister = new Person { Id = "SisterJane", ParentId = "Dad", Name = "Jane" };
             _me = new Person { Id = "Me", ParentId = "Dad", Name = "MeMyselfAndI" };
 
-            _familyMembers = new List<ITreeNode<string, Person>>
+            _familyMembers = new List<Person>
             {
                 // Let's add them in random order to test that they'll 
                 // be added in the correct order and hierarchy
@@ -446,7 +446,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             var sister = new PersonGuid { Id = sisterId, ParentId = dadId, Name = "Jane" };
             var me = new PersonGuid { Id = meId, ParentId = dadId, Name = "MeMyselfAndI" };
 
-            var familyMembers = new List<ITreeNode<Guid, PersonGuid>>
+            var familyMembers = new List<PersonGuid>
             {
                 sister,
                 dad,
@@ -513,7 +513,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             var sister = new Person { Id = "SisterJane", ParentId = "Dad", Name = "Jane" };
             var me = new Person { Id = "Me", ParentId = "Dad", Name = "MeMyselfAndI" };
 
-            var familyMembers = new List<ITreeNode<string, Person>>
+            var familyMembers = new List<Person>
             {
                 sister,
                 dad,

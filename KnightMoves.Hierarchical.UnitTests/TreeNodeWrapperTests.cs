@@ -22,7 +22,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         private readonly TreeNodeWrapper<string, Person> _cousin;
         private readonly TreeNodeWrapper<string, Person> _sister;
         private readonly TreeNodeWrapper<string, Person> _me;
-        private readonly List<ITreeNode<string, TreeNodeWrapper<string, Person>>> _familyMembers;
+        private readonly List<TreeNodeWrapper<string, Person>> _familyMembers;
         private readonly ITreeNode<string, TreeNodeWrapper<string, Person>> _familyTree;
 
         public TreeNodeWrapperTests()
@@ -35,7 +35,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             _sister = new TreeNodeWrapper<string, Person>(new Person { Name = "Jane" }, "SisterJane", "Dad");
             _me = new TreeNodeWrapper<string, Person>(new Person { Name = "MeMyselfAndI" }, "Me", "Dad");
 
-            _familyMembers = new List<ITreeNode<string, TreeNodeWrapper<string, Person>>>
+            _familyMembers = new List<TreeNodeWrapper<string, Person>>
             {
                 // Let's add them in random order to test that they'll 
                 // be added in the correct order and hierarchy
