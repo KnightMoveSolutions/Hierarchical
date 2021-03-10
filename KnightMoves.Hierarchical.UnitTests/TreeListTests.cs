@@ -8,7 +8,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         // This is our Mock entity. It has a Name property but can have all kind of other things.
         // It can have address, age, soc sec nbr, etc. Inheriting from TreeNode<T> makes it a 
         // tree node capable of having children, parents, etc. 
-        private class Person : TreeNode<Person>
+        private class Person : TreeNode<string, Person>
         {
             public string Name { get; set; }
         }
@@ -29,7 +29,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         public void TestCreate()
         {
             // ACTION
-            var treeList = new TreeList<Person>(_grandpa);
+            var treeList = new TreeList<string, Person>(_grandpa);
 
             // ASSERT
             Assert.NotNull(treeList);
@@ -41,7 +41,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         public void TestAddChildren()
         {
             // ARRANGE
-            var treeList = new TreeList<Person>(_grandpa);
+            var treeList = new TreeList<string, Person>(_grandpa);
 
             // ACTION
             treeList.Add(_dad);
@@ -57,7 +57,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         public void TestRemoveChildren()
         {
             // ARRANGE
-            var treeList = new TreeList<Person>(_grandpa);
+            var treeList = new TreeList<string, Person>(_grandpa);
             treeList.Add(_dad);
             treeList.Add(_uncle);
 

@@ -16,26 +16,26 @@ namespace KnightMoves.Hierarchical.UnitTests
             public string Name { get; set; }
         }
 
-        private readonly TreeNodeWrapper<Person> _grandpa;
-        private readonly TreeNodeWrapper<Person> _dad;
-        private readonly TreeNodeWrapper<Person> _uncle;
-        private readonly TreeNodeWrapper<Person> _cousin;
-        private readonly TreeNodeWrapper<Person> _sister;
-        private readonly TreeNodeWrapper<Person> _me;
-        private readonly List<ITreeNode<TreeNodeWrapper<Person>>> _familyMembers;
-        private readonly ITreeNode<TreeNodeWrapper<Person>> _familyTree;
+        private readonly TreeNodeWrapper<string, Person> _grandpa;
+        private readonly TreeNodeWrapper<string, Person> _dad;
+        private readonly TreeNodeWrapper<string, Person> _uncle;
+        private readonly TreeNodeWrapper<string, Person> _cousin;
+        private readonly TreeNodeWrapper<string, Person> _sister;
+        private readonly TreeNodeWrapper<string, Person> _me;
+        private readonly List<ITreeNode<string, TreeNodeWrapper<string, Person>>> _familyMembers;
+        private readonly ITreeNode<string, TreeNodeWrapper<string, Person>> _familyTree;
 
         public TreeNodeWrapperTests()
         {
             // ARRANGE FOR ALL
-            _grandpa = new TreeNodeWrapper<Person>(new Person { Name = "Richard" }, "Grandpa", null);
-            _dad = new TreeNodeWrapper<Person>(new Person { Name = "Richard Jr." }, "Dad", "Grandpa");
-            _uncle = new TreeNodeWrapper<Person>(new Person { Name = "John" }, "UncleJohn", "Grandpa");
-            _cousin = new TreeNodeWrapper<Person>(new Person { Name = "Ann" }, "CousinAnn", "UncleJohn");
-            _sister = new TreeNodeWrapper<Person>(new Person { Name = "Jane" }, "SisterJane", "Dad");
-            _me = new TreeNodeWrapper<Person>(new Person { Name = "MeMyselfAndI" }, "Me", "Dad");
+            _grandpa = new TreeNodeWrapper<string, Person>(new Person { Name = "Richard" }, "Grandpa", null);
+            _dad = new TreeNodeWrapper<string, Person>(new Person { Name = "Richard Jr." }, "Dad", "Grandpa");
+            _uncle = new TreeNodeWrapper<string, Person>(new Person { Name = "John" }, "UncleJohn", "Grandpa");
+            _cousin = new TreeNodeWrapper<string, Person>(new Person { Name = "Ann" }, "CousinAnn", "UncleJohn");
+            _sister = new TreeNodeWrapper<string, Person>(new Person { Name = "Jane" }, "SisterJane", "Dad");
+            _me = new TreeNodeWrapper<string, Person>(new Person { Name = "MeMyselfAndI" }, "Me", "Dad");
 
-            _familyMembers = new List<ITreeNode<TreeNodeWrapper<Person>>>
+            _familyMembers = new List<ITreeNode<string, TreeNodeWrapper<string, Person>>>
             {
                 // Let's add them in random order to test that they'll 
                 // be added in the correct order and hierarchy
@@ -47,7 +47,7 @@ namespace KnightMoves.Hierarchical.UnitTests
                 _cousin
             };
 
-            _familyTree = TreeNode<TreeNodeWrapper<Person>>.CreateTree(_familyMembers);
+            _familyTree = TreeNode<string, TreeNodeWrapper<string, Person>>.CreateTree(_familyMembers);
         }
 
         [Fact(DisplayName = "TestCreateTree")]
@@ -61,11 +61,11 @@ namespace KnightMoves.Hierarchical.UnitTests
         public void TestCreateNoRootException()
         {
             // ARRANGE
-            // Root node is identified by a null ParentId. This should throw an exception
-            _grandpa.ParentId = string.Empty;
+            // Root node is identified by a null or empty ParentId. This should throw an exception
+            _grandpa.ParentId = "GreatGrandpa";
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => TreeNode<TreeNodeWrapper<Person>>.CreateTree(_familyMembers));
+            Assert.Throws<ArgumentException>(() => TreeNode<string, TreeNodeWrapper<string, Person>>.CreateTree(_familyMembers));
         }
 
         [Fact(DisplayName = "TestHierarchy")]
@@ -101,7 +101,7 @@ namespace KnightMoves.Hierarchical.UnitTests
         {
             // ARRANGE
             // My sister had a baby
-            TreeNodeWrapper<Person> nephew = new TreeNodeWrapper<Person>(new Person { Name = "Johnny" }, "LittleJohnny", "SisterJane");
+            TreeNodeWrapper<string, Person> nephew = new TreeNodeWrapper<string, Person>(new Person { Name = "Johnny" }, "LittleJohnny", "SisterJane");
 
             // ACTION 
             _sister.Children.Add(nephew);
@@ -255,7 +255,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             Assert.True(mockProcessor.IsProcessed(_cousin));
         }
 
-        private class MockTreeNodeProcessor : ITreeNodeProcessor<TreeNodeWrapper<Person>>
+        private class MockTreeNodeProcessor : ITreeNodeProcessor<string, TreeNodeWrapper<string, Person>>
         {
             private readonly IList<string> _testOutput;
 
@@ -264,13 +264,13 @@ namespace KnightMoves.Hierarchical.UnitTests
                 _testOutput = new List<string>();
             }
 
-            public bool ProcessNode(ITreeNode<TreeNodeWrapper<Person>> node)
+            public bool ProcessNode(ITreeNode<string, TreeNodeWrapper<string, Person>> node)
             {
                 _testOutput.Add(node.Id + " Processed");
                 return true;
             }
 
-            public bool IsProcessed(ITreeNode<TreeNodeWrapper<Person>> node)
+            public bool IsProcessed(ITreeNode<string, TreeNodeWrapper<string, Person>> node)
             {
                 var processed = _testOutput.FirstOrDefault(n => n == node.Id + " Processed");
                 return processed != null;
@@ -284,7 +284,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessChildren(delegate (ITreeNode<TreeNodeWrapper<Person>> t)
+            _grandpa.ProcessChildren(delegate (ITreeNode<string, TreeNodeWrapper<string, Person>> t)
             {
                 testOutput.Add(t.Id + " Processed");
                 return true;
@@ -305,7 +305,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessTree(delegate (ITreeNode<TreeNodeWrapper<Person>> t)
+            _grandpa.ProcessTree(delegate (ITreeNode<string, TreeNodeWrapper<string, Person>> t)
             {
                 testOutput.Add(t.Id + " Processed");
                 return true;

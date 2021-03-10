@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnightMoves.Hierarchical", "KnightMoves.Hierarchical\KnightMoves.Hierarchical.csproj", "{9216B112-5F5A-44FD-A5FD-3F8786AB48DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnightMoves.Hierarchical", "KnightMoves.Hierarchical\KnightMoves.Hierarchical.csproj", "{821CF923-3202-44F4-83D5-66FA95A6033B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnightMoves.Hierarchical.UnitTests", "KnightMoves.Hierarchical.UnitTests\KnightMoves.Hierarchical.UnitTests.csproj", "{5D5B537A-9997-4ADA-801D-8EAE907F999D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnightMoves.Hierarchical.UnitTests", "KnightMoves.Hierarchical.UnitTests\KnightMoves.Hierarchical.UnitTests.csproj", "{9ADD34A6-9977-4408-8ADF-1D0C5F5A5577}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D25B27A-CCA5-43DF-9729-362EDD958E09}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFCF5CBE-EA15-42EA-8577-0D44B614462D}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
@@ -18,16 +18,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9216B112-5F5A-44FD-A5FD-3F8786AB48DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9216B112-5F5A-44FD-A5FD-3F8786AB48DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9216B112-5F5A-44FD-A5FD-3F8786AB48DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9216B112-5F5A-44FD-A5FD-3F8786AB48DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D5B537A-9997-4ADA-801D-8EAE907F999D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D5B537A-9997-4ADA-801D-8EAE907F999D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D5B537A-9997-4ADA-801D-8EAE907F999D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D5B537A-9997-4ADA-801D-8EAE907F999D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{821CF923-3202-44F4-83D5-66FA95A6033B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{821CF923-3202-44F4-83D5-66FA95A6033B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{821CF923-3202-44F4-83D5-66FA95A6033B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{821CF923-3202-44F4-83D5-66FA95A6033B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ADD34A6-9977-4408-8ADF-1D0C5F5A5577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ADD34A6-9977-4408-8ADF-1D0C5F5A5577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ADD34A6-9977-4408-8ADF-1D0C5F5A5577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ADD34A6-9977-4408-8ADF-1D0C5F5A5577}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CCCAB69-EED6-46FC-A198-F337A991EAE7}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.HashFunction;
 
 namespace KnightMoves.Hierarchical
 {
@@ -7,23 +8,24 @@ namespace KnightMoves.Hierarchical
     /// to function as a node in a tree structure so that tree node functionality is generic. Entity classes that 
     /// are organized in a tree do not have to implement the tree structure. 
     /// </summary>
+    /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a Tree Node object (ITreeNode).</typeparam>
-    public interface ITreeNode<T> where T : ITreeNode<T>
+    public interface ITreeNode<TId, T> where T : ITreeNode<TId, T>
     {
         /// <summary>
-        /// For classes that implement this interface, this method finds and returns the ITreeNode&lt;T&gt; object 
+        /// For classes that implement this interface, this method finds and returns the <see cref="ITreeNode{TId, T}"/> object 
         /// where the <see cref="Id"/> value is equal to the <paramref name="nodeId"/> value provided as
         /// an argument. It will search the tree recursively until it is found.
         /// </summary>
         /// <param name="nodeId">The <see cref="Id"/> of the node to search for.</param>
-        /// <returns>The ITreeNode&lt;T&gt; that matches the search ID or null if it is not found</returns>
-        ITreeNode<T> FindById(string nodeId);
+        /// <returns>The <see cref="ITreeNode{TId, T}"/> that matches the search ID or null if it is not found</returns>
+        ITreeNode<TId, T> FindById(TId nodeId);
 
         /// <summary>
         /// For classes that implement this interface, this method determines if the node provided as the 
         /// <paramref name="treeNode"/> is an ancestor of this node up the tree.
         /// </summary>
-        /// <param name="treeNode">The ITreeNode&lt;T&gt; object that is being checked if it is an ancestor of this object.</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object that is being checked if it is an ancestor of this object.</param>
         /// <returns>True if <paramref name="treeNode"/> is an ancestor of this object, false if not.</returns>
         bool IsAncestor(T treeNode);
 
@@ -31,7 +33,7 @@ namespace KnightMoves.Hierarchical
         /// For classes that implement this interface, this method determines if the node provided as the 
         /// <paramref name="treeNode"/> is a descendant of this node down the tree.
         /// </summary>
-        /// <param name="treeNode">The ITreeNode&lt;T&gt; object that is being checked if it is a descendant of this object.</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object that is being checked if it is a descendant of this object.</param>
         /// <returns>True if <paramref name="treeNode"/> is an ancestor of this object, false if not.</returns>
         bool IsDescendent(T treeNode);
 
@@ -39,7 +41,7 @@ namespace KnightMoves.Hierarchical
         /// For classes that implement this interface, this method determines if the node provided as the <paramref name="treeNode"/> 
         /// is a sibling of this node.
         /// </summary>
-        /// <param name="treeNode">The ITreeNode&lt;T&gt; object that is being checked if it is a sibling of this object.</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object that is being checked if it is a sibling of this object.</param>
         /// <returns>True if <paramref name="treeNode"/> is a sibling of this object, false if not</returns>
         bool IsSibling(T treeNode);
 
@@ -137,7 +139,7 @@ namespace KnightMoves.Hierarchical
         /// interfaces that edit trees. For example, if you are viewing a tree and you see two items listed under 
         /// the same parent, you click the second item to highlight it, then click the up-arrow, the item will 
         /// look like it moved on top of the sibling that was previously above it. Executing this method provides
-        ///  that up-arrow functionality in the object model. 
+        /// that up-arrow functionality in the object model. 
         /// </remarks>
         void MoveUpInSiblingOrder();
 
@@ -146,15 +148,15 @@ namespace KnightMoves.Hierarchical
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. It does not include this node.
         /// </summary>
         /// <remarks>
-        /// This method performs recursion for you. Provide a node processor of type ITreeNodeProcessor&lt;T&gt; 
+        /// This method performs recursion for you. Provide a node processor of type <see cref="ITreeNodeProcessor{TId, T}"/> 
         /// and this method will recursively travel down the children of this node passing each child node it 
         /// encounters down the tree into the ProcessNode method of the processor. The processor can then do its 
         /// thing against each node. This method will NOT include this node. If you need to include this node as 
-        /// well then use <see cref="ProcessTree(KnightMoves.Hierarchical.ITreeNodeProcessor{T})"/> instead.
+        /// well then use <see cref="ProcessTree(ITreeNodeProcessor{TId, T})"/> instead.
         /// </remarks>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
         /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessChildren(ITreeNodeProcessor<T> nodeProcessor);
+        bool ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor) ;
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
@@ -162,7 +164,7 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         /// <remarks>
         /// This method performs recursion for you. Provide a delegate as a node processor of type that accepts 
-        /// an ITreeNode&lt;T&gt; object (which is for the nodes of the tree) and returns a bool as true if the 
+        /// an <see cref="ITreeNode{TId, T}"/> object (which is for the nodes of the tree) and returns a bool as true if the 
         /// execution of the delegate is successful or false if not. This method will recursively travel down the 
         /// children of this node passing each child node it encounters down the tree into the delegate method. 
         /// The delegate method can then do its thing against each node. This method will NOT include this node. 
@@ -171,28 +173,28 @@ namespace KnightMoves.Hierarchical
         /// </remarks>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
         /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessChildren(Func<ITreeNode<T>, bool> nodeProcessor);
+        bool ProcessChildren(Func<ITreeNode<TId, T>, bool> nodeProcessor);
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
-        /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike ProcessChildren, 
+        /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike <see cref="ProcessChildren(ITreeNodeProcessor{TId, T})"/>, 
         /// this method will start with (include) this node.
         /// </summary>
         /// <remarks>
-        /// This method performs recursion for you. Provide a node processor of type ITreeNodeProcessor&lt;T&gt; 
+        /// This method performs recursion for you. Provide a node processor of type <see cref="ITreeNodeProcessor{TId, T}"/> 
         /// and this method will recursively travel down the children of this node passing each child node it 
         /// encounters down the tree into the ProcessNode method of the processor. The processor can then do its 
         /// thing against each node. Unlike ProcessChildren, this method will start with (include) this node. If 
         /// you need to exclude this node then use 
-        /// <see cref="ProcessChildren(KnightMoves.Hierarchical.ITreeNodeProcessor{T})"/> instead. 
+        /// <see cref="ProcessChildren(ITreeNodeProcessor{TId, T})"/> instead. 
         /// </remarks>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
         /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessTree(ITreeNodeProcessor<T> nodeProcessor);
+        bool ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor);
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
-        /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike ProcessChildren, this method 
+        /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike <see cref="ProcessChildren(Func{ITreeNode{TId, T}, bool})"/>, this method 
         /// will start with (include) this node.
         /// </summary>
         /// <remarks>
@@ -202,18 +204,74 @@ namespace KnightMoves.Hierarchical
         /// children of this node passing each child node it encounters down the tree into the delegate method. 
         /// The delegate method can then do its thing against each node. Unlike ProcessChildren, this method will 
         /// start with (include) this node. If you need to exclude this node then use 
-        /// <see cref="ProcessChildren(Func&lt;ITreeNode&lt;T&gt;, bool&gt;)"/> instead.
+        /// <see cref="ProcessChildren(Func{ITreeNode{TId, T}, bool})"/> instead.
         /// </remarks>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
         /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessTree(Func<ITreeNode<T>, bool> nodeProcessor);
+        bool ProcessTree(Func<ITreeNode<TId, T>, bool> nodeProcessor);
+
+        /// <summary>
+        /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="treeNode"/> object 
+        /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
+        /// </summary>
+        /// <remarks>
+        /// Executes the <paramref name="nodeProcessor"/> by passing it the <paramref name="treeNode"/> object 
+        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
+        /// recursively climb the ancestry line up to the Root node or to the node having a <see cref="DepthFromRoot"/> 
+        /// value defined by the <paramref name="maxLevel"/> parameter. If <paramref name="maxLevel"/> is not 
+        /// used it will go to the root (i.e. up the tree until it finds the Root object having <see cref="DepthFromRoot"/> == 1). 
+        /// If, for example, <param name="maxLevel"/> is set to 3, then it will recurse up to the grandchild of 
+        /// the root node and stop.
+        /// </remarks>
+        /// <param name="nodeProcessor">The <see cref="ITreeNodeProcessor{TId, T}"/> object used to process the nodes up the ancestor tree</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="maxLevel">(Optional) If defined will be used to check the <see cref="DepthFromRoot"/> property and will stop when it gets to that level</param>
+        /// <returns></returns>
+        bool ProcessAncestors(ITreeNodeProcessor<TId, T> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = 1);
+
+        /// <summary>
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
+        /// </summary>
+        /// <remarks>
+        /// Executes the <paramref name="nodeProcessor"/> function by passing it the <paramref name="treeNode"/> object 
+        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
+        /// recursively climb the ancestry line up to the Root node or to the node having a <see cref="DepthFromRoot"/> 
+        /// value defined by the <paramref name="maxLevel"/> parameter. If <paramref name="maxLevel"/> is not 
+        /// used it will go to the root (i.e. up the tree until it finds the Root object having <see cref="DepthFromRoot"/> == 1). 
+        /// If, for example, <param name="maxLevel"/> is set to 3, then it will recurse up to the grandchild of 
+        /// the root node and stop.
+        /// </remarks>
+        /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="maxLevel"></param>
+        /// <returns></returns>
+        bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = 1);
+
+        /// <summary>
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// and then recursively up the ancestor tree until the root or the node defined by the <paramref name="stopFunction"/>
+        /// </summary>
+        /// <remarks>
+        /// Executes the <paramref name="nodeProcessor"/> function by passing it the <paramref name="treeNode"/> object 
+        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
+        /// recursively climb the ancestry line up to the Root node or to the node satisfying the <paramref name="stopFunction"/>. 
+        /// For cases where the decision to stop climbing the tree has to be more robust, use the <paramref name="stopFunction"/>,
+        /// which will be used to pass it each ancestor. The function can contain logic to determine if it should stop or 
+        /// not. If it returns true it will stop the recursion and return. 
+        /// </remarks>
+        /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
+        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="stopFunction">The function used to process the nodes up the ancestor tree to determine if it should stop recursing</param>
+        /// <returns></returns>
+        bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, Func<ITreeNode<TId, T>, bool> stopFunction);
 
         // Properties
 
         /// <summary>
         /// The Child objects of this node in the hierarchy
         /// </summary>
-        TreeList<T> Children { get; }
+        TreeList<TId, T> Children { get; }
 
         /// <summary>
         /// The number of levels in the tree where the ROOT node is Level 1. 
@@ -229,7 +287,17 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The ID of this node
         /// </summary>
-        string Id { get; set; }
+        TId Id { get; set; }
+
+        /// <summary>
+        /// Hash Function provider used to produce the PathId
+        /// </summary>
+        IHashFunction HashProvider { get; set; }
+
+        /// <summary>
+        /// A unique identifier that represents the unique path from the root to this node
+        /// </summary>
+        string PathId { get; set; }
 
         /// <summary>
         /// The character used for indentation. It will be repeated (by the <see cref="IndentString"/> property) once 
@@ -246,28 +314,33 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The Parent node of this node
         /// </summary>
-        ITreeNode<T> Parent { get; set; }
+        ITreeNode<TId, T> Parent { get; set; }
 
         /// <summary>
         /// The <see cref="Id"/> of the <see cref="Parent"/> object of this node.
         /// </summary>
         /// <remarks>
         /// This value is required for all objects except the root object in order for the 
-        /// <see cref="KnightMoves.Hierarchical.TreeNode&lt;T&gt;.CreateTree"/> method to successfully build the tree.
+        /// <see cref="TreeNode{TId, T}.CreateTree(System.Collections.Generic.List{ITreeNode{TId, T}})"/> method to successfully build the tree.
         /// </remarks>
-        string ParentId { get; set; }
+        TId ParentId { get; set; }
 
         /// <summary>
         /// A reference to the Root object in the tree. All objects in the tree will have 
         /// the same Root.
         /// </summary>
-        ITreeNode<T> Root { get; set; }
+        ITreeNode<TId, T> Root { get; set; }
+
+        /// <summary>
+        /// The <see cref="Id"/> of the <see cref="Root"/> object of this node
+        /// </summary>
+        TId RootId { get; set; }
 
         /// <summary>
         /// The other objects in the <see cref="Parent"/> objects <see cref="Children"/> 
         /// collection. It returns all objects in that collection except for this node.
         /// </summary>
-        TreeList<T> Siblings { get; }
+        TreeList<TId, T> Siblings { get; }
 
         /// <summary>
         /// A string representation of the location of this object in the tree in the form of a "Path".
