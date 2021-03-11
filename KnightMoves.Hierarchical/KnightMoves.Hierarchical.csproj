@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
@@ -9,10 +9,36 @@
     <Authors>Ricardo Pena</Authors>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageIcon>knigh_move_solutions_logo.png</PackageIcon>
+    <RepositoryUrl>https://github.com/KnightMoveSolutions/Hierarchical</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/KnightMoveSolutions/Hierarchical</PackageProjectUrl>
+    <PackageTags>hierarchy tree node</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Copyright>Copyright 2016</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial Version 2.0.0 Package</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\License.txt" Pack="true" PackagePath="License.txt" />
+    <None Include="knigh_move_solutions_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>  
+  
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.HashFunction.Core" Version="2.0.0" />
     <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
+  </ItemGroup>  
+  
+  <ItemGroup>
+    <None Update="knigh_move_solutions_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
