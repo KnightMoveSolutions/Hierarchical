@@ -419,6 +419,98 @@ want to persist to the database will go along with the underlying inherited prop
 Lastly, inheriting from `TreeNodeEF<TId, T>` will work with migrations as long as your subclass is defined as a 
 `DbSet<T>` property in your application's `DbContext`
 
+## JSON Serialization
+
+Due to the fact that the `TreeNode<TId, T>` implementation includes references to the `Parent`, `Root` and `Siblings`
+objects, it introduces complications when serializing the tree for JSON output. It will fail with errors about circular
+references. To make things worse, for some reason at the time of this documentation (July 2021), the `[JsonIgnore]`
+attribute does not work for NewtonSoft or the `System.Text.Json.Serialization` namespace.
+
+In order to get around this you will need to hide the inherited object references and tag them with the `[JsonIgnore]`
+in preparation for (hopefully) an eventual fix to the broken attribute. After hiding the offending properties you will
+also need to tweak the serialization settings before generating JSON from the `TreeNode<Tid, T>` object. 
+
+Keep in mind that you may need to inherit from your model class again in order to create a sort of ViewModel entity.
+Otherwise, hiding these properties will preclude you from using them in your logic. 
+
+#### Given
+
+    // Use this for logic that requires object references.
+    // If the object references are not needed you can skip
+    // The ViewModel creation and hide properties here
+
+    public class Person : TreeNode<string, Person>
+    {
+         public string Name { get; set; }
+    }
+
+#### Step 1: Create ViewModel Class
+
+    // Create the ViewModel class but not necessary if you 
+    // don't need to reference the object references
+    public class PersonViewModel : Person
+    {
+         
+    }
+
+#### Step 2: Hide Circular Referencing Properties
+
+    // Do not use NewtonSoft's version of JsonIgnoreAttribute
+    using System.Text.Json.Serialization; 
+
+    public class PersonViewModel : Person
+    {
+        [JsonIgnore]
+        public new ITreeNode<string, Person> Parent = null;
+
+        [JsonIgnore]
+        public new ITreeNode<string, Person> Root = null;
+
+        [JsonIgnore]
+        public new TreeList<string, Person> Siblings = null;
+    }
+
+#### Step 3: Customize JSON Serialization Settings
+
+    // Here we use NewtonSoft even though the ViewModle is using System.Text
+    using NewtonSoft.Json;
+    using NewtonSoft.Json.Serialization;
+
+    ...
+
+    // In a Controller Action somewhere for example
+
+    ...
+
+    List<PersonViewModel> personViewModelList = _someRepository.GetPersons().ToViewModels();
+
+    var personTree = TreeNode<string, Person>.CreateTree(personViewModelList);
+
+    var jsonSerializationSettings = new JsonSerializationSettings
+    {
+        // Required!
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore              
+
+        // Other settings if necessary here like ... but not required
+        //NullValueHandling = NullValueHandling.Ignore,                       
+        //ContractResolver = new CamelCasePropertyNamesContractResolver()    
+    };
+
+    // Should work now
+    var jsonOutput = JsonConvert.SerializeObject(personTree, jsonSerializationSettings);
+
+    // Output JSON here
+    
+None of the code in Step 2 or 3 is necessary if the `[JsonIgnore]` attribute works as advertised. We should be able to
+just tag overriden Properties in the original `Person` class but that doesn't work and there are numerous complaints 
+online that the attribute is broken. If ever this attribute works then do not hide the inherited property with the `new` 
+keyword. Instead, overrid the property.
+
+    [JsonIgnore]
+    public override ITreeNode<string, Person> Parent { get; set; }
+
+The overridden property like above *should* be the only thing necessary. `<shrug>`
+
 ## Q & A
 
 #### I can utilize recursion with the SQL syntax of my database. Why not use that?
