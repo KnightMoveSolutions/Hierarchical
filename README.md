@@ -430,7 +430,7 @@ In order to get around this, the easiest thing to do is to set the `Root` and `P
 serializing to JSON for output. Keep in mind that this is destructive to the tree since those references will no 
 longer be available to you. The `Siblings` property is also dependent on `Parent` so that property will be rendered
 null as well. So make sure you do this last before output or reconstruct the tree from the original collection of 
-objects if necessary to re-establish the tree referencdes.
+objects if necessary to re-establish the tree references.
 
     // Extending the familyTree example code in previous sections
 
