@@ -638,6 +638,43 @@ namespace KnightMoves.Hierarchical.UnitTests
             Assert.Equal(_dad.Name, testResults[1]);
         }
 
+        [Fact]
+        public void TestMarkAsSerializable()
+        {
+            // ARRANGE
+            _familyTree.MarkAsSerializable();
+
+            // ACTION
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(_familyTree);
+
+            _familyTree.UnMarkAsSerializable();
+
+            // ASSERT
+            Assert.False(string.IsNullOrEmpty(json));
+        }
+
+        [Fact]
+        public void TestUnMarkAsSerializable()
+        {
+            // ARRANGE
+            _familyTree.UnMarkAsSerializable();
+
+            var threwException = false;
+
+            // ACTION
+            try
+            {
+                var json2 = Newtonsoft.Json.JsonConvert.SerializeObject(_familyTree);
+            }
+            catch 
+            {
+                threwException = true;
+            }
+
+            // ASSERT
+            Assert.True(threwException);
+        }
+
         private class TestTreeNodeProcessor : ITreeNodeProcessor<string, Person>
         {
             public IList<string> TestResults { get; set; } = new List<string>();

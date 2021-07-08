@@ -266,6 +266,10 @@ namespace KnightMoves.Hierarchical
         /// <returns></returns>
         bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, Func<ITreeNode<TId, T>, bool> stopFunction);
 
+        void MarkAsSerializable();
+
+        void UnMarkAsSerializable();
+
         // Properties
 
         /// <summary>
@@ -447,5 +451,7 @@ namespace KnightMoves.Hierarchical
         /// A unique identifer for the node. Not required but can be useful.
         /// </summary>
         Guid TreeNodeId { get; set; }
+
+        public bool IsSerializable { get; set; }
     }
 }

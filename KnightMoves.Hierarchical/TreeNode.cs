@@ -511,6 +511,20 @@ namespace KnightMoves.Hierarchical
             return flag;
         }
 
+        public bool IsSerializable { get; set; }
+
+        public void MarkAsSerializable()
+        {
+            var root = Root == null ? this : Root;
+            root.ProcessTree(node => node.IsSerializable = true);
+        }
+
+        public void UnMarkAsSerializable()
+        {
+            var root = Root == null ? this : Root;
+            root.ProcessTree(node => node.IsSerializable = false);
+        }
+
         // Properties
 
         /// <summary>
@@ -526,7 +540,7 @@ namespace KnightMoves.Hierarchical
         {
             get
             {
-                return Parent == null ? MIN_DEPTH_VALUE : (Parent.DepthFromRoot + 1);
+                return _parent == null ? MIN_DEPTH_VALUE : (_parent.DepthFromRoot + 1);
             }
         }
 
@@ -556,7 +570,7 @@ namespace KnightMoves.Hierarchical
                 if (HashProvider == null)
                     throw new Exception($"A System.Data.HashFunction.IHashFunction was not provided for the {nameof(HashProvider)} property necessary to compute the {nameof(PathId)}");
 
-                var rawString = Parent == null ? Id.ToString() : Parent.PathId + Id.ToString();
+                var rawString = _parent == null ? Id.ToString() : _parent.PathId + Id.ToString();
 
                 byte[] hashBytes = HashProvider.ComputeHash(rawString).Hash;
 
@@ -581,10 +595,15 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public string IndentString => new string(IndentCharacter, DepthFromRoot);
 
+        private ITreeNode<TId, T> _parent;
         /// <summary>
         /// The Parent node of this node
         /// </summary>
-        public virtual ITreeNode<TId, T> Parent { get; set; }
+        public virtual ITreeNode<TId, T> Parent 
+        { 
+            get { return IsSerializable ? null : _parent; }
+            set { _parent = value; } 
+        }
 
         /// <summary>
         /// The <see cref="Id"/> of the <see cref="Parent"/> object of this node.
@@ -595,11 +614,16 @@ namespace KnightMoves.Hierarchical
         /// </remarks>
         public virtual TId ParentId { get; set; }
 
+        private ITreeNode<TId, T> _root;
         /// <summary>
         /// A reference to the Root object in the tree. All objects in the tree will have 
         /// the same Root.
         /// </summary>
-        public virtual ITreeNode<TId, T> Root { get; set; }
+        public virtual ITreeNode<TId, T> Root 
+        { 
+            get { return IsSerializable ? null : _root; }
+            set { _root = value; }
+        }
 
         /// <summary>
         /// The <see cref="Id"/> of the <see cref="Root"/> object of this node
@@ -614,6 +638,9 @@ namespace KnightMoves.Hierarchical
         {
             get
             {
+                if (IsSerializable)
+                    return null;
+
                 if (Parent == null)
                     return null;
                 
@@ -732,18 +759,18 @@ namespace KnightMoves.Hierarchical
         {
             get
             {
-                string str = Parent == null ? string.Empty : Parent.SortableTreePath + ".";
+                string str = _parent == null ? string.Empty : _parent.SortableTreePath + ".";
                 
-                string str2 = (Parent?.Children.IndexOf(this) + 1)?.ToString() ?? "1";
+                string str2 = (_parent?.Children.IndexOf(this) + 1)?.ToString() ?? "1";
 
-                if (Parent == null || Root == null)
+                if (_parent == null || _root == null)
                     return str2;
 
-                int num2 = Parent.Children.Count() + 1;
+                int num2 = _parent.Children.Count() + 1;
 
                 if (str2.Length < num2.ToString().Length)
                 {
-                    int num3 = Parent.Children.Count() + 1;
+                    int num3 = _parent.Children.Count() + 1;
                     str2 = new string('0', num3.ToString().Length - str2.Length) + str2;
                 }
 

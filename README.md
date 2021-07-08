@@ -426,22 +426,25 @@ objects, it introduces complications when serializing the tree for JSON output. 
 references. To make things worse, for some reason at the time of this documentation (July 2021), the `[JsonIgnore]`
 attribute does not work for NewtonSoft or the `System.Text.Json.Serialization` namespace.
 
-In order to get around this, the easiest thing to do is to set the `Root` and `Parent` properties to null before 
-serializing to JSON for output. Keep in mind that this is destructive to the tree since those references will no 
-longer be available to you. The `Siblings` property is also dependent on `Parent` so that property will be rendered
-null as well. So make sure you do this last before output or reconstruct the tree from the original collection of 
-objects if necessary to re-establish the tree references.
+In order to get around this, two methods were implemented to mark the tree as serializable and unmark the tree as 
+serializable. 
 
-    // Extending the familyTree example code in previous sections
+    familyTree.MarkAsSerializable();
 
-    familyTree.ProcessTree(p =>
-    {
-        p.Parent = null;
-        p.Root = null;
-        return true;
-    });
+    // Safe to serialize to JSON here. Cannot use some methods.
 
-    // familTree is now safe for JSON deserialization
+    familyTree.UnMarkAsSerializable();
+
+    // Restored to original state. Safe to use all methods.
+
+The `MarkAsSerializable()` method sets the `IsSerializable` property to true for all nodes in the tree recursively. 
+When `IsSerializable` is `true` then the `Root`, `Parent`, and `Siblings` properties will return `null` in 
+order to avoid the circular reference exception during serialization. During this time, methods that rely on `Parent`
+or `Root` will not work. Therefore, you should only mark the tree as serializable for the lines of code that 
+produce the JSON string. After that, if you want the full functionality of the tree, then you must restore
+it by calling the `UnMarkSerializable()` method, which will set the `IsSerializable` property to true for all nodes 
+in the tree recursively. After that all methods of the tree that depend on `Parent`, `Root`, and `Siblings` will 
+function normally.
     
 
 ## Q & A
