@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <Description>A library that implements a Hierarchical object model for any Entity Class.</Description>
     <Company>Knight Move Solutions, Inc.</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,7 +18,9 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright 2016</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Version 2.0.1 - Added support for JSON serialization with the addition of the MarkAsSerializable() and UnMarkAsSerializable() methods.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 2.0.2 - Added support for JSON deserialization</PackageReleaseNotes>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +32,7 @@
   </ItemGroup>  
   
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" allowedVersions="(,14)" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.HashFunction.Core" Version="2.0.0" />
     <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />

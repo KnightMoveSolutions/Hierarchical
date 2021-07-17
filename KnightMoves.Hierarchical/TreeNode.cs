@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.HashFunction;
 using System.Data.HashFunction.CRC;
@@ -79,7 +80,7 @@ namespace KnightMoves.Hierarchical
     /// </remarks>
     /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
-    public abstract class TreeNode<TId, T> : ITreeNode<TId, T> where T : ITreeNode<TId, T> 
+    public class TreeNode<TId, T> : ITreeNode<TId, T> where T : ITreeNode<TId, T> 
     {
         private const int MIN_DEPTH_VALUE = 1;
 
@@ -530,7 +531,8 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The Child objects of this node in the hierarchy
         /// </summary>
-        public virtual TreeList<TId, T> Children { get; }
+        [JsonProperty(ItemConverterType = typeof(InterfaceToConcreteGenericJsonConverter), ItemConverterParameters = new object[] { typeof(TreeNode<,>) })]
+        public virtual TreeList<TId, T> Children { get; private set; }
 
         /// <summary>
         /// The number of levels in the tree where the ROOT node is Level 1. 

@@ -17,7 +17,7 @@ namespace KnightMoves.Hierarchical
     /// </remarks>
     /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
-    public abstract class TreeNodeEF<TId, T> : TreeNode<TId, T> where T : ITreeNode<TId, T>
+    public class TreeNodeEF<TId, T> : TreeNode<TId, T> where T : ITreeNode<TId, T>
     {
         [NotMapped]
         public override IHashFunction HashProvider
