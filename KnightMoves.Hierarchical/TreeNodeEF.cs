@@ -11,10 +11,6 @@ namespace KnightMoves.Hierarchical
     /// This class inherits from <see cref="TreeNode{TId, T}"/> and implements code required to make the tree node 
     /// compatible with <see cref="Microsoft.EntityFrameworkCore"/>. 
     /// </summary>
-    /// <remarks>
-    /// It marks the <see cref="Id"/> property as the Primary Key column, the <see cref="ParentId"/> as a self-referencing 
-    /// foreign key column and marks a number of columns with the <see cref="NotMappedAttribute"/>. 
-    /// </remarks>
     /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
     public class TreeNodeEF<TId, T> : TreeNode<TId, T> where T : ITreeNode<TId, T>
@@ -137,102 +133,6 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// A string representation of the location of this object in the tree in the form of a "Path".
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This property implements the Materialized Path Pattern. A well-known example of Materialized Path 
-        /// is the common file system folder path. C:\Users\Bob\Documents is an example of a Materialized Path. 
-        /// </para>
-        /// <para>
-        /// The SortableTreePath produces a path using integers starting with 1. See the example below.
-        /// </para>
-        /// <pre>
-        /// Tree                     SortableTreePath
-        /// ----------------------   ---------------------------
-        /// RootNode                 1
-        ///   ItemA                  1.1
-        ///     ItemA1               1.1.1
-        ///     ItemA2               1.1.2
-        ///   ItemB                  1.2
-        ///     ItemB1               1.2.1
-        ///       ItemBA             1.2.1.1
-        ///   ItemC                  1.3
-        ///   ItemD                  1.4
-        ///     ItemD1               1.4.1
-        ///     ItemD2               1.4.2
-        ///   ...
-        ///   etc.
-        /// </pre>
-        /// <para>
-        /// You can see that if you sort by the SortableTreePath it will result in a list where every object
-        /// is in order by its position in the tree.
-        /// </para>
-        /// <para>
-        /// This value is incredibly useful when persisting to the database. It allows for the use of very simple 
-        /// SQL queries to get nodes or segments of the tree. 
-        /// </para>
-        /// <para>
-        /// Using the dataset above you can do the following:
-        /// </para>
-        /// <para>
-        /// Get all nodes in the tree in hierarchical order:
-        /// </para>
-        /// <code language="sql">SELECT IndentString + Name FROM MyTreeTable ORDER BY SortableTreePath</code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// RootNode  
-        ///   ItemA 
-        ///     ItemA1 
-        ///     ItemA2
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        ///   ItemC 
-        ///   ItemD
-        ///     ItemD1
-        ///     ItemD2   
-        /// </pre>
-        /// <para>
-        /// Get the ItemB tree
-        /// </para>
-        /// <code language="sql">SELECT IndentString + Name FROM MyTreeTable WHERE SortableTreePath LIKE '1.2%' ORDER BY SortableTreePath</code> 
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        /// </pre>
-        /// <para>
-        /// Get children of ItemD:
-        /// </para>
-        /// <code language="sql">SELECT Name FROM MyTreeTable WHERE SortableTreePath LIKE '1.4.%' ORDER BY SortableTreePath</code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// ItemD1
-        /// ItemD2   
-        /// </pre>
-        /// <para>
-        /// Get Ancestors of ItemBA:
-        /// </para>
-        /// <code language="sql">
-        /// SELECT @itemBAPath = SortableTreePath FROM MyTreeTable WHERE Name = 'ItemBA' -- Noramlly use ID but you get the idea
-        /// SELECT Name FROM MyTreeTable WHERE @itemBAPath LIKE SortableTreePath + '%' ORDER BY SortableTreePath 
-        /// </code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// RootNode  
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        /// </pre>
-        /// </remarks>
         public new string SortableTreePath
         {
             get { return base.SortableTreePath; }

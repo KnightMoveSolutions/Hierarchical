@@ -69,52 +69,6 @@ namespace KnightMoves.Hierarchical
         /// is moved to the left and become a sibling what used to be its parent in the tree. Executing this 
         /// method provides that left-arrow functionality in the object model. 
         /// </para>
-        /// <para>
-        /// When executing this functionality, 
-        /// however, there are two possibilities for other siblings of the parent. If the parent has siblings 
-        /// then the default behavior is the item being moved to the left gets inserted as a sibling up a level 
-        /// by itself. The items that were siblings below it remain children of the parent. If the 
-        /// <paramref name="takeLowerSiblingsAsChildren"/> parameter is true, then the items that were siblings 
-        /// under the item being moved will become children of the item being moved. 
-        /// </para>
-        /// <para>
-        /// For example, given the following hierarchy:
-        /// </para>
-        /// <pre>
-        ///   ItemA
-        ///     ItemA1
-        ///     ItemA2
-        ///     ItemA3
-        ///   ItemB
-        ///   ItemC
-        /// </pre>
-        /// <code language="csharp">ItemA1.MakeSiblingOfParent(false)</code>
-        /// <para>
-        /// becomes:
-        /// </para>
-        /// <pre>
-        ///   ItemA
-        ///     ItemA2
-        ///     ItemA3
-        ///   ItemA1
-        ///   ItemB
-        ///   ItemC
-        /// </pre>
-        /// <para>
-        /// else if you do this:
-        /// </para>
-        /// <code language="csharp">ItemA1.MakeSiblingOfParent(true)</code>
-        /// <para>
-        /// then it would do this:
-        /// </para>
-        /// <pre>
-        ///   ItemA
-        ///   ItemA1
-        ///     ItemA2
-        ///     ItemA3
-        ///   ItemB
-        ///   ItemC
-        /// </pre>
         /// </remarks>
         /// <param name="takeLowerSiblingsAsChildren">If true, makes the lower siblings children of this object, otherwise it moves this object by itself.</param>
         void MakeSiblingOfParent(bool takeLowerSiblingsAsChildren = false);
@@ -147,13 +101,6 @@ namespace KnightMoves.Hierarchical
         /// For classes that implement this interface, this method passes each child of this node to the 
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. It does not include this node.
         /// </summary>
-        /// <remarks>
-        /// This method performs recursion for you. Provide a node processor of type <see cref="ITreeNodeProcessor{TId, T}"/> 
-        /// and this method will recursively travel down the children of this node passing each child node it 
-        /// encounters down the tree into the ProcessNode method of the processor. The processor can then do its 
-        /// thing against each node. This method will NOT include this node. If you need to include this node as 
-        /// well then use <see cref="ProcessTree(ITreeNodeProcessor{TId, T})"/> instead.
-        /// </remarks>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
         /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
         bool ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor) ;
@@ -162,15 +109,6 @@ namespace KnightMoves.Hierarchical
         /// For classes that implement this interface, this method passes each child of this node to the 
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. It does not include this node.
         /// </summary>
-        /// <remarks>
-        /// This method performs recursion for you. Provide a delegate as a node processor of type that accepts 
-        /// an <see cref="ITreeNode{TId, T}"/> object (which is for the nodes of the tree) and returns a bool as true if the 
-        /// execution of the delegate is successful or false if not. This method will recursively travel down the 
-        /// children of this node passing each child node it encounters down the tree into the delegate method. 
-        /// The delegate method can then do its thing against each node. This method will NOT include this node. 
-        /// If you need to include this node as well then use 
-        /// <see cref="ProcessTree(Func&lt;ITreeNode&lt;T&gt;, bool&gt;)"/> instead.
-        /// </remarks>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
         /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
         bool ProcessChildren(Func<ITreeNode<TId, T>, bool> nodeProcessor);
@@ -180,14 +118,6 @@ namespace KnightMoves.Hierarchical
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike <see cref="ProcessChildren(ITreeNodeProcessor{TId, T})"/>, 
         /// this method will start with (include) this node.
         /// </summary>
-        /// <remarks>
-        /// This method performs recursion for you. Provide a node processor of type <see cref="ITreeNodeProcessor{TId, T}"/> 
-        /// and this method will recursively travel down the children of this node passing each child node it 
-        /// encounters down the tree into the ProcessNode method of the processor. The processor can then do its 
-        /// thing against each node. Unlike ProcessChildren, this method will start with (include) this node. If 
-        /// you need to exclude this node then use 
-        /// <see cref="ProcessChildren(ITreeNodeProcessor{TId, T})"/> instead. 
-        /// </remarks>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
         /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
         bool ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor);
@@ -197,15 +127,6 @@ namespace KnightMoves.Hierarchical
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. Unlike <see cref="ProcessChildren(Func{ITreeNode{TId, T}, bool})"/>, this method 
         /// will start with (include) this node.
         /// </summary>
-        /// <remarks>
-        /// This method performs recursion for you. Provide a delegate as a node processor of type that accepts 
-        /// an ITreeNode&lt;T&gt; object (which is for the nodes of the tree) and returns a bool as true if the 
-        /// execution of the delegate is successful or false if not. This method will recursively travel down the 
-        /// children of this node passing each child node it encounters down the tree into the delegate method. 
-        /// The delegate method can then do its thing against each node. Unlike ProcessChildren, this method will 
-        /// start with (include) this node. If you need to exclude this node then use 
-        /// <see cref="ProcessChildren(Func{ITreeNode{TId, T}, bool})"/> instead.
-        /// </remarks>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
         /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
         bool ProcessTree(Func<ITreeNode<TId, T>, bool> nodeProcessor);
@@ -214,15 +135,6 @@ namespace KnightMoves.Hierarchical
         /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="treeNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
-        /// <remarks>
-        /// Executes the <paramref name="nodeProcessor"/> by passing it the <paramref name="treeNode"/> object 
-        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
-        /// recursively climb the ancestry line up to the Root node or to the node having a <see cref="DepthFromRoot"/> 
-        /// value defined by the <paramref name="maxLevel"/> parameter. If <paramref name="maxLevel"/> is not 
-        /// used it will go to the root (i.e. up the tree until it finds the Root object having <see cref="DepthFromRoot"/> == 1). 
-        /// If, for example, <param name="maxLevel"/> is set to 3, then it will recurse up to the grandchild of 
-        /// the root node and stop.
-        /// </remarks>
         /// <param name="nodeProcessor">The <see cref="ITreeNodeProcessor{TId, T}"/> object used to process the nodes up the ancestor tree</param>
         /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel">(Optional) If defined will be used to check the <see cref="DepthFromRoot"/> property and will stop when it gets to that level</param>
@@ -233,15 +145,6 @@ namespace KnightMoves.Hierarchical
         /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
-        /// <remarks>
-        /// Executes the <paramref name="nodeProcessor"/> function by passing it the <paramref name="treeNode"/> object 
-        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
-        /// recursively climb the ancestry line up to the Root node or to the node having a <see cref="DepthFromRoot"/> 
-        /// value defined by the <paramref name="maxLevel"/> parameter. If <paramref name="maxLevel"/> is not 
-        /// used it will go to the root (i.e. up the tree until it finds the Root object having <see cref="DepthFromRoot"/> == 1). 
-        /// If, for example, <param name="maxLevel"/> is set to 3, then it will recurse up to the grandchild of 
-        /// the root node and stop.
-        /// </remarks>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
         /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel"></param>
@@ -252,22 +155,20 @@ namespace KnightMoves.Hierarchical
         /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by the <paramref name="stopFunction"/>
         /// </summary>
-        /// <remarks>
-        /// Executes the <paramref name="nodeProcessor"/> function by passing it the <paramref name="treeNode"/> object 
-        /// first and then passes the <paramref name="treeNode.Parent"/> object to itself in order to 
-        /// recursively climb the ancestry line up to the Root node or to the node satisfying the <paramref name="stopFunction"/>. 
-        /// For cases where the decision to stop climbing the tree has to be more robust, use the <paramref name="stopFunction"/>,
-        /// which will be used to pass it each ancestor. The function can contain logic to determine if it should stop or 
-        /// not. If it returns true it will stop the recursion and return. 
-        /// </remarks>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
         /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="stopFunction">The function used to process the nodes up the ancestor tree to determine if it should stop recursing</param>
         /// <returns></returns>
         bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, Func<ITreeNode<TId, T>, bool> stopFunction);
 
+        /// <summary>
+        /// Marks the <see cref="IsSerializable"/> flag as true for all nodes in the tree
+        /// </summary>
         void MarkAsSerializable();
 
+        /// <summary>
+        /// Marks the <see cref="IsSerializable"/> flag as false for all nodes in the tree
+        /// </summary>
         void UnMarkAsSerializable();
 
         // Properties
@@ -349,102 +250,6 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// A string representation of the location of this object in the tree in the form of a "Path".
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This property implements the Materialized Path Pattern. A well-known example of Materialized Path 
-        /// is the common file system folder path. C:\Users\Bob\Documents is an example of a Materialized Path. 
-        /// </para>
-        /// <para>
-        /// The SortableTreePath produces a path using integers starting with 1. See the example below.
-        /// </para>
-        /// <pre>
-        /// Tree                     SortableTreePath
-        /// ----------------------   ---------------------------
-        /// RootNode                 1
-        ///   ItemA                  1.1
-        ///     ItemA1               1.1.1
-        ///     ItemA2               1.1.2
-        ///   ItemB                  1.2
-        ///     ItemB1               1.2.1
-        ///       ItemBA             1.2.1.1
-        ///   ItemC                  1.3
-        ///   ItemD                  1.4
-        ///     ItemD1               1.4.1
-        ///     ItemD2               1.4.2
-        ///   ...
-        ///   etc.
-        /// </pre>
-        /// <para>
-        /// You can see that if you sort by the SortableTreePath it will result in a list where every object
-        /// is in order by its position in the tree.
-        /// </para>
-        /// <para>
-        /// This value is incredibly useful when persisting to the database. It allows for the use of very simple 
-        /// SQL queries to get nodes or segments of the tree. 
-        /// </para>
-        /// <para>
-        /// Using the dataset above you can do the following:
-        /// </para>
-        /// <para>
-        /// Get all nodes in the tree in hierarchical order:
-        /// </para>
-        /// <code language="sql">SELECT IndentString + Name FROM MyTreeTable ORDER BY SortableTreePath</code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// RootNode  
-        ///   ItemA 
-        ///     ItemA1 
-        ///     ItemA2
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        ///   ItemC 
-        ///   ItemD
-        ///     ItemD1
-        ///     ItemD2   
-        /// </pre>
-        /// <para>
-        /// Get the ItemB tree
-        /// </para>
-        /// <code language="sql">SELECT IndentString + Name FROM MyTreeTable WHERE SortableTreePath LIKE '1.2%' ORDER BY SortableTreePath</code> 
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        /// </pre>
-        /// <para>
-        /// Get children of ItemD:
-        /// </para>
-        /// <code language="sql">SELECT Name FROM MyTreeTable WHERE SortableTreePath LIKE '1.4.%' ORDER BY SortableTreePath</code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// ItemD1
-        /// ItemD2   
-        /// </pre>
-        /// <para>
-        /// Get Ancestors of ItemBA:
-        /// </para>
-        /// <code language="sql">
-        /// SELECT @itemBAPath = SortableTreePath FROM MyTreeTable WHERE Name = 'ItemBA' -- Noramlly use ID but you get the idea
-        /// SELECT Name FROM MyTreeTable WHERE @itemBAPath LIKE SortableTreePath + '%' ORDER BY SortableTreePath 
-        /// </code>
-        /// <para>Result:</para>
-        /// <pre>
-        /// Name
-        /// -------------
-        /// RootNode  
-        ///   ItemB
-        ///     ItemB1
-        ///       ItemBA
-        /// </pre>
-        /// </remarks>
         string SortableTreePath { get; }
 
         /// <summary>
@@ -452,6 +257,12 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         Guid TreeNodeId { get; set; }
 
+        /// <summary>
+        /// When true it will cause the Root and Parent properties to return null in order
+        /// to avoid circular reference errors during JSON serialization. When false, Root and 
+        /// Parent references are respected. Set to true only when serializing. Ensure this 
+        /// value is false if using the tree object model.
+        /// </summary>
         public bool IsSerializable { get; set; }
     }
 }

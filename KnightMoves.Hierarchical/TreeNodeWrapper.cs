@@ -4,13 +4,6 @@
     /// This class is provided as a wrapper for entity classes that cannot directly inherit from 
     /// <see cref="TreeNode{TId, T}"/>
     /// </summary>
-    /// <remarks>
-    /// This class is provided as a wrapper for entity classes that cannot directly inherit from 
-    /// <see cref="TreeNode{TId, T}"/> since there is no multiple inheritance in .NET (thankfully). Instead of 
-    /// inheriting from <see cref="TreeNode{TId, T}"/> the entity object can be wrapped by this class, which itself 
-    /// inherits from <see cref="TreeNode{TId, T}"/> on the entity object's behalf. Binding to values of the entity
-    /// object requires accessing the object via the <see cref="Entity"/> property.
-    /// </remarks>
     /// <typeparam name="T"></typeparam>
     public sealed class TreeNodeWrapper<TId, T> : TreeNode<TId, TreeNodeWrapper<TId, T>>
     {
