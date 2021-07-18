@@ -514,8 +514,11 @@ namespace KnightMoves.Hierarchical
                 {
                     n.IsSerializable = false;
                     n.Root = root;
-                    n.Parent = nodeIndex.Single(p => p.Id.Equals(n.ParentId));
-                    nodeIndex.Add(n);
+                    n.Parent = nodeIndex.First(p => p.Id.Equals(n.ParentId));
+                    if (!nodeIndex.Contains(n))
+                    {
+                        nodeIndex.Add(n);
+                    }
                     return true;
                 });
             }
