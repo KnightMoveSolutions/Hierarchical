@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.HashFunction;
 using System.Data.HashFunction.CRC;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace KnightMoves.Hierarchical
 {
@@ -570,7 +571,7 @@ namespace KnightMoves.Hierarchical
             get
             {
                 if (HashProvider == null)
-                    throw new Exception($"A System.Data.HashFunction.IHashFunction was not provided for the {nameof(HashProvider)} property necessary to compute the {nameof(PathId)}");
+                    return null;
 
                 var rawString = _parent == null ? Id.ToString() : _parent.PathId + Id.ToString();
 
@@ -602,7 +603,7 @@ namespace KnightMoves.Hierarchical
         /// The Parent node of this node
         /// </summary>
         public virtual ITreeNode<TId, T> Parent 
-        { 
+        {
             get { return IsSerializable ? null : _parent; }
             set { _parent = value; } 
         }
@@ -786,5 +787,27 @@ namespace KnightMoves.Hierarchical
         /// This is Not required but can be useful.
         /// </summary>
         public virtual Guid TreeNodeId { get; set; }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            // We do this to restore the Root and Parent 
+            // references that were lost upon serialization
+            if (ParentId == null)
+            {
+                IsSerializable = false;
+                var root = this;
+                var nodeIndex = new List<ITreeNode<TId, T>> { this };
+                
+                ProcessChildren(n =>
+                {
+                    n.IsSerializable = false;
+                    n.Root = root;
+                    n.Parent = nodeIndex.Single(p => p.Id.Equals(n.ParentId));
+                    nodeIndex.Add(n);
+                    return true;
+                });
+            }
+        }
     }
 }

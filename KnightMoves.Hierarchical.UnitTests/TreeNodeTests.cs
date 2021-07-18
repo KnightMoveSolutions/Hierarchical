@@ -690,12 +690,38 @@ namespace KnightMoves.Hierarchical.UnitTests
 
             // ASSERT
             Assert.NotNull(familyTree);
+            
+            // Ensure all objects are of Type T (in this case Person)
+            Assert.IsType<Person>(familyTree);
+            Assert.IsType<Person>(familyTree.Children[0]);
+            Assert.IsType<Person>(familyTree.Children[0].Children[0]);
+            Assert.IsType<Person>(familyTree.Children[0].Children[1]);
+            Assert.IsType<Person>(familyTree.Children[1]);
+            Assert.IsType<Person>(familyTree.Children[1].Children[0]);
+
+            // Ensure deserialization of structure matches pre-serialized object
             Assert.Equal(_familyTree.Id, familyTree.Id);
             Assert.Equal(_familyTree.Children[0].Id, familyTree.Children[0].Id);
             Assert.Equal(_familyTree.Children[0].Children[0].Id, familyTree.Children[0].Children[0].Id);
             Assert.Equal(_familyTree.Children[0].Children[1].Id, familyTree.Children[0].Children[1].Id);
             Assert.Equal(_familyTree.Children[1].Id, familyTree.Children[1].Id);
             Assert.Equal(_familyTree.Children[1].Children[0].Id, familyTree.Children[1].Children[0].Id);
+
+            // Ensure Root references were restored
+            Assert.Null(familyTree.Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Children[0].Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Children[1].Root);
+            Assert.Equal(familyTree, familyTree.Children[1].Root);
+            Assert.Equal(familyTree, familyTree.Children[1].Children[0].Root);
+
+            // Ensure Parent references were restored
+            Assert.Null(familyTree.Parent);
+            Assert.Equal(familyTree, familyTree.Children[0].Parent);
+            Assert.Equal(familyTree.Children[0], familyTree.Children[0].Children[0].Parent);
+            Assert.Equal(familyTree.Children[0], familyTree.Children[0].Children[1].Parent);
+            Assert.Equal(familyTree, familyTree.Children[1].Parent);
+            Assert.Equal(familyTree.Children[1], familyTree.Children[1].Children[0].Parent);
         }
 
         private class TestTreeNodeProcessor : ITreeNodeProcessor<string, Person>

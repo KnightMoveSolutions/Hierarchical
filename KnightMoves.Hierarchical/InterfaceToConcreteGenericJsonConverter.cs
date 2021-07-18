@@ -26,7 +26,7 @@ namespace KnightMoves.Hierarchical
             try
             {
                 var parameters = objectType.GetGenericArguments();
-                return GenericTypeDefinition.MakeGenericType(parameters);
+                return parameters[1];
             }
             catch (Exception ex)
             {
