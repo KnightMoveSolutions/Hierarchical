@@ -349,7 +349,7 @@ You can cause it to stop recursing up the ancestor line early by setting the max
     IList<string> testOutput = new List<string>();
 
     // Starts with the `me` object and processes up to the 
-    // 2nd level (dad object) because maxLevel == 2 by default 
+    // 2nd level (dad object) because maxLevel == 2 
     bool okay = familyTree.ProcessAncestors(
         (node) => 
         {
@@ -445,7 +445,97 @@ produce the JSON string. After that, if you want the full functionality of the t
 it by calling the `UnMarkSerializable()` method, which will set the `IsSerializable` property to true for all nodes 
 in the tree recursively. After that all methods of the tree that depend on `Parent`, `Root`, and `Siblings` will 
 function normally.
+
+#### Deserialization
+
+This library supports re-hydrating the tree model from a JSON string. It will also work polymorphically, where the 
+type of the tree can be a base object and concrete objects that derive from it will be preserved. 
+
+The scenario using the original `familyTree` example will work.
+
+    familyTree.MarkAsSerializable();
+
+    var json = Newtonsoft.Json.JsonConvert.SerializeObject(familyTree);
+
+    Console.WriteLine(json); // prints json as expected
+
+    var rebuiltTree = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(json);
+
+    Console.WriteLine(rebuiltTree.Children[0].Children[1].Id == "Me"); // prints true
+
+If the tree was built with nodes that derive from the type supplied for T it will still work. 
+
+Consider the following completely new example, which uses `Person` as the base class and uses 
+several derived classes for the tree nodes.
+
+    namespace MyApp
+    {
+        // Base class inherits from TreeNode<TId, T>
+        public class Person : TreeNode<string, Person>
+        {
+	        // Person is now able to function as a tree node
+	        // Id and ParentId are inherited properties
+
+	        public string Name { get; set; }
+        }
+
+        // The SchoolBudget property is specific to the Principal
+        public class Principal : Person
+        {
+            public decimal SchoolBudget { get; set; }
+        }
+
+        // The Subject property is specific to the Teacher 
+        public class Teacher : Person
+        {
+            public string Subject { get; set; }
+        }
+
+        // The GPA property is specific to the Student
+        public class Student : Person
+        {
+            public decimal GPA { get; set; }
+        }
+
+        public class MyFamilyTreeApp
+        {
+            public static void Main(string[] args)
+            {
+                var principal = new Principal { Id = "p", Name = "Mrs. Monroe", SchoolBudget = 1000000.00m };
+                var teacher = new Teacher { Id = "t", ParentId = "p", Name = "Mrs. Smith", Subject = "Math" }; 
+                var student = new Student { Id = "s", ParentId = "t", Name = "Johnny", GPA = 3.75m };
+
+                // NOTICE this is a collection of Person objects
+                var schoolPeople = new List<Person> { principal, student, teacher, honorStudent };
+
+                // NOTICE this tree is of Person objects --> TreeNode<string, Person>
+                var schoolTree = TreeNode<string, Person>.CreateTree(schoolPeople);
+
+                schoolTree.MarkAsSerializable();
+
+                // Examine this json string to see that properties particular to the objects above 
+                // are preserved in the output (i.e. principal.SchoolBudget, teacher.Subject, and student.GPA)
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(schoolTree);
+
+                // Do this if you want to use the schoolTree object again
+                schoolTree.UnMarkAsSerializable();
+
+                // De-Serialize the json into a rebuilt tree object using the base Person type
+                var rebuiltTree = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(json);
+
+                Console.WriteLine(newTree.GetType().Name);                          // Prints Principal
+                Console.WriteLine(newTree.Children[0].GetType().Name);              // Prints Teacher
+                Console.WriteLine(newTree.Children[0].Children[0].GetType().Name);  // Prints Student
+
+                Console.WriteLine(newTree.SchoolBudget);            // Prints 1000000.00
+                Console.WriteLine(newTree.Children[0].Subject);     // Prints Math
+                Console.WriteLine(newTree.Children[0].GPA);         // Prints 3.75
+            }
+        }
+    }
     
+So yu can see that if your tree is made up of different classes that derive from a base class, the tree model and the 
+serialization / deserialization of the objects will still work.
 
 ## Q & A
 
@@ -467,13 +557,13 @@ Use the `TreeNodeWrapper<TId, T>` class like so.
 Instead of ...
 
     var grandpa = new Person { Id = "Grandpa", Name = "Richard" }
-    var dad = new Dad { Id = "Dad", ParentId = "Grandpa" Name = "Richard Jr." };
+    var dad = new Person { Id = "Dad", ParentId = "Grandpa" Name = "Richard Jr." };
     // ... etc.
 
 ... you would code ... 
 
     var grandpa = new TreeNodeWrapper<string, Person>(new Person { Id = "Grandpa", Name = "Richard" }, "Grandpa", null);
-    var dad = new TreeNodeWrapper<string, Person>(new Dad { Id = "Dad", ParentId = "Grandpa" Name = "Richard Jr." }, "Dad", "Grandpa");
+    var dad = new TreeNodeWrapper<string, Person>(new Person { Id = "Dad", ParentId = "Grandpa" Name = "Richard Jr." }, "Dad", "Grandpa");
     // ... etc.
 
 ... and the rest is the same.

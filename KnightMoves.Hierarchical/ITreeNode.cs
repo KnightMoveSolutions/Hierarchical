@@ -12,6 +12,8 @@ namespace KnightMoves.Hierarchical
     /// <typeparam name="T">The type of the object that is being proxied into a Tree Node object (ITreeNode).</typeparam>
     public interface ITreeNode<TId, T> where T : ITreeNode<TId, T>
     {
+        string TypeName { get; set; }
+
         /// <summary>
         /// For classes that implement this interface, this method finds and returns the <see cref="ITreeNode{TId, T}"/> object 
         /// where the <see cref="Id"/> value is equal to the <paramref name="nodeId"/> value provided as
@@ -263,6 +265,6 @@ namespace KnightMoves.Hierarchical
         /// Parent references are respected. Set to true only when serializing. Ensure this 
         /// value is false if using the tree object model.
         /// </summary>
-        public bool IsSerializable { get; set; }
+        bool IsSerializable { get; set; }
     }
 }

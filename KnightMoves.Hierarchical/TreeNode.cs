@@ -18,9 +18,24 @@ namespace KnightMoves.Hierarchical
     /// </summary>
     /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
+    [JsonConverter(typeof(TreeNodeJsonConverter))]
     public class TreeNode<TId, T> : ITreeNode<TId, T> where T : ITreeNode<TId, T> 
     {
         private const int MIN_DEPTH_VALUE = 1;
+
+        private string _typeName;
+        public string TypeName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_typeName))
+                    _typeName = GetType().AssemblyQualifiedName;
+
+                return _typeName;
+            }
+
+            set { _typeName = value; }
+        }
 
         /// <summary>
         /// Constructor setting some reasonable defaults
@@ -321,7 +336,7 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void MarkAsSerializable()
         {
-            var root = Root == null ? this : Root;
+            var root = _root == null ? this : _root;
             root.ProcessTree(node => node.IsSerializable = true);
         }
 
@@ -330,7 +345,7 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void UnMarkAsSerializable()
         {
-            var root = Root == null ? this : Root;
+            var root = _root == null ? this : _root;
             root.ProcessTree(node => node.IsSerializable = false);
         }
 
@@ -339,7 +354,7 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The Child objects of this node in the hierarchy
         /// </summary>
-        [JsonProperty(ItemConverterType = typeof(InterfaceToConcreteGenericJsonConverter), ItemConverterParameters = new object[] { typeof(TreeNode<,>) })]
+        [JsonProperty(ItemConverterType = typeof(TreeNodeJsonConverter))]
         public virtual TreeList<TId, T> Children { get; private set; }
 
         /// <summary>

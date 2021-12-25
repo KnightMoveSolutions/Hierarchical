@@ -5,17 +5,36 @@ using Xunit;
 
 namespace KnightMoves.Hierarchical.UnitTests
 {
+    // This is our Mock entity. It has a Name property but can have all kind of other things.
+    // It can have address, age, soc sec nbr, etc. Inheriting from TreeNode<T> makes it a 
+    // tree node capable of having children, parents, etc. 
+    public class Person : TreeNode<string, Person>
+    {
+        public override string Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Principal : Person
+    {
+        public decimal SchoolBudget { get; set; }
+    }
+    public class Teacher : Person
+    {
+        public string Subject { get; set; }
+    }
+
+    public class Student : Person
+    {
+        public decimal GPA { get; set; }
+    }
+
+    public class HonorStudent : Student
+    {
+        public decimal MaxGPA { get; set; }
+    }
 
     public class TreeNodeTests
     {
-        // This is our Mock entity. It has a Name property but can have all kind of other things.
-        // It can have address, age, soc sec nbr, etc. Inheriting from TreeNode<T> makes it a 
-        // tree node capable of having children, parents, etc. 
-        private class Person : TreeNode<string, Person>
-        {
-            public override string Id { get; set; }
-            public string Name { get; set; }
-        }
 
         private readonly Person _grandpa;
         private readonly Person _dad;
@@ -722,6 +741,31 @@ namespace KnightMoves.Hierarchical.UnitTests
             Assert.Equal(familyTree.Children[0], familyTree.Children[0].Children[1].Parent);
             Assert.Equal(familyTree, familyTree.Children[1].Parent);
             Assert.Equal(familyTree.Children[1], familyTree.Children[1].Children[0].Parent);
+        }
+
+        [Fact]
+        public void TestPolymorphicDeserialization()
+        {
+            var principal = new Principal { Id = "p", Name = "Mrs. Monroe", SchoolBudget = 1000000.00m };
+            var teacher = new Teacher { Id = "t", ParentId = "p", Name = "Mrs. Smith", Subject = "Math" }; 
+            var student = new Student { Id = "s", ParentId = "t", Name = "Johnny", GPA = 3.75m };
+            var honorStudent = new HonorStudent { Id = "h", ParentId = "t", Name = "Mary", MaxGPA = 5.0m, GPA = 4.25m };
+
+            var schoolPeople = new List<Person> { principal, student, teacher, honorStudent };
+
+            var schoolTree = TreeNode<string, Person>.CreateTree(schoolPeople);
+
+            schoolTree.MarkAsSerializable();
+
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(schoolTree);
+
+            var newTree = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(json);
+
+            Assert.NotNull(newTree);
+            Assert.Equal("Principal", newTree.GetType().Name);
+            Assert.Equal("Teacher", newTree.Children[0].GetType().Name);
+            Assert.Equal("Student", newTree.Children[0].Children[0].GetType().Name);
+            Assert.Equal("HonorStudent", newTree.Children[0].Children[1].GetType().Name);
         }
 
         private class TestTreeNodeProcessor : ITreeNodeProcessor<string, Person>
