@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageIcon>knigh_move_solutions_logo.png</PackageIcon>
+    <PackageIcon>knight_move_solutions_logo.png</PackageIcon>
     <RepositoryUrl>https://github.com/KnightMoveSolutions/Hierarchical</RepositoryUrl>
     <PackageProjectUrl>https://github.com/KnightMoveSolutions/Hierarchical</PackageProjectUrl>
     <PackageTags>hierarchy tree node</PackageTags>
@@ -21,11 +21,16 @@
     <PackageReleaseNotes>Version 2.1.0 - Added the ability to deserialize JSON into the hierarchical object model when the nodes are polymorphic (i.e. different base classes that implement the same base type).</PackageReleaseNotes>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
     <FileVersion>2.1.0.0</FileVersion>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\License.txt" Pack="true" PackagePath="License.txt" />
-    <None Include="knigh_move_solutions_logo.png">
+    <None Include="knight_move_solutions_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="knight_move_solutions_logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

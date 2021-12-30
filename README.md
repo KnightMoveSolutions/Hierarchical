@@ -523,13 +523,13 @@ several derived classes for the tree nodes.
                 // De-Serialize the json into a rebuilt tree object using the base Person type
                 var rebuiltTree = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(json);
 
-                Console.WriteLine(newTree.GetType().Name);                          // Prints Principal
-                Console.WriteLine(newTree.Children[0].GetType().Name);              // Prints Teacher
-                Console.WriteLine(newTree.Children[0].Children[0].GetType().Name);  // Prints Student
+                Console.WriteLine(rebuiltTree.GetType().Name);                          // Prints Principal
+                Console.WriteLine(rebuiltTree.Children[0].GetType().Name);              // Prints Teacher
+                Console.WriteLine(rebuiltTree.Children[0].Children[0].GetType().Name);  // Prints Student
 
-                Console.WriteLine(newTree.SchoolBudget);            // Prints 1000000.00
-                Console.WriteLine(newTree.Children[0].Subject);     // Prints Math
-                Console.WriteLine(newTree.Children[0].GPA);         // Prints 3.75
+                Console.WriteLine(rebuiltTree.SchoolBudget);            // Prints 1000000.00
+                Console.WriteLine(rebuiltTree.Children[0].Subject);     // Prints Math
+                Console.WriteLine(rebuiltTree.Children[0].GPA);         // Prints 3.75
             }
         }
     }
