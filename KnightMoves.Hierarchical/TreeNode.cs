@@ -23,25 +23,14 @@ namespace KnightMoves.Hierarchical
     {
         private const int MIN_DEPTH_VALUE = 1;
 
-        private string _typeName;
-        public string TypeName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_typeName))
-                    _typeName = GetType().AssemblyQualifiedName;
-
-                return _typeName;
-            }
-
-            set { _typeName = value; }
-        }
+        public string TypeName { get; set; }
 
         /// <summary>
         /// Constructor setting some reasonable defaults
         /// </summary>
         protected TreeNode()
         {
+            TypeName = GetType().AssemblyQualifiedName;
             HashProvider = CRCFactory.Instance.Create();
             TreeNodeId = Guid.Empty;
             Children = new TreeList<TId, T>(this);
