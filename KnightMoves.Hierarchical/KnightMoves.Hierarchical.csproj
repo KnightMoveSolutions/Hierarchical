@@ -37,7 +37,7 @@
   </ItemGroup>  
   
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" allowedVersions="(,14)" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" allowedVersions="(,14)" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.HashFunction.Core" Version="2.0.0" />
     <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
