@@ -1,0 +1,20 @@
+name: CI/CD docs
+on:
+  workflow_dispatch:
+  push:
+    branches: "master"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+
+    - name: Deploy static site to S3 bucket
+      run: aws s3 sync ./docs/_build/html s3://docs.knightmovesolutions.com/hierarchical --delete
