@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Overview &mdash; KnightMoves.Pipelines 2.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Start" href="quick-start.html" />
+    <link rel="prev" title="Welcome to KnightMoves.Pipelines documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #0255a3" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/knight_move_solutions_hierarchical_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-it">What is it?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-problem-does-it-solve">What problem does it solve?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-do-i-use-it">When do I use it?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-next">What Next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KnightMoves.Pipelines</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
+<div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-it">
+<h2>What is it?<a class="headerlink" href="#what-is-it" title="Permalink to this headline">¶</a></h2>
+<p>This is a lightweight library of a handful of interfaces/classes that implement everything an
+entity needs to participate as a node in a tree.</p>
+</div>
+<div class="section" id="what-problem-does-it-solve">
+<h2>What problem does it solve?<a class="headerlink" href="#what-problem-does-it-solve" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this library is to take care of all the things that are necessary for creating
+tree structures and recursively processing the nodes in the tree. To be clear, this isn’t to be
+confused with low-level structures like B-Trees. It facilitates the creation of the Composite
+Object-Oriented design pattern for C# objects by simply inheriting from a base tree node object.</p>
+</div>
+<div class="section" id="when-do-i-use-it">
+<h2>When do I use it?<a class="headerlink" href="#when-do-i-use-it" title="Permalink to this headline">¶</a></h2>
+<p>Through the course of developing business applications across various industries, it is inevitable
+that you will run into scenarios where trees are anywhere from useful to necessary. Some scenarios
+where trees can be utilized include category trees, account/subaccount trees, organization trees,
+management/employee hierarchies, etc.</p>
+<p>An object-oriented tree structure can also be useful to
+drive hierarchical user interfaces. This library makes it easy to wire user interface actions to
+the underlying tree structure and ultimately for persitence in a file, JSON document, or database.
+User interface actions that might be needed to manage a tree structure include moving whole branches
+up, down, left, or right in the tree and rearranging the sibling order.</p>
+</div>
+<div class="section" id="what-next">
+<h2>What Next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
+<p>If you are familiar with this library and need a reminder on the steps necessary to implement
+or if you just want to get crackin’ then go to the <a class="reference internal" href="quick-start.html"><span class="doc">Quick Start</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="quick-start.html" class="btn btn-neutral float-right" title="Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to KnightMoves.Pipelines documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Ricardo Pena.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

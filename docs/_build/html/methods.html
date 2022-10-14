@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Methods &mdash; KnightMoves.Pipelines 2.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SortableTreePath" href="sortable-tree-path.html" />
+    <link rel="prev" title="Properties" href="properties.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #0255a3" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/knight_move_solutions_hierarchical_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#findbyid">FindById</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isancestor">IsAncestor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isdescendent">IsDescendent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#issibling">IsSibling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#makechildofuppersibling">MakeChildOfUpperSibling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#makesiblingofparent">MakeSiblingOfParent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#movedowninsiblingorder">MoveDownInSiblingOrder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moveupinsiblingorder">MoveUpInSiblingOrder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processchildren">ProcessChildren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processtree">ProcessTree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processancestors">ProcessAncestors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sortable-tree-path.html">SortableTreePath</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KnightMoves.Pipelines</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/methods.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
+<div class="section" id="methods">
+<h1>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="findbyid">
+<h2>FindById<a class="headerlink" href="#findbyid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">FindById</span><span class="p">(</span><span class="n">TId</span> <span class="n">nodeId</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finds and returns the <code class="docutils literal notranslate"><span class="pre">ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> object where the <code class="docutils literal notranslate"><span class="pre">Id</span></code> value is equal to the <code class="docutils literal notranslate"><span class="pre">nodeId</span></code>
+value provided as an argument. It will search the tree recursively until it is found. <code class="docutils literal notranslate"><span class="pre">TId</span></code> is
+the type of the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property.</p>
+</div>
+<div class="section" id="isancestor">
+<h2>IsAncestor<a class="headerlink" href="#isancestor" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">IsAncestor</span><span class="p">(</span><span class="n">T</span> <span class="n">treeNode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is an ancestor of this node up the tree.</p>
+</div>
+<div class="section" id="isdescendent">
+<h2>IsDescendent<a class="headerlink" href="#isdescendent" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">IsDescendent</span><span class="p">(</span><span class="n">T</span> <span class="n">treeNode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is a descendant of this node down the tree
+recursively.</p>
+</div>
+<div class="section" id="issibling">
+<h2>IsSibling<a class="headerlink" href="#issibling" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">IsSibling</span><span class="p">(</span><span class="n">T</span> <span class="n">treeNode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is a sibling of this node (i.e. they share
+the same <code class="docutils literal notranslate"><span class="pre">Parent</span></code> and are members of the same <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection).</p>
+</div>
+<div class="section" id="makechildofuppersibling">
+<h2>MakeChildOfUpperSibling<a class="headerlink" href="#makechildofuppersibling" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">MakeChildOfUpperSibling</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Makes this node a child of the sibling higher in the order of the <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection of its
+parent. In a user-interface this method could be wired to a right-arrow that moves the node to
+the right in the tree causing it to be indented under the item above it.</p>
+</div>
+<div class="section" id="makesiblingofparent">
+<h2>MakeSiblingOfParent<a class="headerlink" href="#makesiblingofparent" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">MakeSiblingOfParent</span><span class="p">(</span><span class="kt">bool</span> <span class="n">takeLowerSiblingsAsChildren</span> <span class="p">=</span> <span class="k">false</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Makes this node a sibling of its parent. In a user-interface this method could be wired to a
+left-arrow that moves the node to the left in the tree causing it to be indented at the same
+level of the item above it and thereby converting it into a sibling of its parent. The
+<code class="docutils literal notranslate"><span class="pre">takeLowerSiblingsAsChildren</span></code>, if <code class="docutils literal notranslate"><span class="pre">true</span></code>, will cause any existing siblings under it to
+be converted into its children. The default is for the lower siblings to remain children of
+the upper (formerly <code class="docutils literal notranslate"><span class="pre">Parent</span></code>) item.</p>
+</div>
+<div class="section" id="movedowninsiblingorder">
+<h2>MoveDownInSiblingOrder<a class="headerlink" href="#movedowninsiblingorder" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">MoveDownInSiblingOrder</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Moves this node down in the sibling order. In a user-interface this method could be wired
+to a down-arrow causing the node to be moved down in the sibling order. It will stop moving
+down when it gets to the bottom of the sibling order at its current level in the tree.</p>
+</div>
+<div class="section" id="moveupinsiblingorder">
+<h2>MoveUpInSiblingOrder<a class="headerlink" href="#moveupinsiblingorder" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">MoveUpInSiblingOrder</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Moves this node up in the sibling order. In a user-interface this method could be wired
+to an up-arrow causing the node to be moved up in the sibling order. It will stop moving
+up when it gets to the top of the sibling order at its current level in the tree remaining
+under its current parent.</p>
+</div>
+<div class="section" id="processchildren">
+<h2>ProcessChildren<a class="headerlink" href="#processchildren" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree,
+where the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>
+method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for <strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code>
+if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes. The method does not include
+this node when processing the tree.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
+<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
+<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.
+The method does not include this node when processing the tree.</p>
+</div>
+<div class="section" id="processtree">
+<h2>ProcessTree<a class="headerlink" href="#processtree" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree,
+where the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The <code class="docutils literal notranslate"><span class="pre">ProcessTree</span></code>
+method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for <strong>all</strong> nodes and
+<code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes. Unlike
+<code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
+<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">ProcessTree</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
+<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.
+Unlike <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
+</div>
+<div class="section" id="processancestors">
+<h2>ProcessAncestors<a class="headerlink" href="#processancestors" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> starting with <code class="docutils literal notranslate"><span class="pre">treeNode</span></code>
+and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
+<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with <code class="docutils literal notranslate"><span class="pre">treeNode</span></code>
+and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
+<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
+    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">stopFunction</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with
+<code class="docutils literal notranslate"><span class="pre">treeNode</span></code> and stopping at the node that causes the stopFunction to return true.
+The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
+<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="sortable-tree-path.html" class="btn btn-neutral float-right" title="SortableTreePath" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="properties.html" class="btn btn-neutral float-left" title="Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Ricardo Pena.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

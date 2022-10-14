@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>FAQs &mdash; KnightMoves.Pipelines 2.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #0255a3" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/knight_move_solutions_hierarchical_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sortable-tree-path.html">SortableTreePath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entity-framework.html">Using Entity Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json-serialization.html">JSON Serialization</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KnightMoves.Pipelines</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>FAQs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/faqs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
+<div class="section" id="faqs">
+<h1>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h1>
+<p><strong>I can utilize recursion with the SQL syntax of my database. Why not use that?</strong></p>
+<p>You can certainly use that to produce or process your tree. However, you will find that for every
+type of entity that must participate in a tree you will need to write that kind of recursive code
+again. With this library it is done once. Also, having a business logic layer implementation makes
+it database agnostic. You can port your data to another database easier because your hierarchical
+processing is done in the application code.</p>
+<p>The output of the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code> also makes reporting easier. Sometimes the people creating
+the reports are not developers. You can use a reporting tool like Tableau and easily create a tree
+with indented children simply by sorting on the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code>. This is implemented once for
+all of your hierarchical entities.</p>
+<p>Lastly, if you’re like me and you prefer not to put business logic in the database, then this makes
+it easier to write code to process a tree recursively and keep the business logic in the application
+code.</p>
+<p><strong>My entity already inherits from something. C# doesn’t support multiple inheritance so what do I do?</strong></p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">TreeNodeWrapper&lt;TId,</span> <span class="pre">T&gt;</span></code> class like so.</p>
+<p>Instead of ..</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span>   <span class="kt">var</span> <span class="n">grandpa</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard&quot;</span> <span class="p">}</span>
+   <span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Dad&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard Jr.&quot;</span> <span class="p">};</span>
+   <span class="c1">// ... etc.</span>
+
+<span class="p">...</span> <span class="n">you</span> <span class="n">would</span> <span class="n">code</span> <span class="p">...</span>
+</pre></div>
+</div>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span>   <span class="kt">var</span> <span class="n">grandpa</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TreeNodeWrapper</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+   <span class="p">(</span>
+       <span class="k">new</span> <span class="n">Person</span>
+       <span class="p">{</span>
+           <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span>
+           <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard&quot;</span>
+       <span class="p">},</span>
+       <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span>
+       <span class="k">null</span>
+   <span class="p">);</span>
+
+   <span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TreeNodeWrapper</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+   <span class="p">(</span>
+       <span class="k">new</span> <span class="n">Person</span>
+       <span class="p">{</span>
+           <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Dad&quot;</span><span class="p">,</span>
+           <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span>
+           <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard Jr.&quot;</span>
+       <span class="p">},</span>
+       <span class="s">&quot;Dad&quot;</span><span class="p">,</span>
+       <span class="s">&quot;Grandpa&quot;</span>
+   <span class="p">);</span>
+
+   <span class="c1">// ... etc.</span>
+
+<span class="p">...</span> <span class="n">and</span> <span class="n">the</span> <span class="n">rest</span> <span class="k">is</span> <span class="n">the</span> <span class="n">same</span><span class="p">.</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Ricardo Pena.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

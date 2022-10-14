@@ -67,7 +67,7 @@ namespace KnightMoves.Hierarchical.UnitTests
                 _cousin
             };
 
-            _familyTree = TreeNode<string, Person>.CreateTree(_familyMembers);
+            _familyTree = Person.CreateTree(_familyMembers);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             _grandpa.ParentId = "GreatGrandpa";
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => TreeNode<string, Person>.CreateTree(_familyMembers));
+            Assert.Throws<ArgumentException>(() => Person.CreateTree(_familyMembers));
         }
 
         [Fact]
@@ -476,7 +476,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             };
 
             // ACTION
-            var familyTree = TreeNode<Guid, PersonGuid>.CreateTree(familyMembers);
+            var familyTree = PersonGuid.CreateTree(familyMembers);
 
             // ASSERT
             Assert.NotNull(familyTree);
@@ -543,7 +543,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             };
 
             // ACTION
-            TreeNode<string, Person>.CreateTree(familyMembers);
+            Person.CreateTree(familyMembers);
 
             // ASSERT 
             Assert.Equal(_grandpa.PathId, grandpa.PathId);
@@ -753,7 +753,7 @@ namespace KnightMoves.Hierarchical.UnitTests
 
             var schoolPeople = new List<Person> { principal, student, teacher, honorStudent };
 
-            var schoolTree = TreeNode<string, Person>.CreateTree(schoolPeople);
+            var schoolTree = Person.CreateTree(schoolPeople);
 
             schoolTree.MarkAsSerializable();
 

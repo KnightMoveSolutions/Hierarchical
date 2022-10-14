@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>JSON Serialization &mdash; KnightMoves.Pipelines 2.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Using Entity Framework" href="entity-framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #0255a3" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/knight_move_solutions_hierarchical_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sortable-tree-path.html">SortableTreePath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entity-framework.html">Using Entity Framework</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JSON Serialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deserialization">Deserialization</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KnightMoves.Pipelines</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>JSON Serialization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/json-serialization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
+<div class="section" id="json-serialization">
+<h1>JSON Serialization<a class="headerlink" href="#json-serialization" title="Permalink to this headline">¶</a></h1>
+<p>Due to the fact that the <code class="docutils literal notranslate"><span class="pre">TreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> implementation includes references to the <code class="docutils literal notranslate"><span class="pre">Parent</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Root</span></code> and <code class="docutils literal notranslate"><span class="pre">Siblings</span></code> objects, it introduces complications when serializing the tree for JSON
+output. It will fail with errors about circular references. To make things worse, for some reason
+at the time of this documentation (July 2021), the <code class="docutils literal notranslate"><span class="pre">[JsonIgnore]</span></code> attribute does not work for
+<code class="docutils literal notranslate"><span class="pre">NewtonSoft</span></code> or the <code class="docutils literal notranslate"><span class="pre">System.Text.Json.Serialization</span></code> namespace.</p>
+<div class="section" id="serialization">
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h2>
+<p>In order to get around this, two methods were implemented to mark the tree as serializable and unmark
+the tree as serializable.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">familyTree</span><span class="p">.</span><span class="n">MarkAsSerializable</span><span class="p">();</span>
+
+<span class="c1">// Safe to serialize to JSON here. Cannot use some methods.</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">UnMarkAsSerializable</span><span class="p">();</span>
+
+<span class="c1">// Restored to original state. Safe to use all methods.</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">MarkAsSerializable()</span></code> method sets the <code class="docutils literal notranslate"><span class="pre">IsSerializable</span></code> property to true for all nodes in the
+tree recursively. When <code class="docutils literal notranslate"><span class="pre">IsSerializable</span></code> is true then the <code class="docutils literal notranslate"><span class="pre">Root</span></code>, <code class="docutils literal notranslate"><span class="pre">Parent</span></code>, and <code class="docutils literal notranslate"><span class="pre">Siblings</span></code>
+properties will return null in order to avoid the circular reference exception during serialization.
+During this time, methods that rely on <code class="docutils literal notranslate"><span class="pre">Parent</span></code> or <code class="docutils literal notranslate"><span class="pre">Root</span></code> will not work. Therefore, you should only
+mark the tree as serializable for the lines of code that produce the JSON string. After that, if you
+want the full functionality of the tree, then you must restore it by calling the <code class="docutils literal notranslate"><span class="pre">UnMarkSerializable()</span></code>
+method, which will set the <code class="docutils literal notranslate"><span class="pre">IsSerializable</span></code> property to true for all nodes in the tree recursively.
+After that all methods of the tree that depend on <code class="docutils literal notranslate"><span class="pre">Parent</span></code>, <code class="docutils literal notranslate"><span class="pre">Root</span></code>, and <code class="docutils literal notranslate"><span class="pre">Siblings</span></code> will function
+normally.</p>
+</div>
+<div class="section" id="deserialization">
+<h2>Deserialization<a class="headerlink" href="#deserialization" title="Permalink to this headline">¶</a></h2>
+<p>This library supports re-hydrating the tree model from a JSON string. It will also work polymorphically,
+where the type of the tree can be a base object and concrete objects that derive from it will be preserved.</p>
+<p>The scenario using the original <code class="docutils literal notranslate"><span class="pre">familyTree</span></code> example will work.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">familyTree</span><span class="p">.</span><span class="n">MarkAsSerializable</span><span class="p">();</span>
+
+<span class="kt">var</span> <span class="n">json</span> <span class="p">=</span> <span class="n">Newtonsoft</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">JsonConvert</span><span class="p">.</span><span class="n">SerializeObject</span><span class="p">(</span><span class="n">familyTree</span><span class="p">);</span>
+
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">json</span><span class="p">);</span> <span class="c1">// prints json as expected</span>
+
+<span class="kt">var</span> <span class="n">rebuiltTree</span> <span class="p">=</span> <span class="n">Newtonsoft</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">JsonConvert</span><span class="p">.</span><span class="n">DeserializeObject</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">json</span><span class="p">);</span>
+
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Children</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Id</span> <span class="p">==</span> <span class="s">&quot;Me&quot;</span><span class="p">);</span> <span class="c1">// prints true</span>
+</pre></div>
+</div>
+<p>If the tree was built with nodes that derive from the type supplied for <code class="docutils literal notranslate"><span class="pre">T</span></code> it will still work.</p>
+<p>Consider the following completely new example, which uses <code class="docutils literal notranslate"><span class="pre">Person</span></code> as the base class and uses several
+derived classes for the tree nodes.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">MyApp</span>
+<span class="p">{</span>
+    <span class="c1">// Base class inherits from TreeNode&lt;TId, T&gt;</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span> <span class="p">:</span> <span class="n">TreeNode</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="c1">// Person is now able to function as a tree node</span>
+        <span class="c1">// Id and ParentId are inherited properties</span>
+
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The SchoolBudget property is specific to the Principal</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Principal</span> <span class="p">:</span> <span class="n">Person</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">decimal</span> <span class="n">SchoolBudget</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The Subject property is specific to the Teacher</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Teacher</span> <span class="p">:</span> <span class="n">Person</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Subject</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The GPA property is specific to the Student</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Student</span> <span class="p">:</span> <span class="n">Person</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">decimal</span> <span class="n">GPA</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyFamilyTreeApp</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">principal</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Principal</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;p&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Mrs. Monroe&quot;</span><span class="p">,</span> <span class="n">SchoolBudget</span> <span class="p">=</span> <span class="m">1000000.00</span><span class="n">m</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">teacher</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Teacher</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;t&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;p&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Mrs. Smith&quot;</span><span class="p">,</span> <span class="n">Subject</span> <span class="p">=</span> <span class="s">&quot;Math&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">student</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Student</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;s&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;t&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Johnny&quot;</span><span class="p">,</span> <span class="n">GPA</span> <span class="p">=</span> <span class="m">3.75</span><span class="n">m</span> <span class="p">};</span>
+
+            <span class="c1">// NOTICE this is a collection of Person objects</span>
+            <span class="kt">var</span> <span class="n">schoolPeople</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">principal</span><span class="p">,</span> <span class="n">student</span><span class="p">,</span> <span class="n">teacher</span> <span class="p">};</span>
+
+            <span class="c1">// NOTICE this tree is of Person objects --&gt; TreeNode&lt;string, Person&gt;</span>
+            <span class="kt">var</span> <span class="n">schoolTree</span> <span class="p">=</span> <span class="n">TreeNode</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;.</span><span class="n">CreateTree</span><span class="p">(</span><span class="n">schoolPeople</span><span class="p">);</span>
+
+            <span class="n">schoolTree</span><span class="p">.</span><span class="n">MarkAsSerializable</span><span class="p">();</span>
+
+            <span class="c1">// Examine this json string to see that properties particular to the objects above</span>
+            <span class="c1">// are preserved in the output (i.e. principal.SchoolBudget, teacher.Subject, and student.GPA)</span>
+            <span class="kt">var</span> <span class="n">json</span> <span class="p">=</span> <span class="n">Newtonsoft</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">JsonConvert</span><span class="p">.</span><span class="n">SerializeObject</span><span class="p">(</span><span class="n">schoolTree</span><span class="p">);</span>
+
+            <span class="c1">// Do this if you want to use the schoolTree object again</span>
+            <span class="n">schoolTree</span><span class="p">.</span><span class="n">UnMarkAsSerializable</span><span class="p">();</span>
+
+            <span class="c1">// De-Serialize the json into a rebuilt tree object using the base Person type</span>
+            <span class="kt">var</span> <span class="n">rebuiltTree</span> <span class="p">=</span> <span class="n">Newtonsoft</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">JsonConvert</span><span class="p">.</span><span class="n">DeserializeObject</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">json</span><span class="p">);</span>
+
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">Name</span><span class="p">);</span>                          <span class="c1">// Prints Principal</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GetType</span><span class="p">().</span><span class="n">Name</span><span class="p">);</span>              <span class="c1">// Prints Teacher</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GetType</span><span class="p">().</span><span class="n">Name</span><span class="p">);</span>  <span class="c1">// Prints Student</span>
+
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">SchoolBudget</span><span class="p">);</span>            <span class="c1">// Prints 1000000.00</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Subject</span><span class="p">);</span>     <span class="c1">// Prints Math</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">rebuiltTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GPA</span><span class="p">);</span>         <span class="c1">// Prints 3.75</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>So yu can see that if your tree is made up of different classes that derive from a base class, the tree
+model and the serialization / deserialization of the objects will still work.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="entity-framework.html" class="btn btn-neutral float-left" title="Using Entity Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Ricardo Pena.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

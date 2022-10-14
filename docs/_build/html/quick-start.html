@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Quick Start &mdash; KnightMoves.Pipelines 2.1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Properties" href="properties.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #0255a3" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/knight_move_solutions_hierarchical_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#complete-example">Complete Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KnightMoves.Pipelines</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Quick Start</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/quick-start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
+<div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p>Install the NuGet package</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Install-Package</span> <span class="n">KnightMoves</span><span class="p">.</span><span class="n">Hierarchical</span>
+</pre></div>
+</div>
+<p>It is basically just a single DLL. Here’s what you get.</p>
+<p>Suppose you have the following entity class in your application.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="c1">// And a bunch of other properties not included for brevity</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>All you have to do is inherit from <code class="docutils literal notranslate"><span class="pre">TreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> and your <code class="docutils literal notranslate"><span class="pre">Person</span></code> class becomes a fully
+capable node in a hierarchy.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Just inherit from TreeNode&lt;TId, T&gt;</span>
+<span class="c1">// TId is the type of the entity&#39;s Id field. If the name of your entity&#39;s identifier property</span>
+<span class="c1">// is &quot;Id&quot; then you should override the inherited &quot;Id&quot; property since it is virtual or remove it</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span> <span class="p">:</span> <span class="n">TreeNode</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="c1">// Person is now able to function as a tree node</span>
+    <span class="c1">// Id and ParentID are inherited properties or</span>
+    <span class="c1">// override it if you name it the same</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">string</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>One instance of your class is not useful as a tree. So to illustrate, we start with a collection
+of <code class="docutils literal notranslate"><span class="pre">Person</span></code> objects.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">List</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">persons</span> <span class="p">=</span> <span class="n">_personRepository</span><span class="p">.</span><span class="n">GetPersons</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The persons collection can contain the <code class="docutils literal notranslate"><span class="pre">Person</span></code> objects in any order. As long as they have an <code class="docutils literal notranslate"><span class="pre">Id</span></code> and
+a <code class="docutils literal notranslate"><span class="pre">ParentId</span></code> with a single <code class="docutils literal notranslate"><span class="pre">Person</span></code> object having a <code class="docutils literal notranslate"><span class="pre">null</span></code> <code class="docutils literal notranslate"><span class="pre">ParentId</span></code> representing the root node, you can
+create the tree like this.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">hierarchy</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">CreateTree</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">hierarchy</span></code> object is a single <code class="docutils literal notranslate"><span class="pre">ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> object that contains all other objects in its
+<code class="docutils literal notranslate"><span class="pre">Children</span></code> collection. Some of those children will have child objects in their <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection
+so on and so forth.</p>
+<p>That’s all you need at its most basic level.</p>
+<div class="section" id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">MyApp</span>
+<span class="p">{</span>
+    <span class="c1">// Just inherit from TreeNode&lt;TId, T&gt;</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span> <span class="p">:</span> <span class="n">TreeNode</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="c1">// Person is now able to function as a tree node</span>
+        <span class="c1">// Id and ParentId are inherited properties</span>
+
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyFamilyTreeApp</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">grandpa</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Dad&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Richard Jr.&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;UncleJohn&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Grandpa&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;John&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">cousin</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;CousinAnn&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;UncleJohn&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Ann&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">sister</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;SisterJane&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Dad&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;Jane&quot;</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;Me&quot;</span><span class="p">,</span> <span class="n">ParentId</span> <span class="p">=</span> <span class="s">&quot;Dad&quot;</span><span class="p">,</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;MeMyselfAndI&quot;</span> <span class="p">};</span>
+
+            <span class="kt">var</span> <span class="n">familyMembers</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;();</span>
+
+            <span class="c1">// Let&#39;s add them in random order just to prove a point</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">sister</span><span class="p">);</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">dad</span><span class="p">);</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">uncle</span><span class="p">);</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">grandpa</span><span class="p">);</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">me</span><span class="p">);</span>
+            <span class="n">familyMembers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">cousin</span><span class="p">);</span>
+
+            <span class="c1">// Not linked in tree structure</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">grandpa</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>      <span class="c1">// prints 0</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">dad</span><span class="p">.</span><span class="n">Parent</span> <span class="p">==</span> <span class="k">null</span><span class="p">);</span>          <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">me</span><span class="p">.</span><span class="n">Parent</span> <span class="p">==</span> <span class="k">null</span><span class="p">);</span>           <span class="c1">// prints true</span>
+
+            <span class="c1">// Creates tree structure automatically by using Id and ParentId of objects.</span>
+            <span class="c1">// Even though the family members were added in random order to the collection</span>
+            <span class="c1">// the tree is still created properly. It returns a single Person object. In this</span>
+            <span class="c1">// case the root Person object is grandpa and it will return it with all other</span>
+            <span class="c1">// child objects arranged under it in the hierarchy.</span>
+
+            <span class="kt">var</span> <span class="n">familyTree</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">CreateTree</span><span class="p">(</span><span class="n">familyMembers</span><span class="p">);</span>
+
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span> <span class="p">==</span> <span class="n">grandpa</span><span class="p">);</span>                           <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>                       <span class="c1">// prints 2</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">==</span> <span class="n">dad</span><span class="p">);</span>                   <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">==</span> <span class="n">uncle</span><span class="p">);</span>                 <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>           <span class="c1">// prints 2</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">==</span> <span class="n">sister</span><span class="p">);</span>    <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Children</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">==</span> <span class="n">me</span><span class="p">);</span>        <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>           <span class="c1">// prints 1</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">==</span> <span class="n">cousin</span><span class="p">);</span>    <span class="c1">// prints true</span>
+
+            <span class="c1">// Linked in tree now</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">grandpa</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>      <span class="c1">// prints 2</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">dad</span><span class="p">.</span><span class="n">Parent</span> <span class="p">==</span> <span class="n">grandpa</span><span class="p">);</span>       <span class="c1">// prints true</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">me</span><span class="p">.</span><span class="n">Parent</span> <span class="p">==</span> <span class="n">dad</span><span class="p">);</span>            <span class="c1">// prints true</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="properties.html" class="btn btn-neutral float-right" title="Properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Ricardo Pena.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
