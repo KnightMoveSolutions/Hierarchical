@@ -5,7 +5,7 @@
 *.nuspec
 
 # don't publish the logo
-*logo.png
+*knight_move_solutions_logo.png
 
 # User-specific files
 *.suo
