@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
-    <Version>2.1.1</Version>
+    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <Version>3.0.0</Version>
     <Description>A library that implements a Hierarchical object model for any Entity Class.</Description>
     <Company>Knight Move Solutions, Inc.</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -16,11 +16,11 @@
     <PackageProjectUrl>https://github.com/KnightMoveSolutions/Hierarchical</PackageProjectUrl>
     <PackageTags>hierarchy tree node</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Copyright>Copyright 2016</Copyright>
+    <Copyright>Copyright 2023</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Version 2.1.1 - Fixed bug where TypeName was null when saving to the database using EF Core</PackageReleaseNotes>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
-    <FileVersion>2.1.1.0</FileVersion>
+    <PackageReleaseNotes>Version 3.0.0 - Refactored ProcessTree and ProcessChildren methods. These are reaking changes.</PackageReleaseNotes>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
     <PackageIconUrl />
   </PropertyGroup>
 
@@ -30,14 +30,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="knight_move_solutions_logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>  
   
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" allowedVersions="(,14)" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" allowedVersions="(,14)" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.HashFunction.Core" Version="2.0.0" />
     <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />

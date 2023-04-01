@@ -129,6 +129,5 @@ derived classes for the tree nodes.
         }
     }
 
-So yu can see that if your tree is made up of different classes that derive from a base class, the tree 
+So you can see that if your tree is made up of different classes that derive from a base class, the tree 
 model and the serialization / deserialization of the objects will still work.
-

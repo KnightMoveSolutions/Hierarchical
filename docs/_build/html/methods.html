@@ -92,6 +92,9 @@
 <li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#contains">Contains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deepcopy">DeepCopy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filter">Filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#findbyid">FindById</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#isancestor">IsAncestor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#isdescendent">IsDescendent</a></li>
@@ -103,9 +106,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#processchildren">ProcessChildren</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processtree">ProcessTree</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processancestors">ProcessAncestors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tolist">ToList</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sortable-tree-path.html">SortableTreePath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entity-framework.html">Using Entity Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json-serialization.html">JSON Serialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
 
             
@@ -176,12 +185,39 @@
   <p><a class="reference external" href="https://docs.knightmovesolutions.com">Documentation Home</a></p>
 <div class="section" id="methods">
 <h1>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="findbyid">
-<h2>FindById<a class="headerlink" href="#findbyid" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">FindById</span><span class="p">(</span><span class="n">TId</span> <span class="n">nodeId</span><span class="p">)</span>
+<div class="section" id="contains">
+<h2>Contains<a class="headerlink" href="#contains" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">Contains</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">condition</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Finds and returns the <code class="docutils literal notranslate"><span class="pre">ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> object where the <code class="docutils literal notranslate"><span class="pre">Id</span></code> value is equal to the <code class="docutils literal notranslate"><span class="pre">nodeId</span></code>
+<p>Returns true if the tree contains AT LEAST ONE node that satisfied the condition provided
+by the lambda function.</p>
+</div>
+<div class="section" id="deepcopy">
+<h2>DeepCopy<a class="headerlink" href="#deepcopy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="nf">DeepCopy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Makes a deep copy (clone) of the tree. If this method is called on a node that is in the middle
+of an existing tree, then a copy of the branch will be returned where the branch node becomes
+the root object. It works like an unmount in a Linux file system except that the unmounted branch
+is returned.</p>
+</div>
+<div class="section" id="filter">
+<h2>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="nf">Filter</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">filter</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Returns a pruned tree where only the nodes that match the filter are returned with their complete ancestor
+paths up to the root. Nodes that are not matched are not included. If a branch of nodes does not have a
+matching node in it, then the entire branch of nodes will not be excluded from the returned tree.</p>
+</div>
+<div class="section" id="findbyid">
+<h2>FindById<a class="headerlink" href="#findbyid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="nf">FindById</span><span class="p">(</span><span class="n">TId</span> <span class="n">nodeId</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finds and returns the <code class="docutils literal notranslate"><span class="pre">T</span></code> object where the <code class="docutils literal notranslate"><span class="pre">Id</span></code> value is equal to the <code class="docutils literal notranslate"><span class="pre">nodeId</span></code>
 value provided as an argument. It will search the tree recursively until it is found. <code class="docutils literal notranslate"><span class="pre">TId</span></code> is
 the type of the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property.</p>
 </div>
@@ -250,77 +286,72 @@ under its current parent.</p>
 </div>
 <div class="section" id="processchildren">
 <h2>ProcessChildren<a class="headerlink" href="#processchildren" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree,
-where the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>
-method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for <strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code>
-if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes. The method does not include
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where
+the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The method does not include
 this node when processing the tree.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
-<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The
-<code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
-<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.
-The method does not include this node when processing the tree.</p>
+<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The method
+does not include this node when processing the tree.</p>
 </div>
 <div class="section" id="processtree">
 <h2>ProcessTree<a class="headerlink" href="#processtree" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree,
-where the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The <code class="docutils literal notranslate"><span class="pre">ProcessTree</span></code>
-method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for <strong>all</strong> nodes and
-<code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes. Unlike
+where the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. Unlike
 <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessTree</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
-<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The
-<code class="docutils literal notranslate"><span class="pre">ProcessTree</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
-<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.
-Unlike <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
+<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. Unlike
+<code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
 </div>
 <div class="section" id="processancestors">
 <h2>ProcessAncestors<a class="headerlink" href="#processancestors" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
     <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
-    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
+    <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
     <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> starting with <code class="docutils literal notranslate"><span class="pre">treeNode</span></code>
-and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
-<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
-    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
-    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> starting with <code class="docutils literal notranslate"><span class="pre">startNode</span></code>
+and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
     <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with <code class="docutils literal notranslate"><span class="pre">treeNode</span></code>
-and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
-<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
-    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
-    <span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">treeNode</span><span class="p">,</span>
-    <span class="n">Func</span><span class="p">&lt;</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">stopFunction</span>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with <code class="docutils literal notranslate"><span class="pre">startNode</span></code>
+and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
+    <span class="n">Func</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">stopFunction</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with
-<code class="docutils literal notranslate"><span class="pre">treeNode</span></code> and stopping at the node that causes the stopFunction to return true.
-The <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> method will return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> for
-<strong>all</strong> nodes and <code class="docutils literal notranslate"><span class="pre">false</span></code> if the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> returns <code class="docutils literal notranslate"><span class="pre">false</span></code> for <strong>any</strong> of the nodes.</p>
+<code class="docutils literal notranslate"><span class="pre">startNode</span></code> and stopping at the node that causes the stopFunction to return true.</p>
+</div>
+<div class="section" id="tolist">
+<h2>ToList<a class="headerlink" href="#tolist" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">List</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">ToList</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Returns all nodes in the tree as a flattened collection of type <code class="docutils literal notranslate"><span class="pre">List&lt;T&gt;</span></code> sorted by the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code>
+property. If this method is called on a branch then it will return only the nodes in that branch where the top
+of the branch is the root and will be the first element in the list.</p>
 </div>
 </div>
 
@@ -338,7 +369,7 @@ The <code class="docutils literal notranslate"><span class="pre">ProcessAncestor
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2022, Ricardo Pena.
+        &#169; Copyright 2022, Knight Move Solutions, Inc.
 
     </p>
   </div>

@@ -13,7 +13,6 @@
         /// object and uses it to perform desired process 
         /// </summary>
         /// <param name="node">The <see cref="ITreeNode{TId, T}"/> object that the method depends on for its process</param>
-        /// <returns>True if execution was successful, false if not.</returns>
-        bool ProcessNode(ITreeNode<TId, T> node);
+        void ProcessNode(T node);
     }
 }

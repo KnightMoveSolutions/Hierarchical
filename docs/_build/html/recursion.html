@@ -38,6 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using Entity Framework" href="entity-framework.html" />
     <link rel="prev" title="SortableTreePath" href="sortable-tree-path.html" /> 
 </head>
 
@@ -92,7 +93,16 @@
 <li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sortable-tree-path.html">SortableTreePath</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Recursion</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Recursion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-a-lambda-function">Using a Lambda Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-a-class">Using a Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-vs-lambda">Class vs. Lambda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="entity-framework.html">Using Entity Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json-serialization.html">JSON Serialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
 
             
@@ -164,8 +174,58 @@
 <div class="section" id="recursion">
 <h1>Recursion<a class="headerlink" href="#recursion" title="Permalink to this headline">¶</a></h1>
 <p>You can process the nodes of your tree of objects recursively without having to code a recursive function.</p>
+<div class="section" id="using-a-lambda-function">
+<h2>Using a Lambda Function<a class="headerlink" href="#using-a-lambda-function" title="Permalink to this headline">¶</a></h2>
+<p>You can easily recurse the tree by using a lambda function.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessTree</span><span class="p">(</span><span class="n">node</span> <span class="p">=&gt;</span> <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>You can also recursively process ancestor nodes up the tree as easy as you can process children. Just use
+one of the similar <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> methods.</p>
+<p>The example below uses the sample hierarchy above where the <code class="docutils literal notranslate"><span class="pre">me</span></code> <code class="docutils literal notranslate"><span class="pre">Person</span></code> object is the third level down
+(i.e. grandchild):</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+
+<span class="c1">// Starts with the `me` object and processes up to the</span>
+<span class="c1">// root (grandpa object) because maxLevel == 1 by default</span>
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span> <span class="n">node</span> <span class="p">=&gt;</span> <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">),</span> <span class="n">me</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>You can cause it to stop recursing up the ancestor line early by setting the maxLevel value</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+
+<span class="c1">// Starts with the `me` object and processes up to the</span>
+<span class="c1">// 2nd level (dad object) because maxLevel == 2</span>
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span> <span class="n">node</span> <span class="p">=&gt;</span> <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">),</span> <span class="n">me</span><span class="p">,</span> <span class="m">2</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>If the logic to stop it from going up the ancestor tree early is more complicated, then you can
+provide a stopFunction with more robust logic to determine if it should stop climbing the tree.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+
+<span class="c1">// Starts with the `me` object and processes up to the</span>
+<span class="c1">// level that satisfies the stopFunction</span>
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span>
+<span class="p">(</span>
+    <span class="n">node</span> <span class="p">=&gt;</span> <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">),</span>
+    <span class="n">me</span><span class="p">,</span>
+    <span class="n">node</span> <span class="p">=&gt;</span> <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="s">&quot;Dad&quot;</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>The stopping logic first processes the current node and then evaluates whether it should stop or not.
+If true, it will return without climbing to the next level. Keep in mind that it does that only after
+executing your <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code> or your <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> lambda function against the
+current node first.</p>
+<p>So you can see that with one quick function in a method call you can test an entire tree for something
+whether you’re going down recursively to all children/branches or up the ancestor line of the tree.</p>
+</div>
+<div class="section" id="using-a-class">
+<h2>Using a Class<a class="headerlink" href="#using-a-class" title="Permalink to this headline">¶</a></h2>
 <p>First you would create the code that processes the nodes of the tree by implementing <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>,
-which requires the implementation of one method called <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">ProcessNode(ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span> <span class="pre">node)</span></code>.</p>
+which requires the implementation of one method called <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">ProcessNode(T</span> <span class="pre">node)</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyTreeNodeProcessor</span> <span class="p">:</span> <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
@@ -176,10 +236,9 @@ which requires the implementation of one method called <code class="docutils lit
         <span class="n">TestOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="kt">bool</span> <span class="nf">ProcessNode</span><span class="p">(</span><span class="n">ITreeNode</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span> <span class="n">node</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ProcessNode</span><span class="p">(</span><span class="n">Person</span> <span class="n">node</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">TestOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -192,7 +251,7 @@ node in the tree because we start at the root node.</p>
 </div>
 <p>However, if you want to process only a branch, then you can pass the tree node processor to the root of
 that branch only. If you want to exclude the root node (or root of branch node) and process starting with
-its children, then you can use the <code class="docutils literal notranslate"><span class="pre">ProcessChildren(ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span> <span class="pre">node)</span></code> method instead.</p>
+its children, then you can use the <code class="docutils literal notranslate"><span class="pre">ProcessChildren(ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span> <span class="pre">nodeProcessor)</span></code> method instead.</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">myProcessor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MyTreeNodeProcessor</span><span class="p">();</span>
 <span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessChildren</span><span class="p">(</span><span class="n">myProcessor</span><span class="p">);</span>
 </pre></div>
@@ -201,104 +260,26 @@ its children, then you can use the <code class="docutils literal notranslate"><s
 processor could act on the node or not depending on the logic. If your entity is a View Model, you can set
 property values to drive user interface changes such as setting <code class="docutils literal notranslate"><span class="pre">IsHighlighted</span> <span class="pre">=</span> <span class="pre">true</span></code> if the object
 matches a search string.</p>
-<p>You can make this shorter by using a lambda.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
-
-<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessTree</span><span class="p">(</span><span class="n">node</span> <span class="p">=&gt;</span> <span class="p">{</span>
-    <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-<span class="p">});</span>
-</pre></div>
 </div>
-<p>The return value of the <code class="docutils literal notranslate"><span class="pre">ProcessTree</span></code> method is the logical AND result of all the resulting processing of
-the nodes. To illustrate consider the following example:</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
-
-<span class="kt">bool</span> <span class="n">okay</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessTree</span><span class="p">(</span><span class="n">node</span> <span class="p">=&gt;</span> <span class="p">{</span>
-
-    <span class="kt">bool</span> <span class="n">result</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
-
-    <span class="c1">// Test the node for something</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">IsManager</span> <span class="p">==</span> <span class="k">false</span><span class="p">)</span>
-        <span class="n">result</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
-
-    <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-<span class="p">});</span>
-
-<span class="k">if</span><span class="p">(</span><span class="n">okay</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">// All nodes processed returned true</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="c1">// At least one of the nodes that were processed failed</span>
-    <span class="c1">// whatever condition you coded in the function</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="class-vs-lambda">
+<h2>Class vs. Lambda<a class="headerlink" href="#class-vs-lambda" title="Permalink to this headline">¶</a></h2>
+<p>Since the most common practice is to use a lambda function it begs the question, why go through the trouble of
+creating a class to do the same thing? Wouldn’t that be a lot of work when you can just shortcut it with a
+lambda function to do the same thing?</p>
+<p>It depends.</p>
+<p>The feature to be able to use a class was provided for cases when the logic necessary to process the nodes in
+the tree is very elaborate and may require injecting dependencies to get that logic to work. It may be a better
+design to encapsulate that in a class whose responsibility is to deal with that more complex logic.</p>
+<p>Also, using a class gives you the option to use a Strategy Pattern by coding to the interface of the node
+processing class. When writing a lambda function, you cannot swap out that implementation neither through some
+configuration nor at runtime by selecting from a number of available implementing classes.</p>
+<p>In general, if the logic is straight forward and short, which is probably the most common use case, then go with
+the lambda function. If the logic is elaborate, requires the use of dependencies sepecific to the logic that
+processes the nodes, and/or you want to be able to swap processors using a Strategy Pattern, then go with the
+class.</p>
+<p>If you want to swap functions using functional programming techniques instead of the object-oriented practice of
+using a Strategy Pattern then go ahead, do your thing, and avoid classes altogether. Choice is yours.</p>
 </div>
-<p>You can also process ancestor nodes up the tree as easy as you can process children. Just use one of the
-similar <code class="docutils literal notranslate"><span class="pre">ProcessAncestors</span></code> methods.</p>
-<p>The example below uses the sample hierarchy above where the me <code class="docutils literal notranslate"><span class="pre">Person</span></code> object is the third level down
-(i.e. grandchild):</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
-
-<span class="c1">// Starts with the `me` object and processes up to the</span>
-<span class="c1">// root (grandpa object) because maxLevel == 1 by default</span>
-<span class="kt">bool</span> <span class="n">okay</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-    <span class="p">},</span>
-    <span class="n">me</span>
-<span class="p">);</span>
-</pre></div>
-</div>
-<p>You can cause it to stop recursing up the ancestor line early by setting the maxLevel value</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
-
-<span class="c1">// Starts with the `me` object and processes up to the</span>
-<span class="c1">// 2nd level (dad object) because maxLevel == 2</span>
-<span class="kt">bool</span> <span class="n">okay</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-    <span class="p">},</span>
-    <span class="n">me</span><span class="p">,</span>
-    <span class="m">2</span>
-<span class="p">);</span>
-</pre></div>
-</div>
-<p>If the logic to stop it from going up the ancestor tree early is more complicated, then you can
-provide a stopFunction with more robust logic to determine if it should stop climbing the tree.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">IList</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">testOutput</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
-
-<span class="c1">// Starts with the `me` object and processes up to the</span>
-<span class="c1">// level that satisfies the stopFunction</span>
-<span class="kt">bool</span> <span class="n">okay</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="n">testOutput</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">+</span> <span class="s">&quot; Processed&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-    <span class="p">},</span>
-    <span class="n">me</span><span class="p">,</span>
-    <span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="p">=&gt;</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="s">&quot;Dad&quot;</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">);</span>
-</pre></div>
-</div>
-<p>The stopping logic first processes the current node and then evaluates whether it should stop or not.
-If true, it will return without climbing to the next level. Keep in mind that it does that only after
-executing your <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code> or your <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> lambda function against the
-current node first.</p>
-<p>So you can see that with one quick function in a method call you can test an entire tree for something
-whether you’re going down recursively to all children/branches or up the ancestor line of the tree.</p>
-<p>There is no equivalent for a logical OR processing of the nodes, where it would return true if ANY
-of the tests in the condition resulted in true. However, you can code this yourself as part of your
-function. Just keep OR’ing some boolean that is outside of the function. This sets you up to do all
-kinds of neat things with trees easily.</p>
 </div>
 
 
@@ -307,6 +288,7 @@ kinds of neat things with trees easily.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="entity-framework.html" class="btn btn-neutral float-right" title="Using Entity Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="sortable-tree-path.html" class="btn btn-neutral float-left" title="SortableTreePath" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
@@ -314,7 +296,7 @@ kinds of neat things with trees easily.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2022, Ricardo Pena.
+        &#169; Copyright 2022, Knight Move Solutions, Inc.
 
     </p>
   </div>

@@ -264,10 +264,9 @@ namespace KnightMoves.Hierarchical.UnitTests
                 _testOutput = new List<string>();
             }
 
-            public bool ProcessNode(ITreeNode<string, TreeNodeWrapper<string, Person>> node)
+            public void ProcessNode(TreeNodeWrapper<string, Person> node)
             {
                 _testOutput.Add(node.Id + " Processed");
-                return true;
             }
 
             public bool IsProcessed(ITreeNode<string, TreeNodeWrapper<string, Person>> node)
@@ -284,10 +283,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessChildren(delegate (ITreeNode<string, TreeNodeWrapper<string, Person>> t)
+            _grandpa.ProcessChildren(delegate (TreeNodeWrapper<string, Person> t)
             {
                 testOutput.Add(t.Id + " Processed");
-                return true;
             });
 
             // ASSERT
@@ -305,10 +303,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessTree(delegate (ITreeNode<string, TreeNodeWrapper<string, Person>> t)
+            _grandpa.ProcessTree(delegate (TreeNodeWrapper<string, Person> t)
             {
                 testOutput.Add(t.Id + " Processed");
-                return true;
             });
 
             // ASSERT
