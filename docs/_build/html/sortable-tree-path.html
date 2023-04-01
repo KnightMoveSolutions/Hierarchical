@@ -38,6 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Recursion" href="recursion.html" />
     <link rel="prev" title="Methods" href="methods.html" /> 
 </head>
 
@@ -92,6 +93,11 @@
 <li class="toctree-l1"><a class="reference internal" href="properties.html">Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">SortableTreePath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entity-framework.html">Using Entity Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json-serialization.html">JSON Serialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
 
             
@@ -188,7 +194,7 @@ It allows for the use of very simple SQL queries to get nodes or segments of the
 <p>Using the dataset above you can do the following.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Keep in mind that if you have multiple trees in the table, you will have to add <code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">RootId</span> <span class="pre">=</span> <span class="pre">'Something'</span></code>
+<p>Keep in mind that if you have multiple trees in the table, you will have to add <code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">RootId</span> <span class="pre">=</span> <span class="pre">'Something'</span> <span class="pre">||</span> <span class="pre">Id</span> <span class="pre">=</span> <span class="pre">'Something'</span></code>
 to avoid mixing nodes from different trees. Your data access model would have to persist the <code class="docutils literal notranslate"><span class="pre">RootId</span></code>
 from the entity in order to accommodate this.</p>
 </div>
@@ -199,9 +205,17 @@ from the entity in order to accommodate this.</p>
 <p>Result:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name
 -------------
+RootNode
+  ItemA
+    ItemA1
+    ItemA2
   ItemB
     ItemB1
-    ItemBA
+    ItemB1A
+  ItemC
+  ItemD
+    ItemD1
+    ItemD2
 </pre></div>
 </div>
 <p>Get children of ItemD:</p>
@@ -243,6 +257,7 @@ RootNode
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="recursion.html" class="btn btn-neutral float-right" title="Recursion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="methods.html" class="btn btn-neutral float-left" title="Methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
@@ -250,7 +265,7 @@ RootNode
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2022, Ricardo Pena.
+        &#169; Copyright 2022, Knight Move Solutions, Inc.
 
     </p>
   </div>

@@ -20,3 +20,5 @@ Welcome to KnightMoves.Pipelines documentation!
    entity-framework
    json-serialization
    faqs
+   release-notes
+   

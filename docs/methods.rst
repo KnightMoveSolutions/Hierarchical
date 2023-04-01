@@ -4,13 +4,43 @@
 Methods
 =======
 
+Contains
+--------
+.. code-block:: csharp 
+
+    bool Contains(Func<T, bool> condition)
+    
+Returns true if the tree contains AT LEAST ONE node that satisfied the condition provided 
+by the lambda function.
+
+DeepCopy
+--------
+.. code-block:: csharp 
+
+    T DeepCopy()
+
+Makes a deep copy (clone) of the tree. If this method is called on a node that is in the middle 
+of an existing tree, then a copy of the branch will be returned where the branch node becomes 
+the root object. It works like an unmount in a Linux file system except that the unmounted branch 
+is returned.
+
+Filter
+------
+.. code-block:: csharp 
+
+    T Filter(Func<T, bool> filter)
+
+Returns a pruned tree where only the nodes that match the filter are returned with their complete ancestor 
+paths up to the root. Nodes that are not matched are not included. If a branch of nodes does not have a
+matching node in it, then the entire branch of nodes will not be excluded from the returned tree.
+
 FindById
 --------
 .. code-block:: csharp
 
-    ITreeNode<TId, T> FindById(TId nodeId)
+    T FindById(TId nodeId)
 
-Finds and returns the ``ITreeNode<TId, T>`` object where the ``Id`` value is equal to the ``nodeId`` 
+Finds and returns the ``T`` object where the ``Id`` value is equal to the ``nodeId`` 
 value provided as an argument. It will search the tree recursively until it is found. ``TId`` is 
 the type of the ``Id`` property. 
 
@@ -89,85 +119,82 @@ ProcessChildren
 
 .. code-block:: csharp
 
-    bool ProcessChildren(Func<ITreeNode<TId, T>, bool> nodeProcessor)
+    void ProcessChildren(Action<T> nodeProcessor)
 
-Passes each child of this node to the ``nodeProcessor`` recursively down the tree,
-where the ``nodeProcessor`` is a lambda function used as the handler. The ``ProcessChildren``
-method will return ``true`` if the ``nodeProcessor`` returns ``true`` for **all** nodes and ``false`` 
-if the ``nodeProcessor`` returns ``false`` for **any** of the nodes. The method does not include 
+Passes each child of this node to the ``nodeProcessor`` recursively down the tree, where 
+the ``nodeProcessor`` is a lambda function used as the handler. The method does not include 
 this node when processing the tree.
 
 .. code-block:: csharp 
 
-    bool ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor)
+    void ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor)
 
 Passes each child of this node to the ``nodeProcessor`` recursively down the tree, where the 
-``nodeProcessor`` is a handler object that implements ``ITreeNodeProcessor<TId, T>``. The 
-``ProcessChildren`` method will return ``true`` if the ``nodeProcessor`` returns ``true`` for 
-**all** nodes and ``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes. 
-The method does not include this node when processing the tree.
+``nodeProcessor`` is a handler object that implements ``ITreeNodeProcessor<TId, T>``. The method 
+does not include this node when processing the tree.
 
 ProcessTree
 -----------
 
 .. code-block:: csharp
 
-    bool ProcessTree(Func<ITreeNode<TId, T>, bool> nodeProcessor)
+    void ProcessTree(Action<T> nodeProcessor)
 
 Passes each child of this node to the ``nodeProcessor`` recursively down the tree,
-where the ``nodeProcessor`` is a lambda function used as the handler. The ``ProcessTree``
-method will return ``true`` if the ``nodeProcessor`` returns ``true`` for **all** nodes and 
-``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes. Unlike 
+where the ``nodeProcessor`` is a lambda function used as the handler. Unlike 
 ``ProcessChildren``, this method will start with (include) this node.
 
 .. code-block:: csharp
 
-    bool ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor)
+    void ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor)
 
 Passes each child of this node to the ``nodeProcessor`` recursively down the tree, where the 
-``nodeProcessor`` is a handler object that implements ``ITreeNodeProcessor<TId, T>``. The 
-``ProcessTree`` method will return ``true`` if the ``nodeProcessor`` returns ``true`` for 
-**all** nodes and ``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes. 
-Unlike ``ProcessChildren``, this method will start with (include) this node.
+``nodeProcessor`` is a handler object that implements ``ITreeNodeProcessor<TId, T>``. Unlike 
+``ProcessChildren``, this method will start with (include) this node.
 
 ProcessAncestors
 ----------------
 
 .. code-block:: csharp 
 
-    bool ProcessAncestors(
+    void ProcessAncestors(
         ITreeNodeProcessor<TId, T> nodeProcessor, 
-        ITreeNode<TId, T> treeNode, 
+        T startNode, 
         int maxLevel = 1
     )
 
-Passes each node up the tree of ancestors to the ``nodeProcessor`` starting with ``treeNode`` 
+Passes each node up the tree of ancestors to the ``nodeProcessor`` starting with ``startNode`` 
 and stopping at the node where ``DepthFromRoot`` = 1 (i.e. the top) or the specified ``maxLevel``.
-The ``ProcessAncestors`` method will return ``true`` if the ``nodeProcessor`` returns ``true`` for 
-**all** nodes and ``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes. 
 
 .. code-block:: csharp
 
-    bool ProcessAncestors(
-        Func<ITreeNode<TId, T>, bool> nodeProcessor, 
-        ITreeNode<TId, T> treeNode, 
+    void ProcessAncestors(
+        Action<T> nodeProcessor, 
+        T startNode, 
         int maxLevel = 1
     )
 
-Passes each node up the tree of ancestors to the ``nodeProcessor`` function starting with ``treeNode`` 
+Passes each node up the tree of ancestors to the ``nodeProcessor`` function starting with ``startNode`` 
 and stopping at the node where ``DepthFromRoot`` = 1 (i.e. the top) or the specified ``maxLevel``.
-The ``ProcessAncestors`` method will return ``true`` if the ``nodeProcessor`` returns ``true`` for 
-**all** nodes and ``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes.
 
 .. code-block:: csharp 
 
-    bool ProcessAncestors(
-        Func<ITreeNode<TId, T>, bool> nodeProcessor, 
-        ITreeNode<TId, T> treeNode, 
-        Func<ITreeNode<TId, T>, bool> stopFunction
+    void ProcessAncestors(
+        Action<T> nodeProcessor, 
+        T startNode, 
+        Func<T, bool> stopFunction
     )
 
 Passes each node up the tree of ancestors to the ``nodeProcessor`` function starting with 
-``treeNode`` and stopping at the node that causes the stopFunction to return true.
-The ``ProcessAncestors`` method will return ``true`` if the ``nodeProcessor`` returns ``true`` for 
-**all** nodes and ``false`` if the ``nodeProcessor`` returns ``false`` for **any** of the nodes.
+``startNode`` and stopping at the node that causes the stopFunction to return true.
+
+ToList
+------
+
+.. code-block:: csharp 
+
+    List<T> ToList()
+
+Returns all nodes in the tree as a flattened collection of type ``List<T>`` sorted by the ``SortableTreePath`` 
+property. If this method is called on a branch then it will return only the nodes in that branch where the top 
+of the branch is the root and will be the first element in the list.

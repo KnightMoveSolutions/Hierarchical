@@ -19,7 +19,7 @@ namespace KnightMoves.Hierarchical
     /// <typeparam name="TId">The type of the <see cref="Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
     [JsonConverter(typeof(TreeNodeJsonConverter))]
-    public class TreeNode<TId, T> : ITreeNode<TId, T> where T : ITreeNode<TId, T> 
+    public class TreeNode<TId, T> : ITreeNode<TId, T> where T : ITreeNode<TId, T>
     {
         private const int MIN_DEPTH_VALUE = 1;
 
@@ -57,7 +57,7 @@ namespace KnightMoves.Hierarchical
         /// An <see cref="T"/> object representing the root node from the <paramref name="treeNodeCollection"/> argument. 
         /// All other objects will be added as <see cref="Children"/> of their respective <see cref="Parent"/> objects in the object graph.
         /// </returns>
-        public static T CreateTree(List<T> treeNodeCollection) 
+        public static T CreateTree(List<T> treeNodeCollection)
         {
             var rootNode = treeNodeCollection.Find(n => {
                 return
@@ -75,7 +75,81 @@ namespace KnightMoves.Hierarchical
 
             AddChildren(treeNodeCollection, rootNode);
 
-            return (T) rootNode;
+            return (T)rootNode;
+        }
+
+        /// <summary>
+        /// Returns true if the tree contains a node that satisfied the condition 
+        /// provided by the lambda function.
+        /// </summary>
+        /// <param name="condition">A boolean function that tests each node for the given condition</param>
+        /// <returns>True if ANY node in the tree satisfies the condition</returns>
+        public bool Contains(Func<T, bool> condition)
+        {
+            var doesContain = false;
+
+            ProcessTree(n => 
+                doesContain = doesContain || condition(n)
+            );
+
+            return doesContain;
+        }
+
+        /// <summary>
+        /// Makes a deep copy (clone) of the tree. If this method is called on a node 
+        /// that is in the middle of an existing tree, then a copy of the branch will 
+        /// be returned where the branch node becomes the root object. It works like an 
+        /// unmount in a Linux file system except that the unmounted branch is returned.
+        /// </summary>
+        /// <returns>A deep copy clone of this node</returns>
+        public T DeepCopy()
+        {
+            MarkAsSerializable();
+
+            var json = JsonConvert.SerializeObject(this);
+
+            var copy = JsonConvert.DeserializeObject<T>(json);
+
+            UnMarkAsSerializable();
+
+            copy.RootId = default(TId);
+            copy.ParentId = default(TId);
+
+            return copy;
+        }
+
+        /// <summary>
+        /// Returns a new tree where only the nodes that match the filter are returned 
+        /// with their complete ancestor paths up to the root. Nodes that are not matched
+        /// are not included. If a path of nodes does not have a matching node in it then
+        /// the entire path of nodes will not be included.
+        /// </summary>
+        /// <param name="filter">A matching function that returns a boolean</param>
+        /// <returns>A pruned tree with nodes that match the filter</returns>
+        public T Filter(Func<T, bool> filter)
+        {
+            var matches = new List<T>();
+
+            var copy = DeepCopy();
+
+            copy = (T) (object) copy.Root ?? copy;
+
+            ProcessTree(n =>
+            {
+                if (filter(n))
+                    ProcessAncestors(a => { if (!matches.Contains(a)) matches.Add(a); }, n );
+            });
+
+            matches.ForEach(n =>
+            {
+                n.Root = null;
+                n.Parent = null;
+                n.Children.Clear();
+            });
+
+            var filteredTree = CreateTree(matches);
+
+            return filteredTree;
         }
 
         /// <summary>
@@ -84,17 +158,16 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         /// <param name="nodeId">The <see cref="Id"/> of the node to search for.</param>
         /// <returns>The <see cref="ITreeNode{TId, T}"/> that matches the search ID or null if it is not found</returns>
-        public ITreeNode<TId, T> FindById(TId nodeId)
+        public T FindById(TId nodeId)
         {
-            ITreeNode<TId, T> targetNode = null;
+            T targetNode = default;
 
-            ProcessTree(delegate(ITreeNode<TId, T> t)
+            ProcessTree(delegate(T t)
             {
                 if (t.Id.ToString() == nodeId.ToString())
                 {
                     targetNode = t;
                 }
-                return true;
             });
 
             return targetNode;
@@ -196,17 +269,13 @@ namespace KnightMoves.Hierarchical
         /// tree. It does not include this node.
         /// </summary>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
-        /// <returns>True if every execution of the <see cref="ITreeNodeProcessor{TId, T}.ProcessNode(ITreeNode{TId, T})"/> method returns true, false if at least one of the executions returns false.</returns>
-        public bool ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor)
+        public void ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor)
         {
-            bool flag = true;
-
-            foreach (ITreeNode<TId, T> local in Children)
+            foreach (T local in Children)
             {
-                flag = (flag & nodeProcessor.ProcessNode(local)) & local.ProcessChildren(nodeProcessor);
+                nodeProcessor.ProcessNode(local);
+                local.ProcessChildren(nodeProcessor);
             }
-
-            return flag;
         }
 
         /// <summary>
@@ -214,17 +283,13 @@ namespace KnightMoves.Hierarchical
         /// tree. It does not include this node.
         /// </summary>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
-        /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        public bool ProcessChildren(Func<ITreeNode<TId, T>, bool> nodeProcessor)
+        public void ProcessChildren(Action<T> nodeProcessor)
         {
-            bool flag = true;
-
             foreach (T local in Children)
             {
-                flag = (flag & nodeProcessor(local)) & local.ProcessChildren(nodeProcessor);
+                nodeProcessor(local);
+                local.ProcessChildren(nodeProcessor);
             }
-
-            return flag;
         }
 
         /// <summary>
@@ -232,10 +297,11 @@ namespace KnightMoves.Hierarchical
         /// tree. Unlike <see cref="ProcessChildren(ITreeNodeProcessor{TId, T})"/>, this method will start with (include) this node.
         /// </summary>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
-        /// <returns>True if every execution of the <see cref="ITreeNodeProcessor{TId, T}.ProcessNode(ITreeNode{TId, T})"/> method returns true, false if at least one of the executions returns false.</returns>
-        public bool ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor)
+        public void ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor)
         {
-            return nodeProcessor.ProcessNode(this) & ProcessChildren(nodeProcessor);
+            var node = (T) (object) this;
+            nodeProcessor.ProcessNode(node);
+            ProcessChildren(nodeProcessor);
         }
 
         /// <summary>
@@ -243,73 +309,77 @@ namespace KnightMoves.Hierarchical
         /// tree. Unlike <see cref="ProcessChildren(Func{ITreeNode{TId, T}, bool})"/>, this method will start with (include) this node.
         /// </summary>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
-        /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        public bool ProcessTree(Func<ITreeNode<TId, T>, bool> nodeProcessor)
+        public void ProcessTree(Action<T> nodeProcessor)
         {
-            return nodeProcessor(this) & ProcessChildren(nodeProcessor);
+            nodeProcessor((T)(object)this);
+            ProcessChildren(nodeProcessor);
         }
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
         /// <param name="nodeProcessor">The <see cref="ITreeNodeProcessor{TId, T}"/> object used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel">(Optional) If defined will be used to check the <see cref="DepthFromRoot"/> property and will stop when it gets to that level</param>
-        /// <returns></returns>
-        public bool ProcessAncestors(ITreeNodeProcessor<TId, T> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = MIN_DEPTH_VALUE)
+        public void ProcessAncestors(ITreeNodeProcessor<TId, T> nodeProcessor, T startNode, int maxLevel = MIN_DEPTH_VALUE)
         {
-            bool flag = true;
+            // Process this node
+            nodeProcessor.ProcessNode(startNode);
 
-            flag = flag & 
-                   nodeProcessor.ProcessNode(treeNode) &                        // Process this node
-                   treeNode.Parent == null ||                                   // There is no parent so evaluate to true
-                   treeNode.DepthFromRoot == maxLevel ||                        // Instructed to stop here so evalutate to true
-                   ProcessAncestors(nodeProcessor, treeNode.Parent, maxLevel);  // Go up the tree and return the result
- 
-            return flag;
+            // Are we done?
+            if (startNode.Parent == null || startNode.DepthFromRoot == maxLevel)
+                return;
+
+            // Go up the tree 
+            var parent = (T) (object) startNode.Parent;
+
+            ProcessAncestors(nodeProcessor, parent, maxLevel);
         }
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel"></param>
-        /// <returns></returns>
-        public bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = MIN_DEPTH_VALUE)
+        public void ProcessAncestors(Action<T> nodeProcessor, T startNode, int maxLevel = MIN_DEPTH_VALUE)
         {
-            bool flag = true;
+            // Process this node
+            nodeProcessor(startNode);
 
-            flag = flag &
-                   nodeProcessor(treeNode) &                                    // Process this node
-                   treeNode.Parent == null ||                                   // There is no parent so evaluate to true
-                   treeNode.DepthFromRoot == maxLevel ||                        // Instructed to stop here so evalutate to true
-                   ProcessAncestors(nodeProcessor, treeNode.Parent, maxLevel);  // Go up the tree and return the result
+            // Are we done?
+            if (startNode.Parent == null || startNode.DepthFromRoot == maxLevel)
+                return;
 
-            return flag;
+            // Go up the tree and return the result
+            var parent = (T) (object) startNode.Parent;
+
+            ProcessAncestors(nodeProcessor, parent, maxLevel);  
         }
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by the <paramref name="stopFunction"/>
         /// </summary>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="stopFunction">The function used to process the nodes up the ancestor tree to determine if it should stop recursing</param>
         /// <returns></returns>
-        public bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, Func<ITreeNode<TId, T>, bool> stopFunction)
+        public void ProcessAncestors(Action<T> nodeProcessor, T startNode, Func<T, bool> stopFunction)
         {
-            bool flag = true;
+            // Process this node
+            nodeProcessor(startNode);
 
-            flag = flag &
-                   nodeProcessor(treeNode) &                                        // Process this node
-                   treeNode.Parent == null ||                                       // There is no parent so evaluate to true
-                   stopFunction(treeNode) ||                                        // Instructed to stop here if it returns true
-                   ProcessAncestors(nodeProcessor, treeNode.Parent, stopFunction);  // Go up the tree and return the result
+            // Are we done?
+            if (startNode.Parent == null || stopFunction(startNode))
+                return;
 
-            return flag;
+            // Go up the tree and return the result
+            var parent = (T) (object) startNode.Parent;
+
+            ProcessAncestors(nodeProcessor, parent, stopFunction);
         }
 
         /// <summary>
@@ -327,6 +397,26 @@ namespace KnightMoves.Hierarchical
         {
             var root = _root == null ? this : _root;
             root.ProcessTree(node => node.IsSerializable = true);
+        }
+
+        /// <summary>
+        /// Returns all nodes in the tree as a flattened collection of type <see cref="IList{T}"/> 
+        /// sorted by the <see cref="SortableTreePath"/> property. If this method is called 
+        /// on a branch then it will return only the nodes in that branch where the top of the  
+        /// branch is the root.
+        /// </summary>
+        /// <returns><see cref="IList{T}"/></returns>
+        public List<T> ToList()
+        {
+            var node = DeepCopy();
+
+            var list = new List<T>();
+
+            node.ProcessTree(n => list.Add(n));
+
+            node.MarkAsSerializable();
+
+            return list;
         }
 
         /// <summary>
@@ -523,7 +613,6 @@ namespace KnightMoves.Hierarchical
                     {
                         nodeIndex.Add(n);
                     }
-                    return true;
                 });
             }
         }

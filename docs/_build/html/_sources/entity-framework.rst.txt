@@ -38,4 +38,3 @@ inherited properties managed by ``TreeNodeEF<TId, T>``.
 
 Lastly, inheriting from ``TreeNodeEF<TId, T>`` will work with migrations as long as your subclass 
 is defined as a ``DbSet<T>`` property in your application's DbContext.
-

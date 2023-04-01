@@ -34,7 +34,7 @@ Using the dataset above you can do the following.
 
 .. note::
 
-   Keep in mind that if you have multiple trees in the table, you will have to add ``WHERE RootId = 'Something'``
+   Keep in mind that if you have multiple trees in the table, you will have to add ``WHERE RootId = 'Something' || Id = 'Something'``
    to avoid mixing nodes from different trees. Your data access model would have to persist the ``RootId`` 
    from the entity in order to accommodate this.
 
@@ -50,9 +50,17 @@ Result:
 
     Name
     -------------
+    RootNode
+      ItemA
+        ItemA1
+        ItemA2
       ItemB
         ItemB1
-        ItemBA
+        ItemB1A
+      ItemC
+      ItemD
+        ItemD1
+        ItemD2
 
 Get children of ItemD:
 
@@ -92,3 +100,4 @@ Result:
       ItemB
         ItemB1
         ItemBA
+

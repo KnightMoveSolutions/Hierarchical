@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.HashFunction;
 
 namespace KnightMoves.Hierarchical
@@ -15,13 +16,40 @@ namespace KnightMoves.Hierarchical
         string TypeName { get; set; }
 
         /// <summary>
-        /// For classes that implement this interface, this method finds and returns the <see cref="ITreeNode{TId, T}"/> object 
-        /// where the <see cref="Id"/> value is equal to the <paramref name="nodeId"/> value provided as
-        /// an argument. It will search the tree recursively until it is found.
+        /// Returns true if the tree contains a node that satisfied the condition 
+        /// provided by the lambda function.
+        /// </summary>
+        /// <param name="condition">A boolean function that tests each node for the given condition</param>
+        /// <returns>True if ANY node in the tree satisfies the condition</returns>
+        bool Contains(Func<T, bool> condition);
+
+        /// <summary>
+        /// Makes a deep copy (clone) of the tree. If this method is called on a node 
+        /// that is in the middle of an existing tree, then a copy of the branch will 
+        /// be returned where the branch node becomes the root object. It works like an 
+        /// unmount in a Linux file system except that the unmounted branch is returned.
+        /// </summary>
+        /// <returns>A deep copy clone of this node</returns>
+        T DeepCopy();
+
+        /// <summary>
+        /// Returns a new tree where only the nodes that match the filter are returned 
+        /// with their complete ancestor paths up to the root. Nodes that are not matched
+        /// are not included. If a path of nodes does not have a matching node in it then
+        /// the entire path of nodes will not be included.
+        /// </summary>
+        /// <param name="filter">A matching function that returns a boolean</param>
+        /// <returns>A pruned tree with nodes that match the filter</returns>
+        T Filter(Func<T, bool> filter);
+
+        /// <summary>
+        /// For classes that implement this interface, this method finds and returns the object of type 
+        /// <typeparamref name="T"/> where the <see cref="Id"/> value is equal to the <paramref name="nodeId"/> 
+        /// value provided as an argument. It will search the tree recursively until it is found.
         /// </summary>
         /// <param name="nodeId">The <see cref="Id"/> of the node to search for.</param>
-        /// <returns>The <see cref="ITreeNode{TId, T}"/> that matches the search ID or null if it is not found</returns>
-        ITreeNode<TId, T> FindById(TId nodeId);
+        /// <returns>The node of type <typeparamref name="T"/> that matches the search ID or null if it is not found</returns>
+        T FindById(TId nodeId);
 
         /// <summary>
         /// For classes that implement this interface, this method determines if the node provided as the 
@@ -104,16 +132,14 @@ namespace KnightMoves.Hierarchical
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. It does not include this node.
         /// </summary>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
-        /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor) ;
+        void ProcessChildren(ITreeNodeProcessor<TId, T> nodeProcessor) ;
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
         /// <paramref name="nodeProcessor"/> provided recursively down the tree. It does not include this node.
         /// </summary>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
-        /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessChildren(Func<ITreeNode<TId, T>, bool> nodeProcessor);
+        void ProcessChildren(Action<T> nodeProcessor);
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
@@ -121,8 +147,7 @@ namespace KnightMoves.Hierarchical
         /// this method will start with (include) this node.
         /// </summary>
         /// <param name="nodeProcessor">The object that will process each node down the tree.</param>
-        /// <returns>True if every execution of the ProcessNode method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor);
+        void ProcessTree(ITreeNodeProcessor<TId, T> nodeProcessor);
 
         /// <summary>
         /// For classes that implement this interface, this method passes each child of this node to the 
@@ -130,43 +155,48 @@ namespace KnightMoves.Hierarchical
         /// will start with (include) this node.
         /// </summary>
         /// <param name="nodeProcessor">The delegate method that will process each node down the tree.</param>
-        /// <returns>True if every execution of the delegate method returns true, false if at least one of the executions returns false.</returns>
-        bool ProcessTree(Func<ITreeNode<TId, T>, bool> nodeProcessor);
+        void ProcessTree(Action<T> nodeProcessor);
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
         /// <param name="nodeProcessor">The <see cref="ITreeNodeProcessor{TId, T}"/> object used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel">(Optional) If defined will be used to check the <see cref="DepthFromRoot"/> property and will stop when it gets to that level</param>
-        /// <returns></returns>
-        bool ProcessAncestors(ITreeNodeProcessor<TId, T> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = 1);
+        void ProcessAncestors(ITreeNodeProcessor<TId, T> nodeProcessor, T startNode, int maxLevel = 1);
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by <paramref name="maxLevel"/>
         /// </summary>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="maxLevel"></param>
-        /// <returns></returns>
-        bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, int maxLevel = 1);
+        void ProcessAncestors(Action<T> nodeProcessor, T startNode, int maxLevel = 1);
 
         /// <summary>
-        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="treeNode"/> object 
+        /// Executes the <paramref name="nodeProcessor"/> function starting with the <paramref name="startNode"/> object 
         /// and then recursively up the ancestor tree until the root or the node defined by the <paramref name="stopFunction"/>
         /// </summary>
         /// <param name="nodeProcessor">The function used to process the nodes up the ancestor tree</param>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
+        /// <param name="startNode">The <see cref="ITreeNode{TId, T}"/> object used as the starting point for processing up the ancestor tree</param>
         /// <param name="stopFunction">The function used to process the nodes up the ancestor tree to determine if it should stop recursing</param>
-        /// <returns></returns>
-        bool ProcessAncestors(Func<ITreeNode<TId, T>, bool> nodeProcessor, ITreeNode<TId, T> treeNode, Func<ITreeNode<TId, T>, bool> stopFunction);
+        void ProcessAncestors(Action<T> nodeProcessor, T startNode, Func<T, bool> stopFunction);
 
         /// <summary>
         /// Marks the <see cref="IsSerializable"/> flag as true for all nodes in the tree
         /// </summary>
         void MarkAsSerializable();
+
+        /// <summary>
+        /// Returns all nodes in the tree as a flattened collection of type <see cref="IList{T}"/> 
+        /// sorted by the <see cref="SortableTreePath"/> property. If this method is called 
+        /// on a branch then it will return only the nodes in that branch where the top of the  
+        /// branch is the root.
+        /// </summary>
+        /// <returns><see cref="IList{T}"/></returns>
+        List<T> ToList();
 
         /// <summary>
         /// Marks the <see cref="IsSerializable"/> flag as false for all nodes in the tree

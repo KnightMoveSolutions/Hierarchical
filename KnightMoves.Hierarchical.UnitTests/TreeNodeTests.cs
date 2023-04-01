@@ -8,10 +8,13 @@ namespace KnightMoves.Hierarchical.UnitTests
     // This is our Mock entity. It has a Name property but can have all kind of other things.
     // It can have address, age, soc sec nbr, etc. Inheriting from TreeNode<T> makes it a 
     // tree node capable of having children, parents, etc. 
+    public enum Gender { Male, Female };
+
     public class Person : TreeNode<string, Person>
     {
         public override string Id { get; set; }
         public string Name { get; set; }
+        public Gender Gender { get; set; }
     }
 
     public class Principal : Person
@@ -48,12 +51,12 @@ namespace KnightMoves.Hierarchical.UnitTests
         public TreeNodeTests()
         {
             // ARRANGE FOR ALL
-            _grandpa = new Person { Id = "Grandpa", Name = "Richard" };
-            _dad = new Person { Id = "Dad", ParentId = "Grandpa", Name = "Richard Jr." };
-            _uncle = new Person { Id = "UncleJohn", ParentId = "Grandpa", Name = "John" };
-            _cousin = new Person { Id = "CousinAnn", ParentId = "UncleJohn", Name = "Ann" };
-            _sister = new Person { Id = "SisterJane", ParentId = "Dad", Name = "Jane" };
-            _me = new Person { Id = "Me", ParentId = "Dad", Name = "MeMyselfAndI" };
+            _grandpa = new Person { Id = "Grandpa", Name = "Richard", Gender = Gender.Male };
+            _dad = new Person { Id = "Dad", ParentId = "Grandpa", Name = "Richard Jr.", Gender = Gender.Male };
+            _uncle = new Person { Id = "UncleJohn", ParentId = "Grandpa", Name = "John", Gender = Gender.Male };
+            _cousin = new Person { Id = "CousinAnn", ParentId = "UncleJohn", Name = "Ann", Gender = Gender.Female };
+            _sister = new Person { Id = "SisterJane", ParentId = "Dad", Name = "Jane", Gender = Gender.Female };
+            _me = new Person { Id = "Me", ParentId = "Dad", Name = "MeMyselfAndI", Gender = Gender.Male };
 
             _familyMembers = new List<Person>
             {
@@ -68,6 +71,45 @@ namespace KnightMoves.Hierarchical.UnitTests
             };
 
             _familyTree = Person.CreateTree(_familyMembers);
+        }
+
+        [Fact]
+        public void TestManuallyBuildingTree()
+        {
+            // ARRANGE
+            var top = new Person { Id = "top", Name = "Top" };
+            var second = new Person { Id = "second", Name = "Second" };
+            var third = new Person { Id = "third", Name = "Third" };
+
+            // ACTION
+            top.Children.Add(second);
+            second.Children.Add(third);
+
+            // ASSERT
+            Assert.Null(top.RootId);
+            Assert.Null(top.Root);
+            Assert.Null(top.ParentId);
+            Assert.Null(top.Parent);
+
+            Assert.NotNull(second.RootId);
+            Assert.NotNull(second.Root);
+            Assert.NotNull(second.ParentId);
+            Assert.NotNull(second.Parent);
+
+            Assert.Equal("top", second.RootId);
+            Assert.Equal("top", second.ParentId);
+            Assert.Equal(top, second.Root);
+            Assert.Equal(top, second.Parent);
+
+            Assert.NotNull(third.RootId);
+            Assert.NotNull(third.Root);
+            Assert.NotNull(third.ParentId);
+            Assert.NotNull(third.Parent);
+
+            Assert.Equal("top", third.RootId);
+            Assert.Equal("second", third.ParentId);
+            Assert.Equal(top, third.Root);
+            Assert.Equal(second, third.Parent);
         }
 
         [Fact]
@@ -132,6 +174,127 @@ namespace KnightMoves.Hierarchical.UnitTests
         }
 
         [Fact]
+        public void TestContains()
+        {
+            // ACTIONS 
+            var containsFemale = _familyTree.Contains(p => p.Gender == Gender.Female);
+            var containsOnlyChild = _familyTree.Contains(p => p.Children.Count == 1);
+            var containsMother = _familyTree.Contains(p => p.Children.Count > 0 && p.Gender == Gender.Female);
+
+            // ASSERT
+            Assert.True(containsFemale);
+            Assert.True(containsOnlyChild);
+            Assert.False(containsMother);
+        }
+
+        [Fact]
+        public void TestDeepCopy()
+        {
+            // ARRANGE
+            _familyTree.MarkAsSerializable();
+
+            // ACTION
+            var familyTree = _familyTree.DeepCopy();
+
+            _familyTree.UnMarkAsSerializable();
+
+            // ASSERT
+            Assert.NotNull(familyTree);
+
+            // Ensure all objects are of Type T (in this case Person)
+            Assert.IsType<Person>(familyTree);
+            Assert.IsType<Person>(familyTree.Children[0]);
+            Assert.IsType<Person>(familyTree.Children[0].Children[0]);
+            Assert.IsType<Person>(familyTree.Children[0].Children[1]);
+            Assert.IsType<Person>(familyTree.Children[1]);
+            Assert.IsType<Person>(familyTree.Children[1].Children[0]);
+
+            // Ensure deserialization of structure matches pre-serialized object
+            Assert.Equal(_familyTree.Id, familyTree.Id);
+            Assert.Equal(_familyTree.Children[0].Id, familyTree.Children[0].Id);
+            Assert.Equal(_familyTree.Children[0].Children[0].Id, familyTree.Children[0].Children[0].Id);
+            Assert.Equal(_familyTree.Children[0].Children[1].Id, familyTree.Children[0].Children[1].Id);
+            Assert.Equal(_familyTree.Children[1].Id, familyTree.Children[1].Id);
+            Assert.Equal(_familyTree.Children[1].Children[0].Id, familyTree.Children[1].Children[0].Id);
+
+            // Ensure Root references were restored
+            Assert.Null(familyTree.Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Children[0].Root);
+            Assert.Equal(familyTree, familyTree.Children[0].Children[1].Root);
+            Assert.Equal(familyTree, familyTree.Children[1].Root);
+            Assert.Equal(familyTree, familyTree.Children[1].Children[0].Root);
+
+            // Ensure Parent references were restored
+            Assert.Null(familyTree.Parent);
+            Assert.Equal(familyTree, familyTree.Children[0].Parent);
+            Assert.Equal(familyTree.Children[0], familyTree.Children[0].Children[0].Parent);
+            Assert.Equal(familyTree.Children[0], familyTree.Children[0].Children[1].Parent);
+            Assert.Equal(familyTree, familyTree.Children[1].Parent);
+            Assert.Equal(familyTree.Children[1], familyTree.Children[1].Children[0].Parent);
+        }
+
+        [Fact]
+        public void TestDeepCopyBranch()
+        {
+            // ARRANGE
+            _familyTree.MarkAsSerializable();
+
+            // ACTION
+            var branch = _familyTree.Children[0].DeepCopy();
+
+            _familyTree.UnMarkAsSerializable();
+
+            // ASSERT
+            Assert.NotNull(branch);
+
+            // Ensure the branch is root
+            Assert.Null(branch.Root);
+            Assert.Null(branch.RootId);
+            Assert.Null(branch.Parent);
+            Assert.Null(branch.ParentId);
+
+            // Ensure only the branch is copied
+            Assert.Equal(_familyTree.Children[0].Id, branch.Id);
+            Assert.Equal(_familyTree.Children[0].Children[0].Id, branch.Children[0].Id);
+            Assert.Equal(_familyTree.Children[0].Children[1].Id, branch.Children[1].Id);
+            Assert.True(branch.Children.Count == 2);
+            Assert.False(branch.Children[0].HasChildren);
+            Assert.False(branch.Children[1].HasChildren);
+        }
+
+        [Fact]
+        public void TestFilter()
+        {
+            // ARRANGE
+            Person grandpa = new Person { Id = "Grandpa", Name = "Richard", Gender = Gender.Male };
+            Person dad = new Person { Id = "Dad", ParentId = "Grandpa", Name = "Richard Jr.", Gender = Gender.Male };
+            Person uncle = new Person { Id = "UncleJohn", ParentId = "Grandpa", Name = "John", Gender = Gender.Male };
+            Person cousin = new Person { Id = "CousinSteve", ParentId = "UncleJohn", Name = "Steve", Gender = Gender.Male };
+            Person sister = new Person { Id = "SisterJane", ParentId = "Dad", Name = "Jane", Gender = Gender.Female };
+            Person me = new Person { Id = "Me", ParentId = "Dad", Name = "MeMyselfAndI", Gender = Gender.Male };
+            Person uncle2 = new Person { Id = "UncleLuke", ParentId = "Grandpa", Name = "Luke", Gender = Gender.Male };
+            Person cousin2 = new Person { Id = "CousinMary", ParentId = "UncleLuke", Gender = Gender.Female };
+
+            List<Person> familyMembers = new List<Person> { grandpa, dad, uncle, cousin, sister, me, uncle2, cousin2 };
+
+            Person familyTree = Person.CreateTree(familyMembers);
+
+            // ACTION 
+            var girlyTree = familyTree.Filter(n => n.Gender == Gender.Female);
+
+            // ASSERT
+            Assert.True(girlyTree == grandpa);
+            Assert.True(girlyTree.Children.Count == 2);
+            Assert.True(girlyTree.Children[0] == dad);
+            Assert.True(girlyTree.Children[1] == uncle2);
+            Assert.True(girlyTree.Children[0].Children.Count == 1);
+            Assert.True(girlyTree.Children[0].Children[0] == sister);
+            Assert.True(girlyTree.Children[1].Children.Count == 1);
+            Assert.True(girlyTree.Children[1].Children[0] == cousin2);
+        }
+
+        [Fact]
         public void TestFindById()
         {
             // ACTION
@@ -139,6 +302,28 @@ namespace KnightMoves.Hierarchical.UnitTests
 
             // ASSERT
             Assert.True(searchNode == _uncle);
+        }
+
+        [Fact]
+        public void TestToList()
+        {
+            // ACTION
+            var flatList = _familyTree.ToList();
+
+            var noAncestorRefs = true;
+
+            flatList.ForEach(n => noAncestorRefs = n.Root == null && n.Parent == null);
+
+            // ASSERT
+            Assert.NotNull(flatList);
+            Assert.Equal(6, flatList.Count);
+            Assert.True(noAncestorRefs);
+            Assert.Equal("1", flatList[0].SortableTreePath);
+            Assert.Equal("1.1", flatList[1].SortableTreePath);
+            Assert.Equal("1.1.1", flatList[2].SortableTreePath);
+            Assert.Equal("1.1.2", flatList[3].SortableTreePath);
+            Assert.Equal("1.2", flatList[4].SortableTreePath);
+            Assert.Equal("1.2.1", flatList[5].SortableTreePath);
         }
 
         [Fact]
@@ -284,10 +469,9 @@ namespace KnightMoves.Hierarchical.UnitTests
                 _testOutput = new List<string>();
             }
 
-            public bool ProcessNode(ITreeNode<string, Person> node)
+            public void ProcessNode(Person node)
             {
                 _testOutput.Add(node.Id + " Processed");
-                return true;
             }
 
             public bool IsProcessed(ITreeNode<string, Person> node)
@@ -303,10 +487,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessChildren(delegate (ITreeNode<string, Person> t)
+            _grandpa.ProcessChildren(delegate (Person t)
             {
                 testOutput.Add(t.Id + " Processed");
-                return true;
             });
 
             // ASSERT
@@ -324,10 +507,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             IList<string> testOutput = new List<string>();
 
             // ACTION
-            _grandpa.ProcessTree(delegate (ITreeNode<string, Person> t)
+            _grandpa.ProcessTree(delegate (Person t)
             {
                 testOutput.Add(t.Id + " Processed");
-                return true;
             });
 
             // ASSERT
@@ -561,10 +743,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             var treeNodeProcessor = new TestTreeNodeProcessor();
 
             // ACTION
-            var result = _familyTree.ProcessAncestors(treeNodeProcessor, _me);
+            _familyTree.ProcessAncestors(treeNodeProcessor, _me);
 
             // ASSERT
-            Assert.True(result);
             Assert.Equal(3, treeNodeProcessor.TestResults.Count());
             Assert.Equal(_me.Name, treeNodeProcessor.TestResults[0]);
             Assert.Equal(_dad.Name, treeNodeProcessor.TestResults[1]);
@@ -578,10 +759,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             var treeNodeProcessor = new TestTreeNodeProcessor();
 
             // ACTION
-            var result = _familyTree.ProcessAncestors(treeNodeProcessor, _me, 2);
+            _familyTree.ProcessAncestors(treeNodeProcessor, _me, 2);
 
             // ASSERT
-            Assert.True(result);
             Assert.Equal(2, treeNodeProcessor.TestResults.Count());
             Assert.Equal(_me.Name, treeNodeProcessor.TestResults[0]);
             Assert.Equal(_dad.Name, treeNodeProcessor.TestResults[1]);
@@ -594,15 +774,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             var testResults = new List<string>();
 
             // ACTION
-            var result = _familyTree.ProcessAncestors((node) =>
-            {
-                var p = node as Person;
-                testResults.Add(p.Name);
-                return true;
-            }, _me);
+            _familyTree.ProcessAncestors(node => testResults.Add(node.Name), _me);
 
             // ASSERT
-            Assert.True(result);
             Assert.Equal(3, testResults.Count());
             Assert.Equal(_me.Name, testResults[0]);
             Assert.Equal(_dad.Name, testResults[1]);
@@ -616,15 +790,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             var testResults = new List<string>();
 
             // ACTION
-            var result = _familyTree.ProcessAncestors((node) =>
-            {
-                var p = node as Person;
-                testResults.Add(p.Name);
-                return true;
-            }, _me, 2);
+            _familyTree.ProcessAncestors(node => testResults.Add(node.Name), _me, 2);
 
             // ASSERT
-            Assert.True(result);
             Assert.Equal(2, testResults.Count());
             Assert.Equal(_me.Name, testResults[0]);
             Assert.Equal(_dad.Name, testResults[1]);
@@ -637,21 +805,9 @@ namespace KnightMoves.Hierarchical.UnitTests
             var testResults = new List<string>();
 
             // ACTION
-            var result = _familyTree.ProcessAncestors((node) =>
-            {
-                var p = node as Person;
-                testResults.Add(p.Name);
-                return true;
-            }, 
-            _me,
-            (node) =>
-            {
-                var p = node as Person;
-                return p.Name == "Richard Jr.";
-            });
+            _familyTree.ProcessAncestors(node => testResults.Add(node.Name), _me, node => node.Name == "Richard Jr.");
 
             // ASSERT
-            Assert.True(result);
             Assert.Equal(2, testResults.Count());
             Assert.Equal(_me.Name, testResults[0]);
             Assert.Equal(_dad.Name, testResults[1]);
@@ -772,11 +928,10 @@ namespace KnightMoves.Hierarchical.UnitTests
         {
             public IList<string> TestResults { get; set; } = new List<string>();
 
-            public bool ProcessNode(ITreeNode<string, Person> node)
+            public void ProcessNode(Person node)
             {
                 var p = node as Person;
                 TestResults.Add(p.Name);
-                return true;
             }
         }
     }
