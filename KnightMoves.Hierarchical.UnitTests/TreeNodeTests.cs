@@ -12,7 +12,6 @@ namespace KnightMoves.Hierarchical.UnitTests
 
     public class Person : TreeNode<string, Person>
     {
-        public override string Id { get; set; }
         public string Name { get; set; }
         public Gender Gender { get; set; }
     }
