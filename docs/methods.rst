@@ -32,7 +32,7 @@ Filter
 
 Returns a pruned tree where only the nodes that match the filter are returned with their complete ancestor 
 paths up to the root. Nodes that are not matched are not included. If a branch of nodes does not have a
-matching node in it, then the entire branch of nodes will not be excluded from the returned tree.
+matching node in it, then the entire branch of nodes will be excluded from the returned tree.
 
 FindById
 --------
