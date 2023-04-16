@@ -304,6 +304,16 @@ namespace KnightMoves.Hierarchical.UnitTests
         }
 
         [Fact]
+        public void TestFind()
+        {
+            // ACTION 
+            var searchNode = _familyTree.Find(n => n.Gender == Gender.Female);
+
+            // ASSERT 
+            Assert.Equal(_sister.Id, searchNode.Id);
+        }
+
+        [Fact]
         public void TestToList()
         {
             // ACTION

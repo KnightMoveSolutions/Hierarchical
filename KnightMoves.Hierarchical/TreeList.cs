@@ -19,7 +19,7 @@ namespace KnightMoves.Hierarchical
         /// Constructor
         /// </summary>
         /// <param name="parent">The object that is a parent to this colleciton of child objects</param>
-        public TreeList(ITreeNode<TId, T> parent)
+        public TreeList(T parent)
         {
             Parent = parent;
         }
@@ -30,7 +30,7 @@ namespace KnightMoves.Hierarchical
         /// <param name="child">The object being added as another child in the list</param>
         public new void Add(ITreeNode<TId, T> child)
         {
-            child.Parent = Parent;
+            child.Parent = (T) Parent;
             child.ParentId = Parent.Id;
             child.Root = Parent.Root ?? Parent;
             child.RootId = Parent.Root != null ? Parent.RootId : Parent.Id;
@@ -40,7 +40,7 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The object that serves as a Parent to this collection of child objects
         /// </summary>
-        public ITreeNode<TId, T> Parent { get; }
+        public T Parent { get; }
     }
     
 }

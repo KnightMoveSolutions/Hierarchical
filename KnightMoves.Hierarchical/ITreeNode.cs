@@ -52,6 +52,15 @@ namespace KnightMoves.Hierarchical
         T FindById(TId nodeId);
 
         /// <summary>
+        /// For classes that implement this interface, this method finds and returns the object of type 
+        /// <typeparamref name="T"/> where the <paramref name="condition"/> implemented by the lambda 
+        /// function returns true. It will search the tree recursively until the first item is found.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns>The first node of type <typeparamref name="T"/> that matches the condition or null if none is found</returns>
+        T Find(Func<T, bool> condition);
+
+        /// <summary>
         /// For classes that implement this interface, this method determines if the node provided as the 
         /// <paramref name="treeNode"/> is an ancestor of this node up the tree.
         /// </summary>
@@ -251,7 +260,7 @@ namespace KnightMoves.Hierarchical
         /// <summary>
         /// The Parent node of this node
         /// </summary>
-        ITreeNode<TId, T> Parent { get; set; }
+        T Parent { get; set; }
 
         /// <summary>
         /// The <see cref="Id"/> of the <see cref="Parent"/> object of this node.
@@ -266,7 +275,7 @@ namespace KnightMoves.Hierarchical
         /// A reference to the Root object in the tree. All objects in the tree will have 
         /// the same Root.
         /// </summary>
-        ITreeNode<TId, T> Root { get; set; }
+        T Root { get; set; }
 
         /// <summary>
         /// The <see cref="Id"/> of the <see cref="Root"/> object of this node

@@ -30,7 +30,7 @@ namespace KnightMoves.Hierarchical
         }
 
         [NotMapped]
-        public override ITreeNode<TId, T> Parent
+        public override T Parent
         {
             get { return base.Parent; }
             set { base.Parent = value; }
@@ -60,7 +60,7 @@ namespace KnightMoves.Hierarchical
         }
 
         [NotMapped]
-        public override ITreeNode<TId, T> Root
+        public override T Root
         {
             get { return base.Root; }
             set 

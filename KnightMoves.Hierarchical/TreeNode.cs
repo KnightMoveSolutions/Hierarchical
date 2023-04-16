@@ -33,7 +33,7 @@ namespace KnightMoves.Hierarchical
             TypeName = GetType().AssemblyQualifiedName;
             HashProvider = CRCFactory.Instance.Create();
             TreeNodeId = Guid.Empty;
-            Children = new TreeList<TId, T>(this);
+            Children = new TreeList<TId, T>((T) (object) this);
             IndentCharacter = ' ';
         }
 
@@ -142,8 +142,8 @@ namespace KnightMoves.Hierarchical
 
             matches.ForEach(n =>
             {
-                n.Root = null;
-                n.Parent = null;
+                n.Root = default;
+                n.Parent = default;
                 n.Children.Clear();
             });
 
@@ -174,9 +174,31 @@ namespace KnightMoves.Hierarchical
         }
 
         /// <summary>
+        /// This method finds and returns the object of type <typeparamref name="T"/> where the 
+        /// <paramref name="condition"/> implemented by the lambda function returns true. It will 
+        /// search the tree recursively until the first item is found and return that item.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns>The first node of type <typeparamref name="T"/> that matches the condition or null if none is found</returns>
+        public T Find(Func<T, bool> condition)
+        {
+            T targetNode = default;
+
+            ProcessTree(t =>
+            {
+                if (targetNode == null && condition(t))
+                {
+                    targetNode = t;
+                }
+            });
+
+            return targetNode;
+        }
+
+        /// <summary>
         /// Determines if the node provided as the <paramref name="treeNode"/> is an ancestor of this node up the tree.
         /// </summary>
-        /// <param name="treeNode">The <see cref="ITreeNode{TId, T}"/> object that is being checked if it is an ancestor of this object.</param>
+        /// <param name="treeNode">The <see cref="T"/> object that is being checked if it is an ancestor of this object.</param>
         /// <returns>True if <paramref name="treeNode"/> is an ancestor of this object, false if not.</returns>
         public bool IsAncestor(T treeNode)
         {
@@ -395,7 +417,7 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void MarkAsSerializable()
         {
-            var root = _root == null ? this : _root;
+            var root = _root == null ? (T) (object) this : _root;
             root.ProcessTree(node => node.IsSerializable = true);
         }
 
@@ -424,7 +446,7 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void UnMarkAsSerializable()
         {
-            var root = _root == null ? this : _root;
+            var root = _root == null ? (T) (object) this : _root;
             root.ProcessTree(node => node.IsSerializable = false);
         }
 
@@ -499,13 +521,13 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public string IndentString => new string(IndentCharacter, DepthFromRoot);
 
-        private ITreeNode<TId, T> _parent;
+        private T _parent;
         /// <summary>
         /// The Parent node of this node
         /// </summary>
-        public virtual ITreeNode<TId, T> Parent 
+        public virtual T Parent 
         {
-            get { return IsSerializable ? null : _parent; }
+            get { return IsSerializable ? default : _parent; }
             set { _parent = value; } 
         }
 
@@ -518,14 +540,14 @@ namespace KnightMoves.Hierarchical
         /// </remarks>
         public virtual TId ParentId { get; set; }
 
-        private ITreeNode<TId, T> _root;
+        private T _root;
         /// <summary>
         /// A reference to the Root object in the tree. All objects in the tree will have 
         /// the same Root.
         /// </summary>
-        public virtual ITreeNode<TId, T> Root 
+        public virtual T Root 
         { 
-            get { return IsSerializable ? null : _root; }
+            get { return IsSerializable ? default : _root; }
             set { _root = value; }
         }
 
@@ -601,8 +623,8 @@ namespace KnightMoves.Hierarchical
             if (ParentId == null)
             {
                 IsSerializable = false;
-                var root = this;
-                var nodeIndex = new List<ITreeNode<TId, T>> { this };
+                var root = (T) (object) this;
+                var nodeIndex = new List<T> { (T) (object) this };
                 
                 ProcessChildren(n =>
                 {
