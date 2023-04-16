@@ -230,13 +230,13 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void MakeChildOfUpperSibling()
         {
-            int index = Parent.Children.IndexOf(this);
+            int index = Parent.Children.IndexOf((T)(object)this);
 
             if (index > 0)
             {
                 ITreeNode<TId, T> node = Parent.Children[index - 1];
-                Parent.Children.Remove(this);
-                node.Children.Add(this);
+                Parent.Children.Remove((T)(object)this);
+                node.Children.Add((T)(object)this);
             }
         }
 
@@ -248,16 +248,16 @@ namespace KnightMoves.Hierarchical
         {
             if (takeLowerSiblingsAsChildren)
             {
-                for (int i = Parent.Children.IndexOf(this) + 1; i < Parent.Children.Count(); i++)
+                for (int i = Parent.Children.IndexOf((T)(object)this) + 1; i < Parent.Children.Count(); i++)
                 {
-                    ITreeNode<TId, T> item = Parent.Children[i];
+                    var item = Parent.Children[i];
                     Parent.Children.Remove(item);
                     Children.Add(item);
                 }
             }
 
-            Parent.Children.Remove(this);
-            Parent.Parent.Children.Add(this);
+            Parent.Children.Remove((T)(object)this);
+            Parent.Parent.Children.Add((T)(object)this);
         }
 
         /// <summary>
@@ -265,11 +265,11 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void MoveDownInSiblingOrder()
         {
-            int index = Parent.Children.IndexOf(this);
+            int index = Parent.Children.IndexOf((T)(object)this);
             if ((index + 1) < Parent.Children.Count())
             {
-                Parent.Children.Remove(this);
-                Parent.Children.Insert(index + 1, this);
+                Parent.Children.Remove((T)(object)this);
+                Parent.Children.Insert(index + 1, (T)(object)this);
             }
         }
 
@@ -278,11 +278,11 @@ namespace KnightMoves.Hierarchical
         /// </summary>
         public void MoveUpInSiblingOrder()
         {
-            int index = Parent.Children.IndexOf(this);
+            int index = Parent.Children.IndexOf((T)(object)this);
             if (index > 0)
             {
-                Parent.Children.Remove(this);
-                Parent.Children.Insert(index - 1, this);
+                Parent.Children.Remove((T)(object)this);
+                Parent.Children.Insert(index - 1, (T)(object)this);
             }
         }
 
@@ -574,7 +574,7 @@ namespace KnightMoves.Hierarchical
 
                 Parent
                     .Children
-                    .Where(n => n != this)
+                    .Where(n => !n.Equals(this))
                     .ToList()
                     .ForEach(n => list.Add(n));
 
@@ -591,7 +591,7 @@ namespace KnightMoves.Hierarchical
             {
                 string str = _parent == null ? string.Empty : _parent.SortableTreePath + ".";
                 
-                string str2 = (_parent?.Children.IndexOf(this) + 1)?.ToString() ?? "1";
+                string str2 = (_parent?.Children.IndexOf((T)(object)this) + 1)?.ToString() ?? "1";
 
                 if (_parent == null || _root == null)
                     return str2;

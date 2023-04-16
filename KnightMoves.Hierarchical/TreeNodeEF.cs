@@ -22,26 +22,6 @@ namespace KnightMoves.Hierarchical
             set { base.HashProvider = value; }
         }
 
-        [ForeignKey("ParentEntity")]
-        public override TId ParentId
-        {
-            get { return base.ParentId; }
-            set { base.ParentId = value; }
-        }
-
-        [NotMapped]
-        public override T Parent
-        {
-            get { return base.Parent; }
-            set { base.Parent = value; }
-        }
-
-        public T ParentEntity
-        {
-            get { return (T)base.Parent; }
-            set { base.Parent = value; }
-        }
-
         [NotMapped]
         public override TreeList<TId, T> Children => base.Children;
 
@@ -60,19 +40,23 @@ namespace KnightMoves.Hierarchical
         }
 
         [NotMapped]
+        public override T Parent
+        {
+            get { return base.Parent; }
+            set
+            {
+                base.Parent = value; 
+            }
+        }
+
+        [NotMapped]
         public override T Root
         {
             get { return base.Root; }
             set 
             { 
-                base.Root = value; // Fake it so EF persists read-only value to DB
+                base.Root = value; 
             }
-        }
-
-        public override TId RootId
-        {
-            get { return base.RootId; }
-            set { base.RootId = value; }
         }
 
         /// <summary>
