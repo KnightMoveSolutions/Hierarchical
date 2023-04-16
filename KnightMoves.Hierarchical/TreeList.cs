@@ -13,7 +13,7 @@ namespace KnightMoves.Hierarchical
     /// </summary>
     /// <typeparam name="TId">The type of the <see cref="ITreeNode{TId, T}.Id"/> property to accommodate different types of identifiers such as string, int, or Guid</typeparam>
     /// <typeparam name="T">The data type of an <see cref="ITreeNode{TId, T}"/> object. This collection will be a collection of this type of object.</typeparam>
-    public class TreeList<TId, T> : Collection<ITreeNode<TId, T>> where T : ITreeNode<TId, T>
+    public class TreeList<TId, T> : Collection<T> where T : ITreeNode<TId, T>
     {
         /// <summary>
         /// Constructor
@@ -28,9 +28,9 @@ namespace KnightMoves.Hierarchical
         /// Adds the object to the list. The list of objects are children of <see cref="Parent"/>.
         /// </summary>
         /// <param name="child">The object being added as another child in the list</param>
-        public new void Add(ITreeNode<TId, T> child)
+        public new void Add(T child)
         {
-            child.Parent = (T) Parent;
+            child.Parent = Parent;
             child.ParentId = Parent.Id;
             child.Root = Parent.Root ?? Parent;
             child.RootId = Parent.Root != null ? Parent.RootId : Parent.Id;
