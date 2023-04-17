@@ -186,10 +186,16 @@
 <h1>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id">
 <h2>Id<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">TId</span> <span class="n">Id</span>
+</pre></div>
+</div>
 <p>The ID of this node. It’s data type is customized by the <code class="docutils literal notranslate"><span class="pre">TId</span></code> generic type specification.</p>
 </div>
 <div class="section" id="children">
 <h2>Children<a class="headerlink" href="#children" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">TreeList</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">Children</span>
+</pre></div>
+</div>
 <p>The Child objects of this node in the hierarchy as a collection of type <code class="docutils literal notranslate"><span class="pre">TreeList&lt;TId,</span> <span class="pre">T&gt;</span></code>, which is a
 custom implementation that derives from <code class="docutils literal notranslate"><span class="pre">System.Collections.ObjectModel.Collection&lt;T&gt;</span></code>. A node is considered
 a “branch” if the Children collection contains at least one item. A node is considered a “leaf” if the
@@ -197,6 +203,9 @@ Children collection is empty.</p>
 </div>
 <div class="section" id="depthfromroot">
 <h2>DepthFromRoot<a class="headerlink" href="#depthfromroot" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">DepthFromRoot</span>
+</pre></div>
+</div>
 <p>Represents the number of levels in the tree that the node is in where the ROOT node is Level 1
 (i.e. not zero-based like arrays). Whatever code artifact contains the Root node (i.e. whole tree)
 is considered Level 0 but is not a node of the tree. <code class="docutils literal notranslate"><span class="pre">DepthOfRoot</span></code> is used to calculate the
@@ -204,53 +213,87 @@ is considered Level 0 but is not a node of the tree. <code class="docutils liter
 </div>
 <div class="section" id="haschildren">
 <h2>HasChildren<a class="headerlink" href="#haschildren" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">HasChildren</span>
+</pre></div>
+</div>
 <p>True if this node has Children false if not. If true then this node is considered a “branch”. If false
 then this node is considered a “leaf”.</p>
 </div>
 <div class="section" id="indentcharacter">
 <h2>IndentCharacter<a class="headerlink" href="#indentcharacter" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">IndentCharacter</span>
+</pre></div>
+</div>
 <p>The character used for indentation. It will be repeated once for every Level in the tree. It is
 repeated <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> times and returned by the <code class="docutils literal notranslate"><span class="pre">IndentString</span></code> property.</p>
 </div>
 <div class="section" id="indentstring">
 <h2>IndentString<a class="headerlink" href="#indentstring" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">string</span> <span class="n">IndentString</span>
+</pre></div>
+</div>
 <p>Returns the <code class="docutils literal notranslate"><span class="pre">IndentCharacter</span></code> repeated <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> times to produce the indentation string
 for pretty display in text output.</p>
 </div>
 <div class="section" id="parent">
 <h2>Parent<a class="headerlink" href="#parent" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="n">Parent</span>
+</pre></div>
+</div>
 <p>A reference to the Parent node object of this node.</p>
 </div>
 <div class="section" id="parentid">
 <h2>ParentId<a class="headerlink" href="#parentid" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Id</span></code> of the <code class="docutils literal notranslate"><span class="pre">Parent</span></code> object of this node.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">TId</span> <span class="n">ParentId</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Id</span></code> of the <code class="docutils literal notranslate"><span class="pre">Parent</span></code> object of this node. It’s data type is customized by the <code class="docutils literal notranslate"><span class="pre">TId</span></code> generic type specification.</p>
 </div>
 <div class="section" id="pathid">
 <h2>PathId<a class="headerlink" href="#pathid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">string</span> <span class="n">PathId</span>
+</pre></div>
+</div>
 <p>A unique identifier representing the unique path from the root to the current node. Essentially, it
 is a hash of the chain of hashes of ancestor Ids.</p>
 </div>
 <div class="section" id="root">
 <h2>Root<a class="headerlink" href="#root" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="n">Root</span>
+</pre></div>
+</div>
 <p>A reference to the Root object in the tree. All objects in the tree will have the same Root.</p>
 </div>
 <div class="section" id="roodid">
 <h2>RoodId<a class="headerlink" href="#roodid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">TId</span> <span class="n">RootId</span>
+</pre></div>
+</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">Id</span></code> of the <code class="docutils literal notranslate"><span class="pre">Root</span></code> object. Useful for persisting to the database when there are multiple
-hierarchies in the same table differentiated by their shared <code class="docutils literal notranslate"><span class="pre">Root</span></code>.</p>
+hierarchies in the same table differentiated by their shared <code class="docutils literal notranslate"><span class="pre">Root</span></code>. It’s data type is customized
+by the <code class="docutils literal notranslate"><span class="pre">TId</span></code> generic type specification.</p>
 </div>
 <div class="section" id="siblings">
 <h2>Siblings<a class="headerlink" href="#siblings" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">TreeList</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span>
+</pre></div>
+</div>
 <p>The other objects in the <code class="docutils literal notranslate"><span class="pre">Parent</span></code> object’s <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection. It returns all objects in that
 collection except for this node.</p>
 </div>
 <div class="section" id="sortabletreepath">
 <h2>SortableTreePath<a class="headerlink" href="#sortabletreepath" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">string</span> <span class="n">SortableTreePath</span>
+</pre></div>
+</div>
 <p>A string representation of the location of this object in the tree in the form of a “Path”. The
 <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code> is extensively documented in the <a class="reference internal" href="sortable-tree-path.html"><span class="doc">SortableTreePath</span></a> page.</p>
 </div>
 <div class="section" id="treenodeid">
 <h2>TreeNodeId<a class="headerlink" href="#treenodeid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">Guid</span> <span class="n">TreeNodeId</span>
+</pre></div>
+</div>
 <p>A unique identifer for the node. It is provided as a placeholder that is not required but can be useful.</p>
 </div>
 </div>

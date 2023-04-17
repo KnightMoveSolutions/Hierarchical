@@ -178,7 +178,7 @@ namespace KnightMoves.Hierarchical.UnitTests
             // ACTIONS 
             var containsFemale = _familyTree.Contains(p => p.Gender == Gender.Female);
             var containsOnlyChild = _familyTree.Contains(p => p.Children.Count == 1);
-            var containsMother = _familyTree.Contains(p => p.Children.Count > 0 && p.Gender == Gender.Female);
+            var containsMother = _familyTree.Contains(p => p.HasChildren && p.Gender == Gender.Female);
 
             // ASSERT
             Assert.True(containsFemale);
@@ -189,16 +189,19 @@ namespace KnightMoves.Hierarchical.UnitTests
         [Fact]
         public void TestDeepCopy()
         {
-            // ARRANGE
-            _familyTree.MarkAsSerializable();
-
             // ACTION
             var familyTree = _familyTree.DeepCopy();
 
-            _familyTree.UnMarkAsSerializable();
-
             // ASSERT
             Assert.NotNull(familyTree);
+
+            // Ensure they are different objects in memory
+            Assert.False(_familyTree.Equals(familyTree));
+            Assert.False(_familyTree.Children[0].Equals(familyTree.Children[0]));
+            Assert.False(_familyTree.Children[0].Children[0].Equals(familyTree.Children[0].Children[0]));
+            Assert.False(_familyTree.Children[0].Children[1].Equals(familyTree.Children[0].Children[1]));
+            Assert.False(_familyTree.Children[1].Equals(familyTree.Children[1]));
+            Assert.False(_familyTree.Children[1].Children[0].Equals(familyTree.Children[1].Children[0]));
 
             // Ensure all objects are of Type T (in this case Person)
             Assert.IsType<Person>(familyTree);
@@ -236,13 +239,8 @@ namespace KnightMoves.Hierarchical.UnitTests
         [Fact]
         public void TestDeepCopyBranch()
         {
-            // ARRANGE
-            _familyTree.MarkAsSerializable();
-
             // ACTION
             var branch = _familyTree.Children[0].DeepCopy();
-
-            _familyTree.UnMarkAsSerializable();
 
             // ASSERT
             Assert.NotNull(branch);

@@ -96,6 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#deepcopy">DeepCopy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#filter">Filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#findbyid">FindById</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#find">Find</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#isancestor">IsAncestor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#isdescendent">IsDescendent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#issibling">IsSibling</a></li>
@@ -103,8 +104,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#makesiblingofparent">MakeSiblingOfParent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#movedowninsiblingorder">MoveDownInSiblingOrder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#moveupinsiblingorder">MoveUpInSiblingOrder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#processchildren">ProcessChildren</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processtree">ProcessTree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processchildren">ProcessChildren</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processancestors">ProcessAncestors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tolist">ToList</a></li>
 </ul>
@@ -192,6 +193,23 @@
 </div>
 <p>Returns true if the tree contains AT LEAST ONE node that satisfied the condition provided
 by the lambda function.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">containsFemale</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Gender</span> <span class="p">==</span> <span class="n">Gender</span><span class="p">.</span><span class="n">Female</span><span class="p">);</span> <span class="c1">// true</span>
+<span class="kt">var</span> <span class="n">containsOnlyChild</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Count</span> <span class="p">==</span> <span class="m">1</span><span class="p">);</span> <span class="c1">// true</span>
+<span class="kt">var</span> <span class="n">containsMother</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">HasChildren</span> <span class="p">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">Gender</span> <span class="p">==</span> <span class="n">Gender</span><span class="p">.</span><span class="n">Female</span><span class="p">);</span> <span class="c1">// false</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="deepcopy">
 <h2>DeepCopy<a class="headerlink" href="#deepcopy" title="Permalink to this headline">¶</a></h2>
@@ -201,7 +219,42 @@ by the lambda function.</p>
 <p>Makes a deep copy (clone) of the tree. If this method is called on a node that is in the middle
 of an existing tree, then a copy of the branch will be returned where the branch node becomes
 the root object. It works like an unmount in a Linux file system except that the unmounted branch
-is returned.</p>
+is returned. Another way to look at it is that it functions like the spread operator (…) in
+Javascript, except that it is a recursive spread.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>DeepCopy() serializes and deserializes the tree in order to create a full copy of every object. If
+your class contains references to anything that references it back then you will see a circular
+reference exception. Before calling DeepCopy(), you must ensure that there are no circular referencing
+properties in your class.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="c1">// Make a copy of the whole tree</span>
+<span class="kt">var</span> <span class="n">familyTreeCopy</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">DeepCopy</span><span class="p">();</span>
+
+<span class="c1">// Make a copy of a branch</span>
+<span class="kt">var</span> <span class="n">branchCopy</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Children</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">DeepCopy</span><span class="p">();</span>
+
+<span class="cm">/*</span>
+<span class="cm">    branchCopy looks like this</span>
+
+<span class="cm">    Id: Dad, Name: Richard Jr, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">        Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="filter">
 <h2>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h2>
@@ -211,6 +264,46 @@ is returned.</p>
 <p>Returns a pruned tree where only the nodes that match the filter are returned with their complete ancestor
 paths up to the root. Nodes that are not matched are not included. If a branch of nodes does not have a
 matching node in it, then the entire branch of nodes will be excluded from the returned tree.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Filter() uses the DeepCopy() method, which serializes and deserializes the tree in order to create a full
+copy of the objects it needs to produce the result. If your class contains references to anything that
+references it back then you will see a circular reference exception. Before calling DeepCopy(), you must
+ensure that there are no circular referencing properties in your class.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinSteve, Name: Steve, Gender: Male, ParentId: John</span>
+<span class="cm">        Id: UncleLuke, Name: Luke, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinMary, Name: Mary, Gender: Female, ParentId: UncleLuke</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">femaleTree</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Gender</span> <span class="p">===</span> <span class="n">Gender</span><span class="p">.</span><span class="n">Female</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    femaleTree will look like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">        Id: UncleLuke, Name: Luke, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinMary, Name: Mary, Gender: Female, ParentId: UncleLuke</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>In the example above note the following:</p>
+<ul class="simple">
+<li><p>Grandpa, Dad, and UncleLuke are all included because they have a matching node in their descendants</p></li>
+<li><p>MeMyselfAndI is not included in the list of Children for Dad because it doesn’t match the filter condition</p></li>
+<li><p>UndleJohn and its descendants are entirely excluded because there are not matching nodes in that branch</p></li>
+</ul>
 </div>
 <div class="section" id="findbyid">
 <h2>FindById<a class="headerlink" href="#findbyid" title="Permalink to this headline">¶</a></h2>
@@ -220,6 +313,61 @@ matching node in it, then the entire branch of nodes will be excluded from the r
 <p>Finds and returns the <code class="docutils literal notranslate"><span class="pre">T</span></code> object where the <code class="docutils literal notranslate"><span class="pre">Id</span></code> value is equal to the <code class="docutils literal notranslate"><span class="pre">nodeId</span></code>
 value provided as an argument. It will search the tree recursively until it is found. <code class="docutils literal notranslate"><span class="pre">TId</span></code> is
 the type of the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">targetNode</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UndleJohn&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example above note the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">targetNode</span></code> will contain the “UncleJohn” branch in the tree above</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">targetNode.Parent.Id</span></code> is “Grandpa”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">targetNode.Children[0].Id</span></code> is “CousinAnn”</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="find">
+<h2>Find<a class="headerlink" href="#find" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="nf">Find</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">condition</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finds and returns the object of type <code class="docutils literal notranslate"><span class="pre">T</span></code> where the <code class="docutils literal notranslate"><span class="pre">condition</span></code> implemented by the lambda function returns
+true. It will search the tree recursively until the first item is found ignoring any other nodes that match
+the <code class="docutils literal notranslate"><span class="pre">condition</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">targetNode</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Gender</span> <span class="p">==</span> <span class="n">Gender</span><span class="p">.</span><span class="n">Female</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example above note the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">targetNode.Id</span></code> is “SisterJane”</p></li>
+<li><p>The node with <code class="docutils literal notranslate"><span class="pre">Id</span> <span class="pre">==</span> <span class="pre">&quot;CousinAnn&quot;</span></code> also satisfies the filter condition but it is ignored because it
+will find “SisterJane” first</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="isancestor">
 <h2>IsAncestor<a class="headerlink" href="#isancestor" title="Permalink to this headline">¶</a></h2>
@@ -227,6 +375,35 @@ the type of the <code class="docutils literal notranslate"><span class="pre">Id<
 </pre></div>
 </div>
 <p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is an ancestor of this node up the tree.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">grandpa</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Grandpa&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Dad&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UncleJohn&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="n">result</span><span class="p">;</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">me</span><span class="p">.</span><span class="n">IsAncestor</span><span class="p">(</span><span class="n">grandpa</span><span class="p">);</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">me</span><span class="p">.</span><span class="n">IsAncestor</span><span class="p">(</span><span class="n">dad</span><span class="p">);</span>
+
+<span class="c1">// result == false</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">me</span><span class="p">.</span><span class="n">IsAncestor</span><span class="p">(</span><span class="n">uncle</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="isdescendent">
 <h2>IsDescendent<a class="headerlink" href="#isdescendent" title="Permalink to this headline">¶</a></h2>
@@ -235,6 +412,35 @@ the type of the <code class="docutils literal notranslate"><span class="pre">Id<
 </div>
 <p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is a descendant of this node down the tree
 recursively.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">grandpa</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Grandpa&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Dad&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UncleJohn&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="n">result</span><span class="p">;</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">grandpa</span><span class="p">.</span><span class="n">IsDescendent</span><span class="p">(</span><span class="n">dad</span><span class="p">);</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">grandpa</span><span class="p">.</span><span class="n">IsDescendent</span><span class="p">(</span><span class="n">me</span><span class="p">);</span>
+
+<span class="c1">// result == false</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">uncle</span><span class="p">.</span><span class="n">IsDescendent</span><span class="p">(</span><span class="n">me</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="issibling">
 <h2>IsSibling<a class="headerlink" href="#issibling" title="Permalink to this headline">¶</a></h2>
@@ -243,6 +449,36 @@ recursively.</p>
 </div>
 <p>Determines if the node provided as the <code class="docutils literal notranslate"><span class="pre">treeNode</span></code> is a sibling of this node (i.e. they share
 the same <code class="docutils literal notranslate"><span class="pre">Parent</span></code> and are members of the same <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection).</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">dad</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Dad&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UncleJohn&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">sister</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;SisterJane&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">cousin</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;CousinAnn&quot;</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="n">result</span><span class="p">;</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">dad</span><span class="p">.</span><span class="n">IsSibling</span><span class="p">(</span><span class="n">uncle</span><span class="p">);</span>
+
+<span class="c1">// result == true</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">me</span><span class="p">.</span><span class="n">IsSibling</span><span class="p">(</span><span class="n">sister</span><span class="p">);</span>
+
+<span class="c1">// result == false</span>
+<span class="n">result</span> <span class="p">=</span> <span class="n">me</span><span class="p">.</span><span class="n">IsSibling</span><span class="p">(</span><span class="n">cousin</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="makechildofuppersibling">
 <h2>MakeChildOfUpperSibling<a class="headerlink" href="#makechildofuppersibling" title="Permalink to this headline">¶</a></h2>
@@ -250,8 +486,36 @@ the same <code class="docutils literal notranslate"><span class="pre">Parent</sp
 </pre></div>
 </div>
 <p>Makes this node a child of the sibling higher in the order of the <code class="docutils literal notranslate"><span class="pre">Children</span></code> collection of its
-parent. In a user-interface this method could be wired to a right-arrow that moves the node to
+parent. In a user-interface this method could be wired to a <strong>right-arrow</strong> that moves the node to
 the right in the tree causing it to be indented under the item above it.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below: CousinAnn is misplaced as a child of Grandpa</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">        Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">cousin</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;CousinAnn&quot;</span><span class="p">);</span>
+
+<span class="n">cousin</span><span class="p">.</span><span class="n">MakeChildOfUpperSibling</span><span class="p">();</span>
+
+<span class="cm">/*</span>
+<span class="cm">    The tree now looks like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="makesiblingofparent">
 <h2>MakeSiblingOfParent<a class="headerlink" href="#makesiblingofparent" title="Permalink to this headline">¶</a></h2>
@@ -259,11 +523,79 @@ the right in the tree causing it to be indented under the item above it.</p>
 </pre></div>
 </div>
 <p>Makes this node a sibling of its parent. In a user-interface this method could be wired to a
-left-arrow that moves the node to the left in the tree causing it to be indented at the same
+<strong>left-arrow</strong> that moves the node to the left in the tree causing it to be indented at the same
 level of the item above it and thereby converting it into a sibling of its parent. The
 <code class="docutils literal notranslate"><span class="pre">takeLowerSiblingsAsChildren</span></code>, if <code class="docutils literal notranslate"><span class="pre">true</span></code>, will cause any existing siblings under it to
 be converted into its children. The default is for the lower siblings to remain children of
 the upper (formerly <code class="docutils literal notranslate"><span class="pre">Parent</span></code>) item.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below: UndleJohn is misplaced as a child of Dad</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: UndleJohn, Name: John, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: SisterMary, Name: Mary, Gender: Female, ParentId: Dad</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UndleJohn&quot;</span><span class="p">);</span>
+
+<span class="n">uncle</span><span class="p">.</span><span class="n">MakeSiblingOfParent</span><span class="p">();</span>
+
+<span class="cm">/*</span>
+<span class="cm">    The tree now looks like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: SisterMary, Name: Mary, Gender: Female, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SisterMary</span></code> remains a child of <code class="docutils literal notranslate"><span class="pre">Dad</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Example using <code class="docutils literal notranslate"><span class="pre">takeLowerSiblingsAsChildren</span> <span class="pre">=</span> <span class="pre">true</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below: UndleJohn is misplaced as a child of Dad</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: UndleJohn, Name: John, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Dad</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">uncle</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;UndleJohn&quot;</span><span class="p">);</span>
+
+<span class="n">uncle</span><span class="p">.</span><span class="n">MakeSiblingOfParent</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    The tree now looks like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: John</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CousinAnn</span></code> becomes a child of <code class="docutils literal notranslate"><span class="pre">UndleJohn</span></code></p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="movedowninsiblingorder">
 <h2>MoveDownInSiblingOrder<a class="headerlink" href="#movedowninsiblingorder" title="Permalink to this headline">¶</a></h2>
@@ -271,8 +603,36 @@ the upper (formerly <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 <p>Moves this node down in the sibling order. In a user-interface this method could be wired
-to a down-arrow causing the node to be moved down in the sibling order. It will stop moving
+to a <strong>down-arrow</strong> causing the node to be moved down in the sibling order. It will stop moving
 down when it gets to the bottom of the sibling order at its current level in the tree.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">sister</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;SisterJane&quot;</span><span class="p">);</span>
+
+<span class="n">sister</span><span class="p">.</span><span class="n">MoveDownInSiblingOrder</span><span class="p">();</span>
+
+ <span class="cm">/*</span>
+<span class="cm">    The tree now looks like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="moveupinsiblingorder">
 <h2>MoveUpInSiblingOrder<a class="headerlink" href="#moveupinsiblingorder" title="Permalink to this headline">¶</a></h2>
@@ -280,24 +640,37 @@ down when it gets to the bottom of the sibling order at its current level in the
 </pre></div>
 </div>
 <p>Moves this node up in the sibling order. In a user-interface this method could be wired
-to an up-arrow causing the node to be moved up in the sibling order. It will stop moving
+to an <strong>up-arrow</strong> causing the node to be moved up in the sibling order. It will stop moving
 up when it gets to the top of the sibling order at its current level in the tree remaining
 under its current parent.</p>
-</div>
-<div class="section" id="processchildren">
-<h2>ProcessChildren<a class="headerlink" href="#processchildren" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="n">me</span><span class="p">.</span><span class="n">MoveUpInSiblingOrder</span><span class="p">();</span>
+
+ <span class="cm">/*</span>
+<span class="cm">    The tree now looks like this</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
 </pre></div>
 </div>
-<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where
-the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The method does not include
-this node when processing the tree.</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
-<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The method
-does not include this node when processing the tree.</p>
 </div>
 <div class="section" id="processtree">
 <h2>ProcessTree<a class="headerlink" href="#processtree" title="Permalink to this headline">¶</a></h2>
@@ -313,18 +686,91 @@ where the <code class="docutils literal notranslate"><span class="pre">nodeProce
 <p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
 <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. Unlike
 <code class="docutils literal notranslate"><span class="pre">ProcessChildren</span></code>, this method will start with (include) this node.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessTree</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">IndentString</span> <span class="p">+</span> <span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Grandpa</span>
+<span class="cm">     Dad</span>
+<span class="cm">      SisterJane</span>
+<span class="cm">      Me</span>
+<span class="cm">     UncleJohn</span>
+<span class="cm">      CousinAnn</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The root node with Id=”Grandpa” is included in the output because processing begins
+with the calling node itself</p></li>
+<li><p>To process nodes down the tree excluding the current node use the ProcessChildren() method below</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="processchildren">
+<h2>ProcessChildren<a class="headerlink" href="#processchildren" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where
+the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a lambda function used as the handler. The method does not include
+this node when processing the tree.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessChildren</span><span class="p">(</span><span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each child of this node to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> recursively down the tree, where the
+<code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> is a handler object that implements <code class="docutils literal notranslate"><span class="pre">ITreeNodeProcessor&lt;TId,</span> <span class="pre">T&gt;</span></code>. The method
+does not include this node when processing the tree.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessChildren</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">IndentString</span> <span class="p">+</span> <span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">     Dad</span>
+<span class="cm">      SisterJane</span>
+<span class="cm">      Me</span>
+<span class="cm">     UncleJohn</span>
+<span class="cm">      CousinAnn</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The root node with Id=”Grandpa” is not in the output because processing begins
+with the Children</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="processancestors">
 <h2>ProcessAncestors<a class="headerlink" href="#processancestors" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
-    <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
-    <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
-    <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> starting with <code class="docutils literal notranslate"><span class="pre">startNode</span></code>
-and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.</p>
+<p><strong>Using Lambda with maxLevel Parameter</strong></p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
     <span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
     <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
@@ -334,6 +780,52 @@ and stopping at the node where <code class="docutils literal notranslate"><span 
 </div>
 <p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with <code class="docutils literal notranslate"><span class="pre">startNode</span></code>
 and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">),</span> <span class="n">me</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Me</span>
+<span class="cm">    Dad</span>
+<span class="cm">    Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">),</span> <span class="n">me</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Me</span>
+<span class="cm">    Dad</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In both calls the starting node is <code class="docutils literal notranslate"><span class="pre">me</span></code> so the Id “Me” is output first</p></li>
+<li><p>In the first call to ProcessAncestors() the default <code class="docutils literal notranslate"><span class="pre">maxLevel</span> <span class="pre">=</span> <span class="pre">1</span></code> was used, which means
+that by default it will go all the way to the root node. That is why <code class="docutils literal notranslate"><span class="pre">Grandpa</span></code> is in the
+output</p></li>
+<li><p>In the second call to ProcessAncestors() it uses <code class="docutils literal notranslate"><span class="pre">maxLevel</span> <span class="pre">=</span> <span class="pre">2</span></code>, so it stops processing
+at the ancestor with <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span> <span class="pre">==</span> <span class="pre">2</span></code>, which is <code class="docutils literal notranslate"><span class="pre">Dad</span></code></p></li>
+</ul>
+</div></blockquote>
+<p><strong>Using Lambda with Stop Function</strong></p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
     <span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
     <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
@@ -343,6 +835,94 @@ and stopping at the node where <code class="docutils literal notranslate"><span 
 </div>
 <p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> function starting with
 <code class="docutils literal notranslate"><span class="pre">startNode</span></code> and stopping at the node that causes the stopFunction to return true.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">nodeProcessor</span><span class="p">:</span> <span class="n">p</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">),</span>
+    <span class="n">startNode</span><span class="p">:</span> <span class="n">me</span><span class="p">,</span>
+    <span class="n">stopFunction</span><span class="p">:</span> <span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">&quot;Jr&quot;</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Me</span>
+<span class="cm">    Dad</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In both calls the starting node is <code class="docutils literal notranslate"><span class="pre">me</span></code> so the Id “Me” is output first</p></li>
+<li><p>The stop function is more complex than a level number</p></li>
+<li><p>You can make the stop function as sophisticated as is necessary</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Using ITreeNodeProcessor Class with maxLevel</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">void</span> <span class="nf">ProcessAncestors</span><span class="p">(</span>
+    <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="n">TId</span><span class="p">,</span> <span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeProcessor</span><span class="p">,</span>
+    <span class="n">T</span> <span class="n">startNode</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">maxLevel</span> <span class="p">=</span> <span class="m">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Passes each node up the tree of ancestors to the <code class="docutils literal notranslate"><span class="pre">nodeProcessor</span></code> starting with <code class="docutils literal notranslate"><span class="pre">startNode</span></code>
+and stopping at the node where <code class="docutils literal notranslate"><span class="pre">DepthFromRoot</span></code> = 1 (i.e. the top) or the specified <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">MyTreeNodeProcessor</span> <span class="p">:</span> <span class="n">ITreeNodeProcessor</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Person</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ProcessNode</span><span class="p">(</span><span class="n">Person</span> <span class="n">node</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">var</span> <span class="n">myNodeProcessor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MyTreeNodeProcessor</span><span class="p">();</span>
+
+<span class="kt">var</span> <span class="n">me</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">FindById</span><span class="p">(</span><span class="s">&quot;Me&quot;</span><span class="p">);</span>
+
+<span class="n">familyTree</span><span class="p">.</span><span class="n">ProcessAncestors</span><span class="p">(</span> <span class="n">myNodeProcessor</span><span class="p">,</span> <span class="n">me</span> <span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Me</span>
+<span class="cm">    Dad</span>
+<span class="cm">    Grandpa</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In both calls the starting node is <code class="docutils literal notranslate"><span class="pre">me</span></code> so the Id “Me” is output first</p></li>
+<li><p>The default <code class="docutils literal notranslate"><span class="pre">maxLevel</span> <span class="pre">=</span> <span class="pre">1</span></code> was used, which means that by default it will go all the way
+to the root node, which is why <code class="docutils literal notranslate"><span class="pre">Grandpa</span></code> is in the output</p></li>
+<li><p>While not demonstrated here, when using a class you can also specify an integer <code class="docutils literal notranslate"><span class="pre">maxLevel</span></code>
+or a <code class="docutils literal notranslate"><span class="pre">stopFunction</span></code> lambda to make it stop climbing the ancestor tree at the defined level</p></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="tolist">
 <h2>ToList<a class="headerlink" href="#tolist" title="Permalink to this headline">¶</a></h2>
@@ -352,6 +932,57 @@ and stopping at the node where <code class="docutils literal notranslate"><span 
 <p>Returns all nodes in the tree as a flattened collection of type <code class="docutils literal notranslate"><span class="pre">List&lt;T&gt;</span></code> sorted by the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code>
 property. If this method is called on a branch then it will return only the nodes in that branch where the top
 of the branch is the root and will be the first element in the list.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    Given the tree below:</span>
+
+<span class="cm">    Id: Grandpa, Name: Richard, Gender: Male, ParentId: null</span>
+<span class="cm">        Id: Dad, Name: Richard Jr, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: SisterJane, Name: Jane, Gender: Female, ParentId: Dad</span>
+<span class="cm">            Id: Me, Name: MeMyselfAndI, Gender: Male, ParentId: Dad</span>
+<span class="cm">        Id: UndleJohn, Name: John, Gender: Male, ParentId: Grandpa</span>
+<span class="cm">            Id: CousinAnn, Name: Ann, Gender: Female, ParentId: Grandpa</span>
+<span class="cm">*/</span>
+
+<span class="kt">var</span> <span class="n">flatList</span> <span class="p">=</span> <span class="n">familyTree</span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+
+<span class="n">flatList</span><span class="p">.</span><span class="n">ForEach</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">SortableTreePath</span><span class="p">));</span>
+
+<span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    1</span>
+<span class="cm">    1.1</span>
+<span class="cm">    1.1.1</span>
+<span class="cm">    1.1.2</span>
+<span class="cm">    1.2</span>
+<span class="cm">    1.2.1</span>
+<span class="cm">*/</span>
+
+<span class="n">flatList</span><span class="p">.</span><span class="n">ForEach</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">IndentString</span> <span class="p">+</span> <span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+
+ <span class="cm">/*</span>
+<span class="cm">    Output:</span>
+
+<span class="cm">    Grandpa</span>
+<span class="cm">     Dad</span>
+<span class="cm">      SisterJane</span>
+<span class="cm">      Me</span>
+<span class="cm">     UncleJohn</span>
+<span class="cm">      CousinAnn</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>Note the following in the example above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The first call above shows how the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code> property can be used to display the
+tree items in the property order without having to recurse the tree even through the list is
+flat.</p></li>
+<li><p>The second call above demonstrates the fact that the tree can be displayed in nested fashion
+using the <code class="docutils literal notranslate"><span class="pre">IndentString</span></code> property without recursing by virtue of the fact that the list
+is sorted by the <code class="docutils literal notranslate"><span class="pre">SortableTreePath</span></code> property.</p></li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
