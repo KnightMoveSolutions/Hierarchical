@@ -97,18 +97,19 @@
 <li class="toctree-l1"><a class="reference internal" href="json-serialization.html">JSON Serialization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">3.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">3.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.0.0</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">2.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">2.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">2.0.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">2.0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">2.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">2.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">2.0.0</a></li>
 </ul>
 </li>
 </ul>
@@ -182,7 +183,24 @@
 <div class="section" id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>3.1.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Switched to the use of <code class="docutils literal notranslate"><span class="pre">T</span></code> instead of <code class="docutils literal notranslate"><span class="pre">ITreeNode&lt;TId,</span> <span class="pre">T&gt;</span></code> so casting is no longer necessary for the following properties
+and collections</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Root</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Parent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Children</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Siblings</span></code></p></li>
+</ul>
+</li>
+<li><p>Added the new <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">Find(Func&lt;T,</span> <span class="pre">bool&gt;</span> <span class="pre">condition)</span></code> method to allow finding of a node anywhere in the tree using an arbitrary
+lambda function to test for a custom condition</p></li>
+<li><p>Added robust examples to documentation</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>3.0.0<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="breaking-changes">
 <h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -215,44 +233,44 @@ One-liner lambda functions are now possible.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>2.1.1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>2.1.1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed bug where TypeName was null when saving to the database using EF Core</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>2.1.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>2.1.0<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added the ability to deserialize JSON into the hierarchical object model when the nodes are polymorphic (i.e. different base classes that implement the same base type)</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>2.0.4<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Fixed serialization bugs</p></li>
-</ul>
-</div>
 <div class="section" id="id5">
-<h2>2.0.3<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2>2.0.4<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed serialization bugs</p></li>
 </ul>
 </div>
 <div class="section" id="id6">
-<h2>2.0.2<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2>2.0.3<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fixed serialization bugs</p></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>2.0.2<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added support for JSON Deserialization</p></li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h2>2.0.1<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>2.0.1<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added support for JSON Serialization</p></li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h2>2.0.0<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>2.0.0<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Ported to .NET Core 3</p></li>
 <li><p>Added generic defintion for the Id data type</p></li>

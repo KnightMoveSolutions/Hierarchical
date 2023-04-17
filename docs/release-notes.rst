@@ -8,7 +8,18 @@ Release Notes
 3.1.0
 -----
 
+* Switched to the use of ``T`` instead of ``ITreeNode<TId, T>`` so casting is no longer necessary for the following properties
+  and collections 
 
+  * ``Root``
+  * ``Parent`` 
+  * ``Children``
+  * ``Siblings``
+
+* Added the new ``T Find(Func<T, bool> condition)`` method to allow finding of a node anywhere in the tree using an arbitrary 
+  lambda function to test for a custom condition
+
+* Added robust examples to documentation 
 
 -----
 3.0.0
