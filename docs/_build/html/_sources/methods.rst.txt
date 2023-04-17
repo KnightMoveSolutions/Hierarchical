@@ -130,7 +130,7 @@ In the example above note the following:
 
 * Grandpa, Dad, and UncleLuke are all included because they have a matching node in their descendants
 * MeMyselfAndI is not included in the list of Children for Dad because it doesn't match the filter condition
-* UndleJohn and its descendants are entirely excluded because there are not matching nodes in that branch
+* UndleJohn and its descendants are entirely excluded because there are no matching nodes in that branch
 
 FindById
 --------
@@ -776,7 +776,7 @@ Example:
     }
 
     var myNodeProcessor = new MyTreeNodeProcessor();
-    
+
     var me = familyTree.FindById("Me");
 
     familyTree.ProcessAncestors( myNodeProcessor, me );

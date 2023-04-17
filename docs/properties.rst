@@ -120,7 +120,7 @@ Siblings
 
 .. code-block:: csharp 
 
-    TreeList<TId, T>
+    TreeList<TId, T> Siblings
 
 The other objects in the ``Parent`` object's ``Children`` collection. It returns all objects in that 
 collection except for this node.
