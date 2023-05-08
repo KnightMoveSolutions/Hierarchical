@@ -17,6 +17,23 @@ namespace KnightMoves.Hierarchical.UnitTests
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<PersonEF>()
+                        .HasOne(p => p.Root)
+                        .WithMany()
+                        .HasForeignKey(p => p.RootId)
+                        .IsRequired(false);
+
+            modelBuilder.Entity<PersonEF>()
+                        .HasOne(p => p.Parent)
+                        .WithMany(p => p.ChildrenList)
+                        .HasForeignKey(p => p.ParentId)
+                        .IsRequired(false);
+        }
+
         public DbSet<PersonEF> Persons { get; set; }
     }
 

@@ -15,6 +15,12 @@ namespace KnightMoves.Hierarchical
     /// <typeparam name="T">The type of the object that is being proxied into a <see cref="TreeNode{TId, T}"/> object</typeparam>
     public class TreeNodeEF<TId, T> : TreeNode<TId, T> where T : ITreeNode<TId, T>
     {
+        [ForeignKey("ParentId")]
+        public override T Parent { get => base.Parent; set => base.Parent = value; }
+
+        [ForeignKey("RootId")]
+        public override T Root { get => base.Root; set => base.Root = value; }
+
         [NotMapped]
         public override IHashFunction HashProvider
         {
@@ -33,30 +39,7 @@ namespace KnightMoves.Hierarchical
                 Children.ToList().ForEach(t => tList.Add((T)t));
                 return tList;
             }
-            set
-            {
-                IList<T> val = value;
-            }
-        }
-
-        [NotMapped]
-        public override T Parent
-        {
-            get { return base.Parent; }
-            set
-            {
-                base.Parent = value; 
-            }
-        }
-
-        [NotMapped]
-        public override T Root
-        {
-            get { return base.Root; }
-            set 
-            { 
-                base.Root = value; 
-            }
+            set { ; }
         }
 
         /// <summary>
@@ -66,10 +49,7 @@ namespace KnightMoves.Hierarchical
         public new int DepthFromRoot
         {
             get { return base.DepthFromRoot; }
-            set
-            {
-                int val = value; // Fake it so EF persists read-only value to DB
-            }
+            set { ; }
         }
 
         /// <summary>
@@ -78,10 +58,7 @@ namespace KnightMoves.Hierarchical
         public new bool HasChildren
         {
             get { return base.HasChildren; }
-            set
-            {
-                bool val = value; // Fake it so EF persists read-only value to DB
-            }
+            set { ; }
         }
 
         [NotMapped]
@@ -108,10 +85,7 @@ namespace KnightMoves.Hierarchical
         public new string IndentString
         {
             get { return base.IndentString; }
-            set
-            {
-                string val = value; // Fake it so EF persists read-only value to DB
-            }
+            set { ; }
         }
 
         /// <summary>
@@ -120,10 +94,7 @@ namespace KnightMoves.Hierarchical
         public new string SortableTreePath
         {
             get { return base.SortableTreePath; }
-            set
-            {
-                string val = value; // Fake it so EF persists read-only value to DB
-            }
+            set { ; }
         }
 
         public override Guid TreeNodeId
