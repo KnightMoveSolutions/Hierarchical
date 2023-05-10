@@ -5,6 +5,19 @@ Release Notes
 =============
 
 -----
+3.1.2
+-----
+
+* Fixed bug that caused EF Core to create a Foreign Key Shadow Property for Sibling references that was missed in the last bug fix (oops!)
+* Added proper unit test to catch these cases 
+
+-----
+3.1.1
+-----
+
+* Fixed bug that caused EF Core to create a Foreign Key Shadow Property for Parent and Root references
+
+-----
 3.1.0
 -----
 
