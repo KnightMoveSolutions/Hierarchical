@@ -18,7 +18,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright 2023</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Version 3.1.2 - Bug Fix: Resolved bug where EF Core created a foreign key shadow property for Sibling references that had been marked as NotMapped and was missed in the last update</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 3.1.2 - Bug Fix: Resolved bug where EF Core created a foreign key shadow property for Sibling references that had NOT been marked as NotMapped and was missed in the last update</PackageReleaseNotes>
     <AssemblyVersion>3.1.2.0</AssemblyVersion>
     <FileVersion>3.1.2.0</FileVersion>
     <PackageIconUrl />
