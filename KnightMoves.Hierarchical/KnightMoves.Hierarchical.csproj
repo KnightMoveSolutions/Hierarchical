@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
-    <Version>3.1.1</Version>
+    <Version>3.1.2</Version>
     <Description>A library that implements a Hierarchical object model for any Entity Class.</Description>
     <Company>Knight Move Solutions, Inc.</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,9 +18,9 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright 2023</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Version 3.1.1 - Bug Fix: Resolved bug where EF Core created a foreign key shadow property for Parent/Root references that had been marked as NotMapped</PackageReleaseNotes>
-    <AssemblyVersion>3.1.1.0</AssemblyVersion>
-    <FileVersion>3.1.1.0</FileVersion>
+    <PackageReleaseNotes>Version 3.1.2 - Bug Fix: Resolved bug where EF Core created a foreign key shadow property for Sibling references that had been marked as NotMapped and was missed in the last update</PackageReleaseNotes>
+    <AssemblyVersion>3.1.2.0</AssemblyVersion>
+    <FileVersion>3.1.2.0</FileVersion>
     <PackageIconUrl />
   </PropertyGroup>
 
