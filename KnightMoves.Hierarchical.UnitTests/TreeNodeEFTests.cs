@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -78,6 +79,30 @@ namespace KnightMoves.Hierarchical.UnitTests
             Assert.NotNull(person.Children[0].Root);
             Assert.Equal(123, person.Children[0].RootId);
             Assert.Equal(123, person.Children[0].Root.Id);
+        }
+
+        [Fact]
+        public async Task TestNoShadowProperties()
+        {
+            // ARRANGE
+            var options = new DbContextOptionsBuilder<TestDBContext>()
+                                .UseInMemoryDatabase("TestDB")
+                                .Options;
+
+            bool hasShadowProperties;
+
+            // ACTION
+            using (var context = new TestDBContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                var props = context.Persons.EntityType.GetProperties().ToList();
+
+                hasShadowProperties = props.Any(p => p.IsShadowProperty());
+            }
+
+            // ASSERT
+            Assert.False(hasShadowProperties);
         }
     }
 }

@@ -560,7 +560,7 @@ namespace KnightMoves.Hierarchical
         /// The other objects in the <see cref="Parent"/> objects <see cref="Children"/> 
         /// collection. It returns all objects in that collection except for this node.
         /// </summary>
-        public TreeList<TId, T> Siblings
+        public virtual TreeList<TId, T> Siblings
         {
             get
             {

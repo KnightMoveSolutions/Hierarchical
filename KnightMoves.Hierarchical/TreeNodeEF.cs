@@ -42,6 +42,9 @@ namespace KnightMoves.Hierarchical
             set { ; }
         }
 
+        [NotMapped]
+        public override TreeList<TId, T> Siblings => base.Siblings;
+
         /// <summary>
         /// Repeats the <see cref="IndentCharacter"/> <see cref="DepthFromRoot"/> number of 
         /// times to produce the indentation string for pretty display in text output.
